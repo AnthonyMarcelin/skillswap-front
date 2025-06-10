@@ -1,14 +1,14 @@
-import React from 'react';
 import Homepage from '../components/Homepage';
 import Header from '../components/Header';
 
-const Home: React.FC = () => {
+export default function Home() {
   return (
     <div>
+        {/* Header */}
         <Header/>
-        <Homepage />
+        {/* MainContent */}
+        <Homepage/>
+        {/* Footer */}
     </div>
   );
 };
-
-export default Home;
