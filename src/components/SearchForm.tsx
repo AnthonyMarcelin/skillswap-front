@@ -21,7 +21,7 @@ export default function SearchForm() {
   return (
     <form
       action={handleSearch}
-      className="max-w-md mx-auto mt-10 bg-primary shadow p-8"
+      className="max-w-md mx-auto mt-10 bg-primary shadow p-8 m-2"
     >
       <h2 className="text-1xl font-semibold mb-6 text-center text-secondary">
         Trouvez des nouvelles compétences proches de chez vous
