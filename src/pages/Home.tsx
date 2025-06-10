@@ -1,6 +1,7 @@
 import Homepage from '../components/Homepage';
 import Header from '../components/Header';
 import FormSection from '../components/FormSection';
+import { UserCard } from '@/components/UserCard';
 
 
 export default function Home() {
@@ -11,6 +12,7 @@ export default function Home() {
 
         {/* MainContent */}
         <Homepage />
+        <UserCard />
         <FormSection />
 
         {/* Footer */}
