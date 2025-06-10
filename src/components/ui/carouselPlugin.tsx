@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/carousel"
 
 import { Button } from "./button"
-import { ProfileCard } from "./ProfileCard"
+import { ProfileCard } from "../ProfileCard"
 
 export function CarouselPlugin() {
   const plugin = React.useRef(
