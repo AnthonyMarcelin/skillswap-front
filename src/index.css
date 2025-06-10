@@ -1,4 +1,7 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+/* @custom-variant dark (&:is(.dark *)); */
 
 @theme {
   --color-primary: #A8D0E6;
@@ -8,6 +11,4 @@
 
   --font-regular: 'Nunito', sans-serif;
   --font-bold : 'Nunito', sans-serif;
-}    
-
-
+}

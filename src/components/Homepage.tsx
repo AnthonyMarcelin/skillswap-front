@@ -1,13 +1,12 @@
 import React from "react";
+import Ellipse from "./ui/Ellipse";
+import { CarouselPlugin } from "./ui/carouselPlugin";
 
-const Homepage: React.FC = () => {
+export default function Homepage () {
   return (
-    <div className="homepage">
-      <h1>Welcome to the Homepage</h1>
-      <p>This is a simple homepage component.</p>
-      <button onClick={() => alert("Button clicked!")}>Click Me</button>
-    </div>
+    <>
+      <CarouselPlugin />
+      <Ellipse/>
+    </>
   );
 };
-
-export default Homepage;
