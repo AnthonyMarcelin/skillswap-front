@@ -35,12 +35,8 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
-<<<<<<< HEAD
-    "prettier": "^3.5.3",
-=======
     "prettier": "3.5.3",
     "tw-animate-css": "^1.3.4",
->>>>>>> 7f47bc5831da50d812d083dfad4055db70b5fa87
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.30.1",
     "vite": "^6.3.5"
