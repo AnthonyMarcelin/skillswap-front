@@ -52,11 +52,11 @@ export default function SignupForm() {
       return;
     }
 
-      // ✅ Vérifie que les mots de passe correspondent
-  if (formData.password !== formData.confirmPassword) {
-    alert("❌ Les mots de passe ne correspondent pas.");
-    return;
-  }
+    // ✅ Vérifie que les mots de passe correspondent
+    if (formData.password !== formData.confirmPassword) {
+      alert("❌ Les mots de passe ne correspondent pas.");
+      return;
+    }
 
     console.log("Inscription", formData);
     // Envoi API ici

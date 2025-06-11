@@ -1,11 +1,11 @@
 const skills = [
-    { name: 'JavaScript'},
-    { name: 'React'},
-    { name: 'Node.js'},
-    { name: 'CSS' },
-    { name: 'HTML'},
-    { name: 'Python'},
-    ];
+  { name: "JavaScript" },
+  { name: "React" },
+  { name: "Node.js" },
+  { name: "CSS" },
+  { name: "HTML" },
+  { name: "Python" },
+];
 
 export default function SkillBubble() {
   return (
