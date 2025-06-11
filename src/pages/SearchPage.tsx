@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import { ProfileCard } from "@/components/ProfileCard";
 import SearchForm from "@/components/SearchForm";
+import { Button } from "@/components/ui/button";
 
 export default function SearchPage() {
     return (
@@ -11,8 +12,8 @@ export default function SearchPage() {
                 <div className="text-center p-6 pb-2 font-semibold">
                     “Des nouvelles compétences à portée de clics proches de chez vous.”
                 </div>
-                <div className="pb-6">
-                <SearchForm />
+                <div className="pb-6 w-full flex justify-center">
+                <SearchForm className="w-full max-w-2xl" />
                 </div>
                 <div className="text-start pl-6 pt-6 font-semibold bg-primary text-secondary">
                     Résultat de votre recherche
@@ -21,6 +22,7 @@ export default function SearchPage() {
                 <ProfileCard />
                 <ProfileCard />
                 <ProfileCard />
+                <Button className="bg-accent hover:bg-secondary text-white">Voir plus</Button>
                 </div>
             </div>
 
