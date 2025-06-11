@@ -4,6 +4,7 @@ import SearchForm from "./SearchForm";
 import SkillBubble from "./ui/SkillBubble";
 import ProfileBubble from "./ui/ProfileBubble";
 import WishToRegister from "./WishToRegister";
+import Footer from "./Footer";
 
 export default function Homepage () {
   return (
@@ -21,6 +22,7 @@ export default function Homepage () {
         <div className="pt-8 text-secondary text-lg text-center items-start font-semibold">Les derniers profils inscrits</div>
         <ProfileBubble />
       </section>
+      <Footer />
       
 
 
