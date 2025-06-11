@@ -1,4 +1,4 @@
-import React from "react";
+
 import { CarouselPlugin } from "./ui/carouselPlugin";
 import SearchForm from "./Forms/SearchForm";
 import SkillBubble from "./ui/SkillBubble";
@@ -27,12 +27,7 @@ export default function Homepage() {
           Les derniers profils inscrits
         </div>
         <ProfileBubble />
-<<<<<<< HEAD
-      </section>
-      <Footer />
-=======
       </section>   
->>>>>>> fc6c6a0077ebcbe91899e68210640c28f1a99c26
     </>
   );
 }

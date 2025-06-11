@@ -21,14 +21,14 @@ export default function LoginForm() {
     e.preventDefault();
 
     if (!loginData.email || !loginData.password) {
-      alert("❌ Merci de remplir tous les champs.");
-      return;
-    }
+    alert("❌ Merci de remplir tous les champs.");
+    return;
+  }
 
-    if (loginData.password.length < 8) {
-      alert("❌ Le mot de passe doit faire au moins 8 caractères.");
-      return;
-    }
+  if (loginData.password.length < 8) {
+    alert("❌ Le mot de passe doit faire au moins 8 caractères.");
+    return;
+  }
 
     // Ici, on affiche les données saisies dans la console
     // Tu peux remplacer ça par un appel à une API d'authentification
@@ -38,16 +38,16 @@ export default function LoginForm() {
   return (
     <form onSubmit={handleSubmit}>
       {/* Titre au-dessus du formulaire */}
-      {/* <h2 className="m-2 text-center text-xl font-bold">
+      <h2 className="m-2 text-center text-xl font-bold">
         Vous avez déjà un compte ?
-      </h2> */}
+      </h2>
 
       {/* Champ email */}
       <input
-        name="email"
-        type="email"
+        name="email" 
+        type="email" 
         required
-        placeholder="Email"
+        placeholder="Email" 
         value={loginData.email} // valeur actuelle du champ (provenant de l'état)
         onChange={handleChange} // fonction appelée à chaque frappe clavier
         className="mb-3 w-full rounded border px-3 py-2 bg-white text-black"
