@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function SearchForm() {
+export default function SearchForm({className = ""}: {className?: string}) {
   async function handleSearch(formData: FormData) {
     const competence = formData.get("competence") as string;
     const codePostal = formData.get("codePostal") as string;
@@ -21,7 +21,7 @@ export default function SearchForm() {
   return (
     <form
       action={handleSearch}
-      className="mt-10 bg-primary shadow p-8 m-5"
+      className={`mt-10 bg-primary shadow p-8 m-5 $ ${className}`}
     >
       <h2 className="text-lg font-semibold mb-6 text-center text-secondary">
         Trouvez des nouvelles compétences proches de chez vous
