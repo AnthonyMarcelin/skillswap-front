@@ -1,31 +1,33 @@
-{/* Pour l'instant récupération données en dur */}
+{
+  /* Pour l'instant récupération données en dur */
+}
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 // Props attendues par le composant SkillSelector
 type Props = {
-  selectedSkills: string[];           // Liste des compétences déjà sélectionnées
+  selectedSkills: string[]; // Liste des compétences déjà sélectionnées
   onChange: (skills: string[]) => void; // Fonction à appeler quand la liste change
 };
 
 // Données statiques : catégories avec les compétences associées
 const skillsByCategory = {
-  frontend: ['HTML', 'CSS', 'React', 'Vue'],
-  backend: ['Node.js', 'Express', 'Python', 'Java'],
-  devops: ['Docker', 'Kubernetes', 'CI/CD', 'AWS']
+  frontend: ["HTML", "CSS", "React", "Vue"],
+  backend: ["Node.js", "Express", "Python", "Java"],
+  devops: ["Docker", "Kubernetes", "CI/CD", "AWS"],
 };
 
 export default function SkillSelector({ selectedSkills, onChange }: Props) {
   // État local pour suivre la catégorie actuellement sélectionnée
-  const [category, setCategory] = useState('frontend');
+  const [category, setCategory] = useState("frontend");
 
   // Fonction appelée lorsqu'on coche ou décoche une compétence
   const handleCheckboxChange = (skill: string) => {
     const updated = selectedSkills.includes(skill)
-      // Si la compétence est déjà sélectionnée, on la retire
-      ? selectedSkills.filter((s) => s !== skill)
-      // Sinon, on l’ajoute à la liste
-      : [...selectedSkills, skill];
+      ? // Si la compétence est déjà sélectionnée, on la retire
+        selectedSkills.filter((s) => s !== skill)
+      : // Sinon, on l’ajoute à la liste
+        [...selectedSkills, skill];
 
     // On remonte la nouvelle liste des compétences au parent via onChange
     onChange(updated);
@@ -38,7 +40,7 @@ export default function SkillSelector({ selectedSkills, onChange }: Props) {
         {/* Choix de la catégorie (frontend, backend, devops) */}
         <label className="block text-sm font-medium mb-2">Catégorie :</label>
         <select
-          value={category}                            // Catégorie actuelle
+          value={category} // Catégorie actuelle
           onChange={(e) => setCategory(e.target.value)} // Met à jour l'état local
           className="mb-4 w-full rounded border px-3 py-2 bg-white text-black"
         >
@@ -57,7 +59,7 @@ export default function SkillSelector({ selectedSkills, onChange }: Props) {
             <label key={skill} className="flex items-center gap-2">
               <input
                 type="checkbox"
-                checked={selectedSkills.includes(skill)}   // Si déjà sélectionnée, coche la case
+                checked={selectedSkills.includes(skill)} // Si déjà sélectionnée, coche la case
                 onChange={() => handleCheckboxChange(skill)} // Gère l'ajout ou le retrait
                 className="accent-[var(--color-accent)]" // Couleur personnalisée (orange)
               />

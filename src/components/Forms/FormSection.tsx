@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import SignupForm from './SignupForm';
-import LoginForm from './LoginForm';
+import { useState } from "react";
+import SignupForm from "./SignupForm";
+import LoginForm from "./LoginForm";
 
 export function FormSection() {
   // État local qui permet de basculer entre le formulaire d'inscription (true) et de connexion (false)
@@ -12,7 +12,7 @@ export function FormSection() {
 
       <section className="py-8">
         {/* Section avec un peu d'espace vertical */}
-        
+
         <h1 className="mb-6 text-center text-2xl font-bold">
           Ca Commence ici !
         </h1>
@@ -20,13 +20,12 @@ export function FormSection() {
         <h2 className="mb-6 text-center text-xl font-bold">
           {/* Titre dynamique en fonction du formulaire affiché */}
           {showSignup
-            ? 'Inscrivez-vous pour partager vos compétences'
-            : 'Connectez-vous'}
+            ? "Inscrivez-vous pour partager vos compétences"
+            : "Connectez-vous"}
         </h2>
 
         {/* Conteneur centralisé pour le formulaire (responsive) */}
         <div className="mx-auto w-full sm:max-w-sm md:max-w-md lg:max-w-lg px-6 py-8">
-          
           {/* Affiche le formulaire d'inscription ou de connexion selon l'état */}
           {showSignup ? <SignupForm /> : <LoginForm />}
 
@@ -37,7 +36,7 @@ export function FormSection() {
           >
             {/* Texte du bouton dynamique */}
             {showSignup
-              ? 'Déjà un compte ? Se connecter'
+              ? "Déjà un compte ? Se connecter"
               : "Pas encore inscrit ? Créer un compte"}
           </button>
         </div>

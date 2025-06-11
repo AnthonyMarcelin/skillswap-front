@@ -1,7 +1,5 @@
 import Homepage from '../components/Homepage';
 import Header from '../components/Header';
-import { UserCard } from '@/components/UserCard';
-import ReviewCard from '@/components/ReviewCard';
 import Footer from '@/components/Footer';
 
 
@@ -9,8 +7,8 @@ import Footer from '@/components/Footer';
 export default function Home() {
   return (
     <div>
-        {/* Header */}
-        <Header />
+      {/* Header */}
+      <Header />
 
         {/* MainContent */}
         <Homepage />
@@ -19,4 +17,4 @@ export default function Home() {
         <Footer />
     </div>
   );
-};
+}

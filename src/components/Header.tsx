@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-
-export default function Header() { 
-     const [open, setOpen] = useState(false);
+export default function Header() {
+  const [open, setOpen] = useState(false);
 
   return (
     <header className="header-container relative flex flex-col w-full">
@@ -43,9 +42,11 @@ export default function Header() {
       {/* {!open && ( */}
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center w-60 pointer-events-none z-20">
           <h1 className="font-bold text-2xl text-center w-full">SkillSwap</h1>
-          <h2 className="text-sm text-center w-full">Partagez vos talents, découvrez ceux des autres</h2>
+          <h2 className="text-sm text-center w-full">
+            Partagez vos talents, découvrez ceux des autres
+          </h2>
         </div>
-      {/* )} */}
+        {/* )} */}
         {/* Burger button */}
         <button
           className="md:hidden flex flex-col justify-center items-center ml-4"
@@ -79,8 +80,7 @@ export default function Header() {
       )}
     </header>
   );
-};
-
+}
 
 //  <header className="header-container relative flex flex-col">
 //       <div className="flex justify-between items-center p-2 bg-primary text-white">
