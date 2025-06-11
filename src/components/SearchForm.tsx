@@ -21,9 +21,9 @@ export default function SearchForm() {
   return (
     <form
       action={handleSearch}
-      className="max-w-md mx-auto mt-10 bg-primary shadow p-8 m-2"
+      className="mt-10 bg-primary shadow p-8 m-5"
     >
-      <h2 className="text-1xl font-semibold mb-6 text-center text-secondary">
+      <h2 className="text-lg font-semibold mb-6 text-center text-secondary">
         Trouvez des nouvelles compétences proches de chez vous
       </h2>
       <div className="mb-4">
@@ -34,7 +34,7 @@ export default function SearchForm() {
           required
         >
           <option value="" disabled>
-            Rechercher une compétence
+            Sélectionner une compétence
           </option>
           {competences.map((comp) => (
             <option key={comp} value={comp} className="text-secondary">
@@ -54,7 +54,7 @@ export default function SearchForm() {
       </div>
       <button
         type="submit"
-        className="w-full bg-accent hover:bg-blue-700 text-white font-semibold py-2 rounded transition"
+        className="w-full bg-accent hover:bg-secondary text-white font-semibold py-2 rounded transition"
       >
         Rechercher
       </button>
