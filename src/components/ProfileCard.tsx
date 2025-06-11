@@ -23,9 +23,9 @@ export function ProfileCard() {
             <CardTitle>John Doe</CardTitle>
             <CardDescription>Paris</CardDescription>
             <div className="flex gap-2">
-            <Button className="w-18 h-6">Tag</Button>
-            <Button className="w-18 h-6">Tag</Button>
-            <Button className="w-18 h-6">Tag</Button>
+            <Button className="w-18 h-6 bg-secondary">Tag</Button>
+            <Button className="w-18 h-6 bg-secondary">Tag</Button>
+            <Button className="w-18 h-6 bg-secondary">Tag</Button>
             </div>
           </CardHeader>
           <CardContent className="px-0 pt-0">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Neque saepe repellat velit ullam! Iste similique ex nobis, alias dolores dicta odit reiciendis.</CardContent>
