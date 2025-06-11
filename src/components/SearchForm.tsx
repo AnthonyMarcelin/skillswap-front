@@ -54,7 +54,7 @@ export default function SearchForm() {
       </div>
       <button
         type="submit"
-        className="w-full bg-accent hover:bg-blue-700 text-white font-semibold py-2 rounded transition"
+        className="w-full bg-accent hover:bg-secondary text-white font-semibold py-2 rounded transition"
       >
         Rechercher
       </button>

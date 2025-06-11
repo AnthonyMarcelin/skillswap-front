@@ -40,7 +40,7 @@ export function CarouselPlugin() {
       <CarouselNext className="mr-2 text-accent" />
     </Carousel>
   <div className="flex justify-center mt-6">
-  <Button className="bg-accent text-white px-6 py-2 text-lg font-semibold">
+  <Button className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold">
     Découvrir les profils
   </Button>
 </div>
