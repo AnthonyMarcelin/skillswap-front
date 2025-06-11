@@ -34,7 +34,7 @@ export default function SearchForm() {
           required
         >
           <option value="" disabled>
-            Rechercher une compétence
+            Sélectionner une compétence
           </option>
           {competences.map((comp) => (
             <option key={comp} value={comp} className="text-secondary">

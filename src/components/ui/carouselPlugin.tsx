@@ -4,15 +4,6 @@ import * as React from "react"
 import Autoplay from "embla-carousel-autoplay"
 
 import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import {
   Carousel,
   CarouselContent,
   CarouselItem,

@@ -1,0 +1,25 @@
+const users = [
+  { name: 'Fakhri Labib', url: '../../../public/fakhri-labib-ZhBGD4vykCU-unsplash.jpg' },
+  { name: 'Jake Nackos', url: '../../../public//jake-nackos-IF9TK5Uy-KI-unsplash.jpg' },
+    ];
+
+export default function ProfileBubble() {
+  return (
+    <div className="flex flex-wrap pt-8 justify-center items-center gap-10 pl-2 pr-2">
+      {users.map((user) => (
+        <div
+          key={user.name}
+          className="flex flex-col items-center">
+          <img
+            src={user.url}
+            alt={user.name}
+            className="w-30 h-30 rounded-full object-cover mb-2"
+          />
+          <div className="text-secondary text-lg font-semibold text-center">
+            {user.name}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
