@@ -16,7 +16,7 @@ export function ProfileCard() {
     <Card className="max-w-xl mx-auto bg-accent">
       <CardContent className="flex flex-col items-stretch gap-4">
         <div className="flex-shrink-0 h-full">
-          <img src="../../public/fakhri-labib-ZhBGD4vykCU-unsplash.jpg" alt="" className="object-cover rounded-l-xl h-full w-full" />
+          <img src="../../fakhri-labib-ZhBGD4vykCU-unsplash.jpg" alt="" className="object-cover rounded-l-xl h-full w-full" />
         </div>
         <div className="flex flex-col justify-between flex-1">
           <CardHeader className="px-0 pb-2">
