@@ -2,8 +2,8 @@ import Homepage from '../components/Homepage';
 import Header from '../components/Header';
 import { UserCard } from '@/components/UserCard';
 import ReviewCard from '@/components/ReviewCard';
-import SignupForm from '@/components/Forms/SignupForm';
-import LoginForm from '../components/Forms/LoginForm';
+import Footer from '@/components/Footer';
+
 
 
 export default function Home() {
@@ -14,12 +14,9 @@ export default function Home() {
 
         {/* MainContent */}
         <Homepage />
-        <UserCard />
-        <ReviewCard />
-        <LoginForm />
-        <SignupForm />
-
+  
         {/* Footer */}
+        <Footer />
     </div>
   );
 };

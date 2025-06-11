@@ -65,100 +65,12 @@ export default function SignupForm() {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <h1 className="m-2 text-center text-2xl font-bold">
-          Ca commence ici !
-        </h1>
+        {/* Titre du formulaire */}
+        {/* <h1 className="m-2 text-center text-2xl font-bold">Ca commence ici !</h1>
         <h2 className="m-2 text-center text-xl font-bold">
           Inscrivez-vous pour partager vos compétences
-        </h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 items-stretch">
-          {/* 📷 Zone photo à gauche */}
-          <div className="flex flex-col items-center justify-center gap-2 md:col-span-1">
-            {formData.photo ? (
-              <img
-                src={URL.createObjectURL(formData.photo)}
-                alt="Aperçu"
-                className="w-32 h-32 object-cover rounded-full shadow-md"
-              />
-            ) : (
-              <div className="w-32 h-32 bg-gray-300 text-gray-600 rounded-full flex items-center justify-center text-sm shadow-md">
-                Photo
-              </div>
-            )}
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              className="text-sm text-white"
-            />
-          </div>
-
-          {/* Infos utilisateur à droite (2 colonnes en largeur) */}
-          <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <input
-              name="firstName"
-              required
-              minLength={2}
-              maxLength={30}
-              type="text"
-              pattern="^[A-Za-zÀ-ÿ\s\-']{2,30}$" // Lettres, accents, espaces, tirets, apostrophes. Entre 2 et 30 caractères.
-              placeholder="Prénom"
-              value={formData.firstName}
-              onChange={handleChange}
-              className="rounded border px-3 py-2 bg-white text-black"
-            />
-            <input
-              name="lastName"
-              required
-              minLength={2}
-              maxLength={30}
-              type="text"
-              pattern="^[A-Za-zÀ-ÿ\s\-']{2,30}$" // Lettres, accents, espaces, tirets, apostrophes. Entre 2 et 30 caractères.
-              placeholder="Nom"
-              value={formData.lastName}
-              onChange={handleChange}
-              className="rounded border px-3 py-2 bg-white text-black"
-            />
-            <input
-              name="email"
-              type="email"
-              required
-              placeholder="Email"
-              autoComplete="off"
-              pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" // Format email basique
-              value={formData.email}
-              onChange={handleChange}
-              className="rounded border px-3 py-2 bg-white text-black col-span-2"
-            />
-            <input
-              name="password"
-              type="password"
-              minLength={8}
-              required
-              pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+=[\]{};:\\\|,.<>/?]).+$"
-              placeholder="Mot de passe"
-              autoComplete="off"
-              value={formData.password}
-              onChange={handleChange}
-              className="rounded border px-3 py-2 bg-white text-black col-span-2"
-            />
-            <input
-              name="confirmPassword"
-              type="password"
-              minLength={8}
-              required
-              pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$" // Min 8 caractères, une majuscule, une minuscule, un chiffre, un caractère spécial.
-              placeholder="Confirmer votre mot de passe"
-              autoComplete="off"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              className="rounded border px-3 py-2 bg-white text-black col-span-2"
-            />
-          </div>
-        </div>
-
-        {/* Adresse, ville, code postal */}
+        </h2> */}
+        {/* Champ Prénom */}
         <input
           name="address"
           required

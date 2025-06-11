@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 
 export default function WishToRegister() {
@@ -8,9 +9,11 @@ export default function WishToRegister() {
           <span className="text-secondary italic text-center">
             "J'ai toujours eu envie de partager mon savoir et mes connaissance aux autres&nbsp;!"
           </span>
+          <Link to="/register">
           <Button className="bg-accent text-white px-6 py-2 justify-center text-center text-lg font-semibold mt-4">
             Je m'incris ici
           </Button>
+          </Link>
         </div>
       </div>
     </div>
