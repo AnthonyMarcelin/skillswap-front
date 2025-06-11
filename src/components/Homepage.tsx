@@ -1,10 +1,9 @@
 import React from "react";
 import { CarouselPlugin } from "./ui/carouselPlugin";
-import SearchForm from "./SearchForm";
+import SearchForm from "./Forms/SearchForm";
 import SkillBubble from "./ui/SkillBubble";
 import ProfileBubble from "./ui/ProfileBubble";
 import WishToRegister from "./WishToRegister";
-import Footer from "./Footer";
 
 export default function Homepage () {
   return (
@@ -21,11 +20,7 @@ export default function Homepage () {
       <section className="flex flex-col items-center min-h-auto bg-primary text-white m-0 pt-5 pb-10">
         <div className="pt-8 text-secondary text-lg text-center items-start font-semibold">Les derniers profils inscrits</div>
         <ProfileBubble />
-      </section>
-      <Footer />
-      
-
-
+      </section>   
     </>
   );
 };

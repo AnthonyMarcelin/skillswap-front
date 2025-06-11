@@ -33,10 +33,10 @@ export default function SignupForm() {
     <>
       <form onSubmit={handleSubmit}>
         {/* Titre du formulaire */}
-        <h1 className="m-2 text-center text-2xl font-bold">Ca commence ici !</h1>
+        {/* <h1 className="m-2 text-center text-2xl font-bold">Ca commence ici !</h1>
         <h2 className="m-2 text-center text-xl font-bold">
           Inscrivez-vous pour partager vos compétences
-        </h2>
+        </h2> */}
         {/* Champ Prénom */}
         <input
           name="firstName"

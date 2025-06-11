@@ -1,7 +1,8 @@
 import Header from "@/components/Header";
 import { ProfileCard } from "@/components/ProfileCard";
-import SearchForm from "@/components/SearchForm";
+import SearchForm from "@/components/Forms/SearchForm";
 import { Button } from "@/components/ui/button";
+import Footer from "@/components/Footer";
 
 export default function SearchPage() {
     return (
@@ -25,9 +26,8 @@ export default function SearchPage() {
                 <Button className="bg-accent hover:bg-secondary text-white">Voir plus</Button>
                 </div>
             </div>
-
-          
         </section>
+        <Footer />
         </>
     )
 }

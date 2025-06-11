@@ -13,6 +13,7 @@ import {
 
 import { Button } from "./button"
 import { ProfileCard } from "../ProfileCard"
+import { Link } from "react-router-dom"
 
 export function CarouselPlugin() {
   const plugin = React.useRef(
@@ -40,9 +41,11 @@ export function CarouselPlugin() {
       <CarouselNext className="mr-2 text-accent" />
     </Carousel>
   <div className="flex justify-center mt-6">
+  <Link to="/search" className="no-underline">
   <Button className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold">
     Découvrir les profils
   </Button>
+  </Link>
 </div>
     </section>
   )
