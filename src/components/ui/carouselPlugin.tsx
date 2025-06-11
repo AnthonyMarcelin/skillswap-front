@@ -11,8 +11,14 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
+<<<<<<< HEAD
 import { Button } from "./button";
 import { ProfileCard } from "../ProfileCard";
+=======
+import { Button } from "./button"
+import { ProfileCard } from "../ProfileCard"
+import { Link } from "react-router-dom"
+>>>>>>> fc6c6a0077ebcbe91899e68210640c28f1a99c26
 
 export function CarouselPlugin() {
   const plugin = React.useRef(
@@ -21,6 +27,7 @@ export function CarouselPlugin() {
 
   return (
     <section className="bg-primary p-6">
+<<<<<<< HEAD
       <Carousel
         plugins={[plugin.current]}
         className="w-full max-w-xs mx-auto relative p-1 bg-primary text-white"
@@ -44,6 +51,33 @@ export function CarouselPlugin() {
           Découvrir les profils
         </Button>
       </div>
+=======
+    <Carousel
+      plugins={[plugin.current]}
+      className="w-full max-w-xs mx-auto relative p-1 bg-primary text-white"
+      onMouseEnter={plugin.current.stop}
+      onMouseLeave={plugin.current.reset}
+    >
+      <CarouselContent>
+        {Array.from({ length: 5 }).map((_, index) => (
+          <CarouselItem key={index}>
+            <div className="p-1">
+             <ProfileCard/>
+            </div>
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+      <CarouselPrevious className="ml-2 text-accent" />
+      <CarouselNext className="mr-2 text-accent" />
+    </Carousel>
+  <div className="flex justify-center mt-6">
+  <Link to="/search" className="no-underline">
+  <Button className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold">
+    Découvrir les profils
+  </Button>
+  </Link>
+</div>
+>>>>>>> fc6c6a0077ebcbe91899e68210640c28f1a99c26
     </section>
   );
 }

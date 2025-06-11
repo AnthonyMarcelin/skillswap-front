@@ -38,9 +38,9 @@ export default function LoginForm() {
   return (
     <form onSubmit={handleSubmit}>
       {/* Titre au-dessus du formulaire */}
-      <h2 className="m-2 text-center text-xl font-bold">
+      {/* <h2 className="m-2 text-center text-xl font-bold">
         Vous avez déjà un compte ?
-      </h2>
+      </h2> */}
 
       {/* Champ email */}
       <input
