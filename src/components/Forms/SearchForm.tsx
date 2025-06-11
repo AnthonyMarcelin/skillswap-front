@@ -20,7 +20,7 @@ export default function SearchForm({className = ""}: {className?: string}) {
 
   return (
     <form
-      action={handleSearch}
+      action={handleSubmit}
       className={`mt-10 bg-primary shadow p-8 m-5 $ ${className}`}
     >
       <h2 className="text-lg font-semibold mb-6 text-center text-secondary">
