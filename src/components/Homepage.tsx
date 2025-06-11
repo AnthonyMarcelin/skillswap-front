@@ -3,6 +3,7 @@ import { CarouselPlugin } from "./ui/carouselPlugin";
 import SearchForm from "./SearchForm";
 import SkillBubble from "./ui/SkillBubble";
 import ProfileBubble from "./ui/ProfileBubble";
+import WishToRegister from "./WishToRegister";
 
 export default function Homepage () {
   return (
@@ -10,15 +11,15 @@ export default function Homepage () {
       <CarouselPlugin />
 
       <section className="flex flex-col items-center min-h-screen bg-secondary text-white m-0 pt-5"> 
-        <div className="text-center p-6 font-bold">“Apprenez gratuitement ce que vous ne savez pas encore, en donnant ce que vous maîtrisez déjà.”</div>
+        <div className="text-center text-lg p-6 font-bold">“Apprenez gratuitement ce que vous ne savez pas encore, en donnant ce que vous maîtrisez déjà.”</div>
         <SearchForm />
-        <div className="pt-8 items-start font-semibold">Top compétences</div>
+        <div className="pt-8 items-start text-lg font-semibold">Top compétences</div>
         <SkillBubble />
       </section>
+      <WishToRegister />
       <section className="flex flex-col items-center min-h-screen bg-primary text-white m-0 pt-5">
-        <div className="pt-8 text-secondary text-center items-start font-semibold">Les derniers profils inscrits</div>
+        <div className="pt-8 text-secondary text-lg text-center items-start font-semibold">Les derniers profils inscrits</div>
         <ProfileBubble />
-
       </section>
       
 
