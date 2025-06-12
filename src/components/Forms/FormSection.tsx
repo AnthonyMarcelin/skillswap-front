@@ -1,48 +1,37 @@
+// src/components/Forms/FormSection.tsx
 import { useState } from "react";
 import SignupForm from "./SignupForm";
-import LoginForm from "./LoginForm";
+import LoginForm  from "./LoginForm";
 
-export function FormSection() {
-  // État local qui permet de basculer entre le formulaire d'inscription (true) et de connexion (false)
+export default function FormSection() {
   const [showSignup, setShowSignup] = useState(true);
 
   return (
-    <div className="bg-[var(--color-secondary)] text-white">
-      {/* Conteneur principal avec fond et texte blanc (défini par la charte graphique) */}
+    <section className="py-10 bg-[var(--color-secondary)] text-white">
 
-      <section className="py-8">
-        {/* Section avec un peu d'espace vertical */}
-
-        <h1 className="mb-6 text-center text-2xl font-bold">
-          Ca Commence ici !
-        </h1>
-
-        <h2 className="mb-6 text-center text-xl font-bold">
-          {/* Titre dynamique en fonction du formulaire affiché */}
-          {showSignup
-            ? "Inscrivez-vous pour partager vos compétences"
-            : "Connectez-vous"}
+      <div className="text-center mb-10 px-4">
+        <h1 className="text-3xl font-bold">Ça commence ici&nbsp;!</h1>
+        <h2 className="text-xl font-semibold">
+          Inscrivez-vous pour partager vos compétences
         </h2>
+      </div>
 
-        {/* Conteneur centralisé pour le formulaire (responsive) */}
-        <div className="mx-auto w-full sm:max-w-sm md:max-w-md lg:max-w-lg px-6 py-8">
-          {/* Affiche le formulaire d'inscription ou de connexion selon l'état */}
-          {showSignup ? <SignupForm /> : <LoginForm />}
+      <div className="mx-auto max-w-[1200px] px-4 grid gap-12 md:grid-cols-2">
+        <SignupForm />
 
-          {/* Bouton pour inverser l'état (toggle entre inscription et connexion) */}
-          <button
-            onClick={() => setShowSignup(!showSignup)} // Inverse le booléen
-            className="mt-4 underline text-center block w-full text-white hover:text-[var(--color-accent)]"
-          >
-            {/* Texte du bouton dynamique */}
-            {showSignup
-              ? "Déjà un compte ? Se connecter"
-              : "Pas encore inscrit ? Créer un compte"}
-          </button>
+        <div className={showSignup ? "hidden md:block" : ""}>
+          <LoginForm />
         </div>
-      </section>
-    </div>
+      </div>
+
+      <button
+        onClick={() => setShowSignup(!showSignup)}
+        className="mt-8 block w-full text-center underline hover:text-[var(--color-accent)] md:hidden"
+      >
+        {showSignup
+          ? "Déjà un compte ? Se connecter"
+          : "Pas encore inscrit ? Créer un compte"}
+      </button>
+    </section>
   );
 }
-
-export default FormSection;
