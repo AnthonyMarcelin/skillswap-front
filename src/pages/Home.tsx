@@ -1,19 +1,20 @@
 import Homepage from '../components/Homepage';
 import Header from '../components/Header';
-import FormSection from '../components/FormSection';
+import Footer from '@/components/Footer';
+
 
 
 export default function Home() {
   return (
     <div>
-        {/* Header */}
-        <Header />
+      {/* Header */}
+      <Header />
 
         {/* MainContent */}
         <Homepage />
-        <FormSection />
-
+  
         {/* Footer */}
+        <Footer />
     </div>
   );
-};
+}
