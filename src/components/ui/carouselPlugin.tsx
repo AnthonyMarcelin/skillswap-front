@@ -14,11 +14,29 @@ import {
 import { Button } from "./button";
 import { ProfileCard } from "../ProfileCard";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export function CarouselPlugin() {
   const plugin = React.useRef(
     Autoplay({ delay: 2000, stopOnInteraction: true })
   );
+
+   const [users, setUsers] = useState([]);
+  
+    useEffect(() => {
+      const fetchUsers = async () => {
+        try {
+          const response = await axios.get("http://localhost:3000/api/users");
+          setUsers(response.data.data);
+          console.log("Fetched users:", response.data.data);
+        } catch (error) {
+          console.error("Error fetching users:", error);
+        }
+      };
+      fetchUsers();
+    }, []);
+
 
   return (
     <section className="bg-primary p-6">
@@ -29,10 +47,10 @@ export function CarouselPlugin() {
         onMouseLeave={plugin.current.reset}
       >
         <CarouselContent>
-          {Array.from({ length: 5 }).map((_, index) => (
-            <CarouselItem key={index}>
+          {Array.isArray(users) && users.map((user:any, index) => (
+            <CarouselItem key={user.id || index} className="flex justify-center">
               <div className="p-1">
-                <ProfileCard />
+                <ProfileCard user={user} />
               </div>
             </CarouselItem>
           ))}

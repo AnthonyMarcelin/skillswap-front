@@ -8,19 +8,21 @@ import { use, useEffect, useState } from "react";
 import axios from "axios";
 
 export default function Homepage() {
-  const [profiles, setProfiles] = useState([]);
+  // const [profiles, setProfiles] = useState([]);
+  // const [users, setUsers] = useState({});
+
   
-  useEffect(() => {
-  const fetchProfiles = async () => {
-    try {
-      const response = await axios.get('/api/profiles');
-      setProfiles(response.data);
-    } catch (error) {
-      console.error("Error fetching profiles:", error);
-    }
-  };
-  fetchProfiles();
-  }, []);
+  // useEffect(() => {
+  // const fetchProfiles = async () => {
+  //   try {
+  //     const response = await axios.get('/api/profiles');
+  //     setProfiles(response.data);
+  //   } catch (error) {
+  //     console.error("Error fetching profiles:", error);
+  //   }
+  // };
+  // fetchProfiles();
+  // }, []);
 
 
   return (
@@ -43,7 +45,7 @@ export default function Homepage() {
         <div className="pt-8 text-secondary text-lg text-center items-start font-semibold">
           Les derniers profils inscrits
         </div>
-        <ProfileBubble profiles={profiles} />
+        <ProfileBubble />
       </section>   
     </>
   );
