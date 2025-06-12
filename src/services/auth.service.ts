@@ -1,0 +1,21 @@
+// src/services/auth.service.ts
+import api from '@/api/axios';
+
+export interface RegisterDto {
+  email: string;
+  password: string;
+  firstname: string;
+  lastname: string;
+  street: string;
+  zipcode: string;
+  city: string;
+  profil_photo: string;     
+  description: string;
+  availability: string;
+}
+
+export async function register(dto: RegisterDto) {
+  // Axios renvoie déjà la promesse du JSON
+  const { data } = await api.post('/auth/register', dto);
+  return data;
+}                                          
