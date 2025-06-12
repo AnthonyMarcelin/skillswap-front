@@ -26,7 +26,8 @@ export default function Homepage() {
 
 
   return (
-    <>
+   
+    <div className="w-full">
       <CarouselPlugin />
 
       <section className="flex flex-col items-center min-h-screen bg-secondary text-white m-0 pt-5">
@@ -47,6 +48,6 @@ export default function Homepage() {
         </div>
         <ProfileBubble />
       </section>   
-    </>
+    </div>
   );
 }
