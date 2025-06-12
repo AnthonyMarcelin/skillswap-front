@@ -4,8 +4,25 @@ import SearchForm from "./Forms/SearchForm";
 import SkillBubble from "./ui/SkillBubble";
 import ProfileBubble from "./ui/ProfileBubble";
 import WishToRegister from "./WishToRegister";
+import { use, useEffect, useState } from "react";
+import axios from "axios";
 
 export default function Homepage() {
+  const [profiles, setProfiles] = useState([]);
+  
+  useEffect(() => {
+  const fetchProfiles = async () => {
+    try {
+      const response = await axios.get('/api/profiles');
+      setProfiles(response.data);
+    } catch (error) {
+      console.error("Error fetching profiles:", error);
+    }
+  };
+  fetchProfiles();
+  }, []);
+
+
   return (
     <>
       <CarouselPlugin />
@@ -26,7 +43,7 @@ export default function Homepage() {
         <div className="pt-8 text-secondary text-lg text-center items-start font-semibold">
           Les derniers profils inscrits
         </div>
-        <ProfileBubble />
+        <ProfileBubble profiles={profiles} />
       </section>   
     </>
   );
