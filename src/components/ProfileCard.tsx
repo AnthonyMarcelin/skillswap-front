@@ -14,7 +14,9 @@ type ProfileCardProps = {
   profile_photo: string;
   city: string;
   description: string;
-  skills: string[];
+  skills: { name: string;
+    id:number
+   }[];
 };
 
 export function ProfileCard({user} : { user: ProfileCardProps }) {
@@ -37,7 +39,7 @@ export function ProfileCard({user} : { user: ProfileCardProps }) {
             <CardDescription>{user.city}</CardDescription>
             <div className="flex w-full h-10 gap-2">
               {user.skills.map((skill) => (
-                <Button key={skill} className="h-6 bg-secondary">
+                <Button key={skill.id} className="h-6 bg-secondary">
                   {skill.name}
                 </Button>
                 ))  
