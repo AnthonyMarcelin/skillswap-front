@@ -7,25 +7,21 @@ import { useLocation } from "react-router-dom";
 import type { IUser } from "@/types/user";
 import { useUserSearch } from "@/hooks/useUserSearch";
 import { useAllUsers } from "@/hooks/useAllUsers";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 
 export default function SearchPage() {
     const location = useLocation();
     const initialUsers = location.state?.filteredUsers || [];
     const {users} = useAllUsers();
 
-    const {filteredUsers, handleSearch, setFilteredUsers} = useUserSearch(initialUsers);
-
-      // Quand la liste complète des users est chargée, on peut permettre la recherche globale
-    useEffect(() => {
-    if (users.length > 0 && filteredUsers.length === 0 && initialUsers.length === 0) {
-      setFilteredUsers(users);
-    }
-  }, [users, filteredUsers.length, initialUsers.length, setFilteredUsers]);
+    const {filteredUsers, handleSearch} = useUserSearch(initialUsers);
 
    function handleGlobalSearch({ skill, zipcode }: { skill: string; zipcode: string }) {
+      console.log("Recherche avec :", skill, zipcode, users);
     handleSearch({ skill, zipcode }, users);
   }
+                  console.log("Filtered Users:", filteredUsers);
+
     return (
         <>
         <Header/>
@@ -41,7 +37,7 @@ export default function SearchPage() {
                     Résultat de votre recherche
                 </div>
                 <div className="flex flex-col p-6 gap-8 bg-primary">
-
+                
                 {filteredUsers.length === 0 ? (
                     <div className="text-center text-secondary">
                         Aucune compétence trouvée pour cette recherche.
