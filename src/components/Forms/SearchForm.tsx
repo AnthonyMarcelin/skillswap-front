@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function SearchForm({ className = "" }: { className?: string }) {
+export default function SearchForm({className = ""}: {className?: string}) {
   async function handleSearch(formData: FormData) {
     const competence = formData.get("competence") as string;
     const codePostal = formData.get("codePostal") as string;
@@ -10,7 +10,7 @@ export default function SearchForm({ className = "" }: { className?: string }) {
     );
   }
 
-  const competences = [
+    const competences = [
     "Développement Web",
     "Design UX/UI",
     "Marketing Digital",
@@ -27,7 +27,7 @@ export default function SearchForm({ className = "" }: { className?: string }) {
         Trouvez des nouvelles compétences proches de chez vous
       </h2>
       <div className="mb-4">
-        <select
+      <select
           name="competence"
           className="w-full px-4 py-2 border border-white rounded focus:outline-none focus:ring-2 focus:ring-accent"
           defaultValue=""
