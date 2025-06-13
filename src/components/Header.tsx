@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
 
 export default function Header() {
@@ -60,10 +61,21 @@ export default function Header() {
         {/* Menu desktop */}
         <nav className="hidden md:block">
           <ul className="flex gap-4">
-            <li><Link to="/">Accueil</Link></li>
-            <li><Link to="/">Se connecter/S'inscrire</Link></li>
-            <li><Link to="/">Mon compte</Link></li>
-            <li><Link to="/">Rechercher</Link></li>
+       <Button asChild className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold">
+  <Link to="/">Accueil</Link>
+</Button>
+
+<Button asChild className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold">
+  <Link to="/register">Inscription</Link>
+</Button>
+
+<Button asChild className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold">
+  <Link to="/account">Mon compte</Link>
+</Button>
+
+<Button asChild className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold">
+  <Link to="/search">Rechercher</Link>
+</Button>
           </ul>
         </nav>
       </div>
@@ -72,7 +84,7 @@ export default function Header() {
         <nav className="md:hidden bg-secondary text-white w-full z-10 absolute left-0 top-20">
           <ul className="flex flex-col items-center gap-4 py-4">
             <li><Link to="/" onClick={() => setOpen(false)}>Accueil</Link></li>
-            <li><Link to="/register" onClick={() => setOpen(false)}>Se connecter/S'inscrire</Link></li>
+            <li><Link to="/register" onClick={() => setOpen(false)}>Connexion / Inscription</Link></li>
             <li><Link to="/myprofile" onClick={() => setOpen(false)}>Mon compte</Link></li>
             <li><Link to="/search" onClick={() => setOpen(false)}>Rechercher</Link></li>
           </ul>
