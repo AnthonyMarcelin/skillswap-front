@@ -1,14 +1,12 @@
 import Footer from "@/components/Footer";
-import LoginForm from "@/components/Forms/LoginForm";
-import SignupForm from "@/components/Forms/SignupForm";
+import FormSection from "@/components/Forms/FormSection";
 import Header from "@/components/Header";
 
 export default function RegisterPage() {
     return (
         <>
         <Header />
-        <SignupForm />
-        <LoginForm />
+        <FormSection />
         <Footer />
         </>
     )
