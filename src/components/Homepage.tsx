@@ -6,22 +6,36 @@ import ProfileBubble from "./ui/ProfileBubble";
 import WishToRegister from "./WishToRegister";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import type { IUser } from "@/types/user";
 
 export default function Homepage() {
-   const [users, setUsers] = useState([]);
+   const [users, setUsers] = useState<IUser[]>([]);
+   const [filteredUsers, setFilteredUsers] = useState<IUser[]>([]);
+   const navigate = useNavigate();
   
     useEffect(() => {
       const fetchUsers = async () => {
         try {
           const response = await axios.get("http://localhost:3000/api/users");
           setUsers(response.data.data);
-          console.log("Fetched users:", response.data.data);
+          setFilteredUsers(response.data.data);
+
         } catch (error) {
           console.error("Error fetching users:", error);
         }
       };
       fetchUsers();
     }, []);
+
+    function handleSearch({ skill, zipcode}: { skill: string; zipcode: string }) {
+      const filtered = users.filter((user) =>
+        user.skills.some((s) => s.name === skill) &&
+        user.zipcode === zipcode
+);
+      setFilteredUsers(filtered);
+      navigate("/search", { state: { filteredUsers: filtered } });
+    }
 
 
   return (
@@ -34,7 +48,7 @@ export default function Homepage() {
           “Apprenez gratuitement ce que vous ne savez pas encore, en donnant ce
           que vous maîtrisez déjà.”
         </div>
-        <SearchForm />
+        <SearchForm onSearch={handleSearch} />
         <div className="pt-10 items-start text-lg font-semibold">
           Top compétences
         </div>
@@ -45,7 +59,7 @@ export default function Homepage() {
         <div className="pt-8 text-secondary text-lg text-center items-start font-semibold">
           Les derniers profils inscrits
         </div>
-        <ProfileBubble profiles={users} />
+        <ProfileBubble users={users} />
       </section>   
     </div>
   );
