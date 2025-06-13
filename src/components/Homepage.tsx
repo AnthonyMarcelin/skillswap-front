@@ -6,10 +6,13 @@ import ProfileBubble from "./ui/ProfileBubble";
 import WishToRegister from "./WishToRegister";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import type { IUser } from "@/types/user"; // Assuming you have a User type defined
 
 export default function Homepage() {
-   const [users, setUsers] = useState([]);
-   const [filteredUsers, setFilteredUsers] = useState([]);
+   const [users, setUsers] = useState<IUser[]>([]);
+   const [filteredUsers, setFilteredUsers] = useState<IUser[]>([]);
+   const navigate = useNavigate();
   
     useEffect(() => {
       const fetchUsers = async () => {
@@ -26,13 +29,14 @@ export default function Homepage() {
       fetchUsers();
     }, []);
 
-    function handleSearch({ skill, zipcode}) {
-      setFilteredUsers(
-        users.filter((user) => 
-          user.skills.some(skill => skill.name === skill) &&
-          user.zipcode === zipcode
-        )
-        );
+    function handleSearch({ skill, zipcode}: { skill: string; zipcode: string }) {
+      const filtered = users.filter((user) =>
+        user.skills.some((s) => s.name === skill) &&
+        user.zipcode === zipcode
+);
+      console.log("Filtered users:", filtered);
+      setFilteredUsers(filtered);
+      navigate("/search", { state: { filteredUsers: filtered } });
     }
 
 
@@ -57,7 +61,7 @@ export default function Homepage() {
         <div className="pt-8 text-secondary text-lg text-center items-start font-semibold">
           Les derniers profils inscrits
         </div>
-        <ProfileBubble profiles={users} />
+        <ProfileBubble users={users} />
       </section>   
     </div>
   );

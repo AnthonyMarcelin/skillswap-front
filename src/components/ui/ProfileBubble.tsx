@@ -1,16 +1,10 @@
+import type { IUser } from "@/types/user";
 
 
-type ProfileCardProps = {
-  id: number;
-  firstname: string;
-  lastname: string;
-  profile_picture: string;
-}
-
-export default function ProfileBubble({profiles} : {profiles:ProfileCardProps[]}) {
+export default function ProfileBubble({users} : {users:IUser[]}) {
   return (
     <div className="flex flex-wrap pt-8 justify-center items-center gap-5 pl-2 pr-2">
-      {profiles.map((user) => (
+      {users.map((user) => (
         <div key={user.id} className="flex flex-col items-center">
           <img
             src={user.profile_picture}

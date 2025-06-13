@@ -7,13 +7,15 @@ type SearchFormProps = {
 };
 
 export default function SearchForm({onSearch, className = ""}: SearchFormProps) {
-  const [skills, setSkills] = useState<{id: number; name: string}[]>([]);
+const [skills, setSkills] = useState<{id: number; name: string}[]>([]);
 
   useEffect(() => {
     const fetchSkills = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/skills");
-        setSkills(response.data.data);
+        const response = await axios.get("http://localhost:3000/api/skills/");
+        console.log("API skills response", response.data);
+
+        setSkills(response.data);
       } catch (error) {
         console.error("Error fetching skills:", error);
       }
@@ -39,7 +41,7 @@ export default function SearchForm({onSearch, className = ""}: SearchFormProps) 
       </h2>
       <div className="mb-4">
         <select
-          name="competence"
+          name="skill"
           className="w-full px-4 py-2 border border-white rounded focus:outline-none focus:ring-2 focus:ring-accent"
           defaultValue=""
           required
@@ -47,8 +49,8 @@ export default function SearchForm({onSearch, className = ""}: SearchFormProps) 
           <option value="" disabled>
             Sélectionner une compétence
           </option>
-          {skills.map((skill) => (
-            <option key={skill.id} value={skill.name} className="text-secondary">
+          {skills.map((skill, idx) => (
+            <option key={`${skill.name}-${idx}`} value={skill.name} className="text-secondary">
               {skill.name}
             </option>
           ))}
@@ -57,7 +59,7 @@ export default function SearchForm({onSearch, className = ""}: SearchFormProps) 
       <div className="mb-6">
         <input
           type="text"
-          name="codePostal"
+          name="zipcode"
           placeholder="Code postal"
           className="w-full px-4 py-2 border border-white rounded focus:outline-none focus:ring-2 focus:ring-accent text-white placeholder-white"
           required

@@ -7,19 +7,9 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Button } from "./ui/button";
+import type { IUser } from "@/types/user";
 
-type ProfileCardProps = {
-  firstname: string;
-  lastname: string;
-  profile_picture: string;
-  city: string;
-  description: string;
-  skills: { name: string;
-    id:number
-   }[];
-};
-
-export function ProfileCard({user} : { user: ProfileCardProps }) {
+export function ProfileCard({user} : { user: IUser }) {
 
 // TODO: Loading
 
