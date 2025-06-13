@@ -13,7 +13,6 @@ const [skills, setSkills] = useState<{id: number; name: string}[]>([]);
     const fetchSkills = async () => {
       try {
         const response = await axios.get("http://localhost:3000/api/skills/");
-        console.log("API skills response", response.data);
 
         setSkills(response.data);
       } catch (error) {

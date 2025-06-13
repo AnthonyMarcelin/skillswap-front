@@ -7,7 +7,7 @@ import WishToRegister from "./WishToRegister";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import type { IUser } from "@/types/user"; // Assuming you have a User type defined
+import type { IUser } from "@/types/user";
 
 export default function Homepage() {
    const [users, setUsers] = useState<IUser[]>([]);
@@ -20,7 +20,6 @@ export default function Homepage() {
           const response = await axios.get("http://localhost:3000/api/users");
           setUsers(response.data.data);
           setFilteredUsers(response.data.data);
-          console.log("Fetched users:", response.data.data);
 
         } catch (error) {
           console.error("Error fetching users:", error);
@@ -34,7 +33,6 @@ export default function Homepage() {
         user.skills.some((s) => s.name === skill) &&
         user.zipcode === zipcode
 );
-      console.log("Filtered users:", filtered);
       setFilteredUsers(filtered);
       navigate("/search", { state: { filteredUsers: filtered } });
     }
