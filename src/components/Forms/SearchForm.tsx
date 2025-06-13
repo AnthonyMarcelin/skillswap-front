@@ -43,7 +43,6 @@ const [skills, setSkills] = useState<{id: number; name: string}[]>([]);
           name="skill"
           className="w-full px-4 py-2 border border-white rounded focus:outline-none focus:ring-2 focus:ring-accent"
           defaultValue=""
-          required
         >
           <option value="" disabled>
             Sélectionner une compétence
@@ -61,7 +60,7 @@ const [skills, setSkills] = useState<{id: number; name: string}[]>([]);
           name="zipcode"
           placeholder="Code postal"
           className="w-full px-4 py-2 border border-white rounded focus:outline-none focus:ring-2 focus:ring-accent text-white placeholder-white"
-          required
+
         />
       </div>
       <button
