@@ -2,21 +2,8 @@ import React from "react";
 
 export default function SearchForm({className = ""}: {className?: string}) {
   async function handleSearch(formData: FormData) {
-    const competence = formData.get("competence") as string;
-    const codePostal = formData.get("codePostal") as string;
-    // Ici, tu peux remplacer l'alerte par ta logique métier
-    alert(
-      `Recherche lancée pour la compétence : "${competence}" et le code postal : "${codePostal}"`
-    );
+  
   }
-
-    const competences = [
-    "Développement Web",
-    "Design UX/UI",
-    "Marketing Digital",
-    "Gestion de Projet",
-    "Data Science",
-  ];
 
   return (
     <form

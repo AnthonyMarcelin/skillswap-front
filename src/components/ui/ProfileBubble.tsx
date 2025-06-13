@@ -4,7 +4,7 @@ type ProfileCardProps = {
   id: number;
   firstname: string;
   lastname: string;
-  profile_photo: string;
+  profile_picture: string;
 }
 
 export default function ProfileBubble({profiles} : {profiles:ProfileCardProps[]}) {
@@ -13,7 +13,7 @@ export default function ProfileBubble({profiles} : {profiles:ProfileCardProps[]}
       {profiles.map((user) => (
         <div key={user.id} className="flex flex-col items-center">
           <img
-            src={user.profile_photo}
+            src={user.profile_picture}
             alt={user.firstname}
             className="w-30 h-30 rounded-full object-cover mb-2"
           />

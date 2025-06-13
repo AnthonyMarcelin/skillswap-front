@@ -20,9 +20,9 @@ export default function SearchPage() {
                     Résultat de votre recherche
                 </div>
                 <div className="flex flex-col p-6 gap-8 bg-primary">
+                {/* <ProfileCard />
                 <ProfileCard />
-                <ProfileCard />
-                <ProfileCard />
+                <ProfileCard /> */}
                 <Button className="bg-accent hover:bg-secondary text-white">Voir plus</Button>
                 </div>
             </div>

@@ -9,19 +9,31 @@ import axios from "axios";
 
 export default function Homepage() {
    const [users, setUsers] = useState([]);
+   const [filteredUsers, setFilteredUsers] = useState([]);
   
     useEffect(() => {
       const fetchUsers = async () => {
         try {
           const response = await axios.get("http://localhost:3000/api/users");
           setUsers(response.data.data);
+          setFilteredUsers(response.data.data);
           console.log("Fetched users:", response.data.data);
+
         } catch (error) {
           console.error("Error fetching users:", error);
         }
       };
       fetchUsers();
     }, []);
+
+    function handleSearch({ skill, zipcode}) {
+      setFilteredUsers(
+        users.filter((user) => 
+          user.skills.some(skill => skill.name === skill) &&
+          user.zipcode === zipcode
+        )
+        );
+    }
 
 
   return (
@@ -34,7 +46,7 @@ export default function Homepage() {
           “Apprenez gratuitement ce que vous ne savez pas encore, en donnant ce
           que vous maîtrisez déjà.”
         </div>
-        <SearchForm />
+        <SearchForm onSearch={handleSearch} />
         <div className="pt-10 items-start text-lg font-semibold">
           Top compétences
         </div>
