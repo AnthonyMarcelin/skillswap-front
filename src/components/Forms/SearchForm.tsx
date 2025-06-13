@@ -1,26 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-export default function SearchForm({ className = "" }: { className?: string }) {
-  async function handleSearch(formData: FormData) {
-    const competence = formData.get("competence") as string;
-    const codePostal = formData.get("codePostal") as string;
-    // Ici, tu peux remplacer l'alerte par ta logique métier
-    alert(
-      `Recherche lancée pour la compétence : "${competence}" et le code postal : "${codePostal}"`
-    );
+type SearchFormProps = {
+  onSearch: (data: { skill: string; zipcode: string }) => void;
+  className?: string;
+};
+
+export default function SearchForm({onSearch, className = ""}: SearchFormProps) {
+const [skills, setSkills] = useState<{id: number; name: string}[]>([]);
+
+  useEffect(() => {
+    const fetchSkills = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/skills/");
+
+        setSkills(response.data);
+      } catch (error) {
+        console.error("Error fetching skills:", error);
+      }
+    };
+    fetchSkills();
+  }, []);
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const skill = formData.get("skill") as string;
+    const zipcode = formData.get("zipcode") as string;
+    onSearch({ skill, zipcode });
   }
-
-  const competences = [
-    "Développement Web",
-    "Design UX/UI",
-    "Marketing Digital",
-    "Gestion de Projet",
-    "Data Science",
-  ];
 
   return (
     <form
-      action={handleSearch}
+      onSubmit={handleSubmit}
       className={`mt-10 bg-primary shadow p-8 m-5 $ ${className}`}
     >
       <h2 className="text-lg font-semibold mb-6 text-center text-secondary">
@@ -28,7 +40,7 @@ export default function SearchForm({ className = "" }: { className?: string }) {
       </h2>
       <div className="mb-4">
         <select
-          name="competence"
+          name="skill"
           className="w-full px-4 py-2 border border-white rounded focus:outline-none focus:ring-2 focus:ring-accent"
           defaultValue=""
           required
@@ -36,9 +48,9 @@ export default function SearchForm({ className = "" }: { className?: string }) {
           <option value="" disabled>
             Sélectionner une compétence
           </option>
-          {competences.map((comp) => (
-            <option key={comp} value={comp} className="text-secondary">
-              {comp}
+          {skills.map((skill, idx) => (
+            <option key={`${skill.name}-${idx}`} value={skill.name} className="text-secondary">
+              {skill.name}
             </option>
           ))}
         </select>
@@ -46,7 +58,7 @@ export default function SearchForm({ className = "" }: { className?: string }) {
       <div className="mb-6">
         <input
           type="text"
-          name="codePostal"
+          name="zipcode"
           placeholder="Code postal"
           className="w-full px-4 py-2 border border-white rounded focus:outline-none focus:ring-2 focus:ring-accent text-white placeholder-white"
           required
