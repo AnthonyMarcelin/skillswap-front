@@ -7,42 +7,68 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import type { User } from "@/types/user";
+
+import { Link, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getUserById } from "@/services/user.service"; // à créer si pas fait
+import { useAsyncState } from "@/hooks/useAsyncState"; // ton hook personnalisé
 
 export function UserCard() {
-  const user = {
-    name: "Anthony Marcelin",
-    email: "anthony@example.com",
-    photo: "https://avatar.iran.liara.run/public/37",
-    skills: ["Bricolage", "Informatique", "Apprentissage"],
-    availability: "Semaine / week-end",
-    bio: `Salut ! Moi c'est Anthony, je bosse côté backend parce que…`,
-  };
+  const { id } = useParams();
+  const [user, setUser] = useState<User | null>(null);
+  const { loading, setLoading, error, setError, reset } = useAsyncState();
+
+  useEffect(() => {
+    console.log(id);
+
+    const fetchUser = async () => {
+      reset();
+      try {
+        setLoading(true);
+        const data = await getUserById(id!);
+        setUser(data);
+      } catch (err: any) {
+        setError("Impossible de charger le profil.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, [id]);
+
+  if (loading) return <p className="text-white">Chargement du profil…</p>;
+  if (error) return <p className="text-red-500">{error}</p>;
+  if (!user) return null;
 
   return (
-    <div className="max-w-md mx-auto mt-8 bg-secondary text-white">
+    <div className="max-w-full  bg-secondary text-white">
       <Card className="border-0 shadow-md">
         {/* --- En-tête : photo, nom, bouton --- */}
         <CardHeader className="flex items-center gap-4 border-0">
           {/* Zone photo  */}
           <img
-            src={user.photo}
+            src={user.profile_picture || "URL de secours"}
             className="h-16 w-16 rounded-full object-cover"
           />
 
           {/* Nom + email */}
           <div className="flex-1">
-            <CardTitle>{user.name}</CardTitle>
+            <CardTitle>{user.firstname} {user.lastname}</CardTitle>
             <CardDescription>{user.email}</CardDescription>
           </div>
 
           {/* Bouton action */}
           <CardAction>
-            <Button
-              size="sm"
-              className="block w-full rounded bg-[var(--color-accent)] text-white"
-            >
-              Contacte-Moi
-            </Button>
+            <Link to="/register">
+              <Button
+                size="sm"
+                className="block w-full display rounded bg-[var(--color-accent)] text-white"
+              >
+                Contacte-Moi
+              </Button>
+            </Link>
           </CardAction>
         </CardHeader>
 
@@ -52,14 +78,20 @@ export function UserCard() {
           <section>
             <h4 className="font-semibold text-sm">Compétences</h4>
             <ul className="mt-1 flex flex-wrap gap-2">
-              {user.skills.map((s) => (
-                <span
-                  key={s}
-                  className="rounded border px-2 py-1 text-xs font-medium"
-                >
-                  {s}
+              {user.skills?.length > 0 ? (
+                user.skills.map((s) => (
+                  <span
+                    key={s.name}
+                    className="rounded border px-2 py-1 text-xs font-medium"
+                  >
+                    {s.name}
+                  </span>
+                ))
+              ) : (
+                <span className="text-xs italic">
+                  Aucune compétence renseignée
                 </span>
-              ))}
+              )}
             </ul>
           </section>
 
@@ -72,10 +104,10 @@ export function UserCard() {
           </section>
 
           {/* Bio */}
-          <section>
-            <h4 className="font-semibold text-sm">À propos</h4>
+          <section className="space-y-1 bg-primary p-4 rounded max-w-full">
+            <h4 className="font-semibold text-sm text-secondary">À propos</h4>
             <p className="whitespace-pre-line text-sm leading-relaxed">
-              {user.bio}
+              {user.description}
             </p>
           </section>
         </CardContent>

@@ -1,10 +1,10 @@
-// src/types/user.ts
 export interface User {
   id: number;
-  name: string;
   email: string;
-  photo?: string | null;
-  skills: string[];
+  firstname: string;
+  lastname: string;
+  profile_picture?: string | null;
+  skills: { name: string }[]; // ← ici !
   availability: string;
-  bio: string;
+  description: string;
 }

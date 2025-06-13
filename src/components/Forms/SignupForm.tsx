@@ -42,7 +42,9 @@ export default function SignupForm() {
   const navigate = useNavigate();
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value.trimStart() }));
@@ -115,49 +117,96 @@ export default function SignupForm() {
 
           {/* champs identité */}
           <div className="grid grid-cols-2 gap-4">
-            <input name="firstName" value={formData.firstName}
-              onChange={handleChange} placeholder="Prénom" required
-              className="rounded border px-3 py-2 bg-white text-black"/>
-            <input name="lastName" value={formData.lastName}
-              onChange={handleChange} placeholder="Nom" required
-              className="rounded border px-3 py-2 bg-white text-black"/>
+            <input
+              name="firstName"
+              value={formData.firstName}
+              onChange={handleChange}
+              placeholder="Prénom"
+              required
+              className="rounded border px-3 py-2 bg-white text-black"
+            />
+            <input
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleChange}
+              placeholder="Nom"
+              required
+              className="rounded border px-3 py-2 bg-white text-black"
+            />
 
-            <input name="email" type="email" autoComplete="off"
-              value={formData.email} onChange={handleChange}
-              placeholder="Email" required
-              className="col-span-2 rounded border px-3 py-2 bg-white text-black"/>
+            <input
+              name="email"
+              type="email"
+              autoComplete="off"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Email"
+              required
+              className="col-span-2 rounded border px-3 py-2 bg-white text-black"
+            />
 
-            <input name="password" type="password" value={formData.password}
-              onChange={handleChange} placeholder="Mot de passe"
-              autoComplete="new-password" required minLength={8}
-              className="col-span-2 rounded border px-3 py-2 bg-white text-black"/>
-            <input name="confirmPassword" type="password"
-              value={formData.confirmPassword} onChange={handleChange}
-              placeholder="Confirmer" autoComplete="new-password"
-              required minLength={8}
-              className="col-span-2 rounded border px-3 py-2 bg-white text-black"/>
+            <input
+              name="password"
+              type="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Mot de passe"
+              autoComplete="new-password"
+              required
+              minLength={8}
+              className="col-span-2 rounded border px-3 py-2 bg-white text-black"
+            />
+            <input
+              name="confirmPassword"
+              type="password"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              placeholder="Confirmer"
+              autoComplete="new-password"
+              required
+              minLength={8}
+              className="col-span-2 rounded border px-3 py-2 bg-white text-black"
+            />
           </div>
         </div>
 
         {/* adresse / ville / zip */}
-        <input name="address" value={formData.address}
-          onChange={handleChange} placeholder="Adresse" required
-          className="w-full rounded border px-3 py-2 bg-white text-black"/>
+        <input
+          name="address"
+          value={formData.address}
+          onChange={handleChange}
+          placeholder="Adresse"
+          required
+          className="w-full rounded border px-3 py-2 bg-white text-black"
+        />
         <div className="grid grid-cols-3 gap-4">
-          <input name="city" value={formData.city}
-            onChange={handleChange} placeholder="Ville" required
-            className="col-span-2 rounded border px-3 py-2 bg-white text-black"/>
-          <input name="zip" value={formData.zip}
-            onChange={handleChange} placeholder="Code postal"
-            required pattern="\\d{5}"
-            className="rounded border px-3 py-2 bg-white text-black"/>
+          <input
+            name="city"
+            value={formData.city}
+            onChange={handleChange}
+            placeholder="Ville"
+            required
+            className="col-span-2 rounded border px-3 py-2 bg-white text-black"
+          />
+          <input
+            name="zip"
+            value={formData.zip}
+            onChange={handleChange}
+            placeholder="Code postal"
+            required
+            // pattern="\\d{5}"
+            className="rounded border px-3 py-2 bg-white text-black"
+          />
         </div>
 
         {/* catégorie */}
         <label className="text-sm mb-1">Catégorie&nbsp;:</label>
-        <select name="category" value={formData.category}
+        <select
+          name="category"
+          value={formData.category}
           onChange={handleChange}
-          className="w-full rounded border px-3 py-2 bg-white text-black mb-3">
+          className="w-full rounded border px-3 py-2 bg-white text-black mb-3"
+        >
           <option value="">Choisir une catégorie</option>
           <option value="developpeur">Développeur</option>
           <option value="designer">Designer</option>
@@ -166,15 +215,21 @@ export default function SignupForm() {
 
         {/* compétences */}
         <label className="text-sm mb-1">Compétences&nbsp;:</label>
-        <button type="button" onClick={() => setShowModal(true)}
-          className="w-full rounded border px-3 py-2 bg-[var(--color-primary)] text-[var(--color-secondary)] font-semibold hover:opacity-90 mb-3">
+        <button
+          type="button"
+          onClick={() => setShowModal(true)}
+          className="w-full rounded border px-3 py-2 bg-[var(--color-primary)] text-[var(--color-secondary)] font-semibold hover:opacity-90 mb-3"
+        >
           Choisir mes compétences
         </button>
 
         {formData.skills.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-4">
-            {formData.skills.map(s => (
-              <span key={s} className="inline-block bg-[var(--color-secondary)] text-[var(--color-whitish)] rounded-full px-4 py-1 text-sm">
+            {formData.skills.map((s) => (
+              <span
+                key={s}
+                className="inline-block bg-[var(--color-secondary)] text-[var(--color-whitish)] rounded-full px-4 py-1 text-sm"
+              >
                 {s}
               </span>
             ))}
@@ -183,9 +238,12 @@ export default function SignupForm() {
 
         {/* disponibilités */}
         <label className="text-sm mb-1">Disponibilités&nbsp;:</label>
-        <select name="availability" value={formData.availability}
+        <select
+          name="availability"
+          value={formData.availability}
           onChange={handleChange}
-          className="w-full rounded border px-3 py-2 bg-white text-black mb-4">
+          className="w-full rounded border px-3 py-2 bg-white text-black mb-4"
+        >
           <option value="">Choisir</option>
           <option value="weekdays">Semaine</option>
           <option value="weekend">Week-end</option>
@@ -193,17 +251,27 @@ export default function SignupForm() {
 
         {/* à propos */}
         <label className="text-sm mb-1">À propos&nbsp;:</label>
-        <textarea name="about" rows={3} value={formData.about}
-          onChange={handleChange} placeholder="Parle-nous de toi"
-          className="w-full resize-none rounded border px-3 py-2 bg-white text-black mb-4"/>
+        <textarea
+          name="about"
+          rows={3}
+          value={formData.about}
+          onChange={handleChange}
+          placeholder="Parle-nous de toi"
+          className="w-full resize-none rounded border px-3 py-2 bg-white text-black mb-4"
+        />
 
         {/* bouton submit */}
-        <button type="submit" disabled={loading}
-          className="w-full rounded bg-[var(--color-accent)] py-2 font-semibold text-white hover:opacity-90 disabled:opacity-50">
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full rounded bg-[var(--color-accent)] py-2 font-semibold text-white hover:opacity-90 disabled:opacity-50"
+        >
           {loading ? "Enregistrement…" : "S’inscrire"}
         </button>
 
-        {error && <p className="text-center text-red-500 font-semibold mt-2">{error}</p>}
+        {error && (
+          <p className="text-center text-red-500 font-semibold mt-2">{error}</p>
+        )}
       </form>
 
       {/* modale compétences */}
@@ -211,7 +279,7 @@ export default function SignupForm() {
         <SkillModal
           selectedSkills={formData.skills}
           onClose={() => setShowModal(false)}
-          onSave={skills => setFormData(p => ({ ...p, skills }))}
+          onSave={(skills) => setFormData((p) => ({ ...p, skills }))}
         />
       )}
     </>
