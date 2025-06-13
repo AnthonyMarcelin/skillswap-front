@@ -1,13 +1,37 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-export default function SearchForm({ className = "" }: { className?: string }) {
-  async function handleSearch(formData: FormData) {
-  
+type SearchFormProps = {
+  onSearch: (data: { skill: string; zipcode: string }) => void;
+  className?: string;
+};
+
+export default function SearchForm({onSearch, className = ""}: SearchFormProps) {
+  const [skills, setSkills] = useState<{id: number; name: string}[]>([]);
+
+  useEffect(() => {
+    const fetchSkills = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/skills");
+        setSkills(response.data.data);
+      } catch (error) {
+        console.error("Error fetching skills:", error);
+      }
+    };
+    fetchSkills();
+  }, []);
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const skill = formData.get("skill") as string;
+    const zipcode = formData.get("zipcode") as string;
+    onSearch({ skill, zipcode });
   }
 
   return (
     <form
-      action={handleSearch}
+      onSubmit={handleSubmit}
       className={`mt-10 bg-primary shadow p-8 m-5 $ ${className}`}
     >
       <h2 className="text-lg font-semibold mb-6 text-center text-secondary">
@@ -23,9 +47,9 @@ export default function SearchForm({ className = "" }: { className?: string }) {
           <option value="" disabled>
             Sélectionner une compétence
           </option>
-          {competences.map((comp) => (
-            <option key={comp} value={comp} className="text-secondary">
-              {comp}
+          {skills.map((skill) => (
+            <option key={skill.id} value={skill.name} className="text-secondary">
+              {skill.name}
             </option>
           ))}
         </select>
