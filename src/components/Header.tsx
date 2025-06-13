@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import{ useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Header() {
@@ -61,9 +61,9 @@ export default function Header() {
         <nav className="hidden md:block">
           <ul className="flex gap-4">
             <li><Link to="/">Accueil</Link></li>
-            <li><Link to="/">Se connecter/S'inscrire</Link></li>
+            <li><Link to="/register">Se connecter/S'inscrire</Link></li>
             <li><Link to="/">Mon compte</Link></li>
-            <li><Link to="/">Rechercher</Link></li>
+            <li><Link to="/search">Rechercher</Link></li>
           </ul>
         </nav>
       </div>
