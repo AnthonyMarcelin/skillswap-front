@@ -7,7 +7,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import type { User } from "@/types/user";
+import type { IUser } from "@/types/user";
 
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -16,7 +16,7 @@ import { useAsyncState } from "@/hooks/useAsyncState"; // ton hook personnalisé
 
 export function UserCard() {
   const { id } = useParams();
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<IUser | null>(null);
   const { loading, setLoading, error, setError, reset } = useAsyncState();
 
   useEffect(() => {

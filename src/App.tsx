@@ -15,9 +15,12 @@ function App() {
         <Route path="/search" element={<SearchPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/profilepage/:id" element={<ProfilePage />} />
+        <Route path="/personalpage" element={<ProfilePage />} /> 
       </Routes>
     </Router>
   );
 }
 
 export default App;
+
+

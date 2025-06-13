@@ -1,11 +1,21 @@
 import { useState } from "react";
+import { login } from "@/services/auth.service";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginForm() {
+  // Initialisation de l’état local pour l’email et le mot de passe
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
   });
 
+  // État pour afficher une erreur éventuelle à l'utilisateur
+  const [error, setError] = useState<string | null>(null);
+
+  // Hook React Router pour la redirection après connexion
+  const navigate = useNavigate();
+
+  // Fonction appelée à chaque frappe dans un champ
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setLoginData({
@@ -14,21 +24,39 @@ export default function LoginForm() {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Fonction appelée lors de la soumission du formulaire
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Validation simple : vérifier que les champs ne sont pas vides
     if (!loginData.email || !loginData.password) {
-      alert("❌ Merci de remplir tous les champs.");
+      alert("Merci de remplir tous les champs.");
       return;
     }
 
+    // Validation de la longueur minimale du mot de passe
     if (loginData.password.length < 8) {
-      alert("❌ Le mot de passe doit faire au moins 8 caractères.");
+      alert("Le mot de passe doit faire au moins 8 caractères.");
       return;
     }
 
-    console.log("Connexion", loginData);
-    // TODO : appel à l'API /auth/login
+    try {
+      // Réinitialisation de l'erreur avant la tentative de connexion
+      setError(null);
+
+      // Appel de la fonction login (API POST vers /auth/login)
+      const response = await login(loginData);
+
+      // Connexion réussie, affichage facultatif pour le debug
+      console.log("Connexion réussie :", response);
+
+      // Redirection vers la page de profil de l'utilisateur
+      navigate(`/profilepage/${response.user.id}`);
+    } catch (err: any) {
+      // Si erreur côté API (401, 500...), on affiche le message retourné
+      const msg = err.response?.data?.message ?? "Erreur lors de la connexion.";
+      setError(msg);
+    }
   };
 
   return (
@@ -65,6 +93,10 @@ export default function LoginForm() {
       >
         Se connecter
       </button>
+
+      {error && (
+        <p className="text-center text-red-500 font-semibold mt-2">{error}</p>
+      )}
     </form>
   );
 }

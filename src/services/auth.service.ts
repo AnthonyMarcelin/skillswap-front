@@ -14,8 +14,19 @@ export interface RegisterDto {
   availability: string;
 }
 
+export interface LoginDto {
+  email: string;
+  password: string;
+}
+
 export async function register(dto: RegisterDto) {
   // Axios renvoie déjà la promesse du JSON
   const { data } = await api.post('/auth/register', dto);
   return data;
-}                                          
+}             
+
+export async function login(dto: LoginDto) {
+  // Axios renvoie déjà la promesse du JSON
+  const { data } = await api.post('/auth/login', dto);
+  return data;
+}
