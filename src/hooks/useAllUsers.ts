@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import type { IUser } from "@/types/user";
+import { getAllUsers } from "@/services/user.service";
 
 export function useAllUsers() {
   const [users, setUsers] = useState<IUser[]>([]);
@@ -10,8 +10,8 @@ export function useAllUsers() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/users");
-        setUsers(response.data.data);
+        const response = await getAllUsers();
+        setUsers(response);
       } catch (err) {
         setError(err as Error);
       } finally {
