@@ -30,3 +30,9 @@ export async function login(dto: LoginDto) {
   const { data } = await api.post('/auth/login', dto);
   return data;
 }
+
+export async function logout() {
+  // Axios renvoie déjà la promesse du JSON
+  const { data } = await api.post('/auth/logout');
+  return data;
+}
