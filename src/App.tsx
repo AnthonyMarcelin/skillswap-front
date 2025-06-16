@@ -5,6 +5,7 @@ import { NotFound } from "./pages/NotFound";
 import SearchPage from "./pages/SearchPage";
 import RegisterPage from "./pages/Register";
 import ProfilePage from "./pages/ProfilePage";
+import PersonalPage from "./pages/PersonalPage";
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
         <Route path="/search" element={<SearchPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/profilepage/:id" element={<ProfilePage />} />
-        <Route path="/personalpage" element={<ProfilePage />} /> 
+        <Route path="/personalpage" element={<PersonalPage />} /> 
       </Routes>
     </Router>
   );

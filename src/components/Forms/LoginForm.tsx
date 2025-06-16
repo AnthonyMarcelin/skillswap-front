@@ -51,7 +51,7 @@ export default function LoginForm() {
       console.log("Connexion réussie :", response);
 
       // Redirection vers la page de profil de l'utilisateur
-      navigate(`/profilepage/${response.user.id}`);
+      navigate("/personalpage");
     } catch (err: any) {
       // Si erreur côté API (401, 500...), on affiche le message retourné
       const msg = err.response?.data?.message ?? "Erreur lors de la connexion.";
