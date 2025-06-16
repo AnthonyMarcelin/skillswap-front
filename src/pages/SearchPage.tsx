@@ -1,7 +1,7 @@
 import Header from "@/components/Header";
 import { ProfileCard } from "@/components/ProfileCard";
 import SearchForm from "@/components/Forms/SearchForm";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import Footer from "@/components/Footer";
 import { useLocation } from "react-router-dom";
 import type { IUser } from "@/types/user";

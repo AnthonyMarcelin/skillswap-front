@@ -5,8 +5,8 @@ import {
   CardTitle,
   CardDescription,
   CardFooter,
-} from "@/components/ui/card";
-import { Button } from "./ui/button";
+} from "@/components/ui/Card";
+import { Button } from "./ui/Button";
 import type { IUser } from "@/types/user";
 
 export function ProfileCard({user} : { user: IUser }) {

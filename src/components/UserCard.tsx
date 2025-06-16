@@ -5,8 +5,8 @@ import {
   CardAction,
   CardTitle,
   CardDescription,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+} from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
 import type { IUser } from "@/types/user";
 
 import { Link, useParams } from "react-router-dom";

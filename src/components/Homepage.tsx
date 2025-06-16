@@ -1,5 +1,5 @@
 
-import { CarouselPlugin } from "./ui/carouselPlugin";
+import { CarouselPlugin } from "./ui/CarouselPlugin";
 import SearchForm from "./Forms/SearchForm";
 import SkillBubble from "./ui/SkillBubble";
 import ProfileBubble from "./ui/ProfileBubble";
@@ -59,7 +59,7 @@ export default function Homepage() {
         <div className="pt-8 text-secondary text-lg text-center items-start font-semibold">
           Les derniers profils inscrits
         </div>
-        <ProfileBubble users={users} />
+        <ProfileBubble />
       </section>   
     </div>
   );
