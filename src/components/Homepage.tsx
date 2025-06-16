@@ -59,7 +59,7 @@ export default function Homepage() {
         <div className="pt-8 text-secondary text-lg text-center items-start font-semibold">
           Les derniers profils inscrits
         </div>
-        <ProfileBubble users={users} />
+        <ProfileBubble />
       </section>   
     </div>
   );
