@@ -1,5 +1,5 @@
 
-import { CarouselPlugin } from "./ui/carouselPlugin";
+import { CarouselPlugin } from "./ui/CarouselPlugin";
 import SearchForm from "./Forms/SearchForm";
 import SkillBubble from "./ui/SkillBubble";
 import ProfileBubble from "./ui/ProfileBubble";

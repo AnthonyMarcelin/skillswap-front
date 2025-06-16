@@ -9,32 +9,45 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
+} from "@/components/ui/Carousel";
 
-import { Button } from "./button";
+import { Button } from "./Button";
 import { ProfileCard } from "../ProfileCard";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { useAsyncState } from "@/hooks/useAsyncState";
+import { getRandomUsers } from "@/services/user.service";
+import type { IUser } from "@/types/user";
 
 export function CarouselPlugin() {
   const plugin = React.useRef(
     Autoplay({ delay: 2000, stopOnInteraction: true })
   );
 
-   const [users, setUsers] = useState([]);
+   const [users, setUsers] = useState<IUser[]>([]);
+    const { loading, setLoading, error, setError, reset } = useAsyncState();
+   
   
     useEffect(() => {
       const fetchUsers = async () => {
+        reset();
         try {
-          const response = await axios.get("http://localhost:3000/api/users");
-          setUsers(response.data.data);
+          setLoading(true);
+          const users = await getRandomUsers();
+          setUsers(users);
+
         } catch (error) {
-          console.error("Error fetching users:", error);
+          setError("Error fetching users:");
+        } finally {
+          setLoading(false);
         }
       };
       fetchUsers();
     }, []);
+
+  if (loading) return <p className="text-white">Chargement du profil…</p>;
+  if (error) return <p className="text-red-500">{error}</p>;
+  if (!users) return null;
 
 
   return (
