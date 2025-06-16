@@ -11,17 +11,18 @@ export function useUserSearch(initialUsers: IUser[]) {
     console.log("Recherche lancée :", skill, zipcode, usersToFilter);
 
     setFilteredUsers(
-
       usersToFilter.filter((user) => {
-  const hasSkill = user.skills.some((s) => s.name.trim().toLowerCase() === skill.trim().toLowerCase());
-  const hasZip = user.zipcode.trim() === zipcode.trim();
-  console.log(user.firstname, "hasSkill:", hasSkill, "hasZip:", hasZip);
-  if (skill && zipcode) return hasSkill && hasZip;
-  if (skill) return hasSkill;
-  if (zipcode) return hasZip;
-  return true;
-})
+        const hasSkill = user.skills.some(
+          (s) => s.name.trim().toLowerCase() === skill.trim().toLowerCase()
+        );
+        const hasZip = user.zipcode.trim() === zipcode.trim();
+        console.log(user.firstname, "hasSkill:", hasSkill, "hasZip:", hasZip);
+        if (skill && zipcode) return hasSkill && hasZip;
+        if (skill) return hasSkill;
+        if (zipcode) return hasZip;
+        return true;
+      })
     );
   }
   return { filteredUsers, handleSearch, setFilteredUsers };
-  }
+}
