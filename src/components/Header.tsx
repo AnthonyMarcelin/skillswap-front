@@ -163,8 +163,8 @@ export default function Header() {
         {/* Uncomment the following lines if you want to display the title and subtitle */}
         {/* {!open && ( */}
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center w-60 pointer-events-none z-20">
-          <h1 className="font-bold text-2xl text-center w-full">SkillSwap</h1>
-          <h2 className="text-sm text-center w-full">
+          <h1 className=" text-secondary font-semibold text-2xl text-center w-full">SkillSwap</h1>
+          <h2 className="text-secondary text-sm text-center w-full">
             Partagez vos talents, découvrez ceux des autres
           </h2>
         </div>
@@ -175,9 +175,9 @@ export default function Header() {
           onClick={() => setOpen(!open)}
           aria-label="Ouvrir le menu"
         >
-          <span className="block w-8 h-1 bg-white mb-1 rounded"></span>
-          <span className="block w-8 h-1 bg-white mb-1 rounded"></span>
-          <span className="block w-8 h-1 bg-white rounded"></span>
+          <span className="block w-8 h-1 bg-secondary mb-1 rounded"></span>
+          <span className="block w-8 h-1 bg-secondary mb-1 rounded"></span>
+          <span className="block w-8 h-1 bg-secondary rounded"></span>
         </button>
         {/* Menu desktop */}
         <nav className="hidden md:block">
