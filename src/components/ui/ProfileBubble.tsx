@@ -1,6 +1,5 @@
 import type { IUser } from "@/types/user";
 
-
 export default function ProfileBubble({users} : {users:IUser[]}) {
   return (
     <div className="flex flex-wrap pt-8 justify-center items-center gap-5 pl-2 pr-2">

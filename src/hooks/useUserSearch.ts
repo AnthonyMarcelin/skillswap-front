@@ -25,19 +25,3 @@ export function useUserSearch(initialUsers: IUser[]) {
   }
   return { filteredUsers, handleSearch, setFilteredUsers };
   }
-//       usersToFilter.filter((user) => {
-//         if (skill && zipcode) {
-//           return user.skills.some((s) => s.name === skill) && user.zipcode === zipcode;
-//         }
-//         if (skill) {
-//           return user.skills.some((s) => s.name === skill);
-//         }
-//         if (zipcode) {
-//           return user.zipcode === zipcode;
-//         }
-//         return true;
-//       })
-//     );
-//   }
-//   return { filteredUsers, handleSearch, setFilteredUsers  };
-// }

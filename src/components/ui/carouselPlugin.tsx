@@ -29,7 +29,6 @@ export function CarouselPlugin() {
         try {
           const response = await axios.get("http://localhost:3000/api/users");
           setUsers(response.data.data);
-          console.log("Fetched users:", response.data.data);
         } catch (error) {
           console.error("Error fetching users:", error);
         }
