@@ -4,29 +4,17 @@ import SearchForm from "./Forms/SearchForm";
 import SkillBubble from "./ui/SkillBubble";
 import ProfileBubble from "./ui/ProfileBubble";
 import WishToRegister from "./WishToRegister";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { IUser } from "@/types/user";
+import { useAllUsers } from "@/hooks/useAllUsers";
 
 export default function Homepage() {
    const [users, setUsers] = useState<IUser[]>([]);
    const [filteredUsers, setFilteredUsers] = useState<IUser[]>([]);
    const navigate = useNavigate();
-  
-    useEffect(() => {
-      const fetchUsers = async () => {
-        try {
-          const response = await axios.get("http://localhost:3000/api/users");
-          setUsers(response.data.data);
-          setFilteredUsers(response.data.data);
-
-        } catch (error) {
-          console.error("Error fetching users:", error);
-        }
-      };
-      fetchUsers();
-    }, []);
+  // Utilisation du hook personnalisé pour récupérer tous les utilisateurs
+  useAllUsers();
 
     function handleSearch({ skill, zipcode}: { skill: string; zipcode: string }) {
       const filtered = users.filter((user) =>
@@ -36,7 +24,6 @@ export default function Homepage() {
       setFilteredUsers(filtered);
       navigate("/search", { state: { filteredUsers: filtered } });
     }
-
 
   return (
    
