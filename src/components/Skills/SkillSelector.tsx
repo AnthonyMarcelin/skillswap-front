@@ -1,6 +1,9 @@
 {
   /* Pour l'instant récupération données en dur */
 }
+import { useAsyncState } from "@/hooks/useAsyncState";
+import { getAllSkills } from "@/services/skill.service";
+import type { ISkill } from "@/types/skill";
 
 import { useState, useEffect } from "react";
 
@@ -10,76 +13,71 @@ type Props = {
   onChange: (skills: string[]) => void; // Fonction à appeler quand la liste change
 };
 
-// Données statiques : catégories avec les compétences associées
-const skillsByCategory = {
-  frontend: ["HTML", "CSS", "React", "Vue"],
-  backend: ["Node.js", "Express", "Python", "Java"],
-  devops: ["Docker", "Kubernetes", "CI/CD", "AWS"],
-};
-
 export default function SkillSelector({ selectedSkills, onChange }: Props) {
+  const [skills, setSkills] = useState<ISkill[]>([]);
+  const { loading, error, setLoading, setError } = useAsyncState();
+
+  useEffect(() => {
+    const fetchSkills = async () => {
+      try {
+        const data = await getAllSkills();
+
+        setSkills(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error("Error fetching skills:", err);
+        setError("Impossible de charger les compétences.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSkills();
+  }, []);
+
   // État local pour suivre la catégorie actuellement sélectionnée
-  const [category, setCategory] = useState("frontend");
-
-  // Fonction appelée lorsqu'on coche ou décoche une compétence
   const handleCheckboxChange = (skill: string) => {
-    const updated = selectedSkills.includes(skill)
-      ? // Si la compétence est déjà sélectionnée, on la retire
-        selectedSkills.filter((s) => s !== skill)
-      : // Sinon, on l’ajoute à la liste
-        [...selectedSkills, skill];
-
+    const isSelected = selectedSkills.includes(skill);
+    // Si on essaie d'en ajouter une 4e → ne rien faire
+    if (!isSelected && selectedSkills.length >= 3) {
+      alert("Vous ne pouvez sélectionner que 3 compétences maximum.");
+      return;
+    }
+    const updated = isSelected
+      ? selectedSkills.filter((s) => s !== skill)
+      : [...selectedSkills, skill];
     // On remonte la nouvelle liste des compétences au parent via onChange
     onChange(updated);
   };
 
   return (
-    <div className="mb-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-      {/* --- Colonne gauche : sélection des compétences --- */}
-      <div>
-        {/* Choix de la catégorie (frontend, backend, devops) */}
-        <label className="block text-sm font-medium mb-2">Catégorie :</label>
-        <select
-          value={category} // Catégorie actuelle
-          onChange={(e) => setCategory(e.target.value)} // Met à jour l'état local
-          className="mb-4 w-full rounded border px-3 py-2 bg-white text-black"
-        >
-          {/* Génération des options depuis les clés de l’objet skillsByCategory */}
-          {Object.keys(skillsByCategory).map((cat) => (
-            <option key={cat} value={cat}>
-              {/* On affiche la catégorie avec la première lettre en majuscule */}
-              {cat.charAt(0).toUpperCase() + cat.slice(1)}
-            </option>
-          ))}
-        </select>
+    <div className="mb-6">
+      <h2 className="text-lg font-semibold mb-4 text-secondary">
+        Sélectionnez vos compétences :
+      </h2>
 
-        {/* Liste des compétences liées à la catégorie sélectionnée */}
-        <fieldset className="space-y-2">
-          {skillsByCategory[category].map((skill) => (
-            <label key={skill} className="flex items-center gap-2">
+      {error && <p className="text-red-500 mb-4">{error}</p>}
+
+      {loading ? (
+        <p className="text-gray-400 italic">Chargement des compétences...</p>
+      ) : (
+        <fieldset className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {skills.map((skill) => (
+            <label key={skill.name} className="flex items-center gap-2">
               <input
                 type="checkbox"
-                checked={selectedSkills.includes(skill)} // Si déjà sélectionnée, coche la case
-                onChange={() => handleCheckboxChange(skill)} // Gère l'ajout ou le retrait
-                className="accent-[var(--color-accent)]" // Couleur personnalisée (orange)
+                checked={selectedSkills.includes(skill.name)}
+                onChange={() => handleCheckboxChange(skill.name)}
+                className="accent-[var(--color-accent)]"
               />
-              {skill}
+              {skill.name}
             </label>
           ))}
         </fieldset>
-      </div>
+      )}
 
-      {/* --- Colonne droite : affichage des compétences sélectionnées --- */}
-      <div>
-        <h3 className="font-semibold mb-2">Compétences sélectionnées :</h3>
-
-        {/* Affichage conditionnel : aucune sélection → message d'information */}
-        {selectedSkills.length === 0 ? (
-          <p className="italic text-sm text-gray-300">
-            Aucune compétence sélectionnée
-          </p>
-        ) : (
-          // Sinon, on liste les compétences sélectionnées
+      {selectedSkills.length > 0 && (
+        <div className="mt-6">
+          <h3 className="font-semibold mb-2">Compétences sélectionnées :</h3>
           <div className="flex flex-wrap gap-2">
             {selectedSkills.map((skill) => (
               <span
@@ -90,8 +88,8 @@ export default function SkillSelector({ selectedSkills, onChange }: Props) {
               </span>
             ))}
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

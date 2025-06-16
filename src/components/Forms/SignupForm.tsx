@@ -207,7 +207,7 @@ export default function SignupForm() {
             {formData.skills.map((s) => (
               <span
                 key={s}
-                className="inline-block bg-[var(--color-secondary)] text-[var(--color-whitish)] rounded-full px-4 py-1 text-sm"
+                className="inline-block bg-[var(--color-primary)] text-[var(--color-whitish)] rounded-full px-4 py-1 text-sm"
               >
                 {s}
               </span>

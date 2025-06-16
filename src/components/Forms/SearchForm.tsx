@@ -1,24 +1,35 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { useAsyncState } from "@/hooks/useAsyncState";
+import { getAllSkills } from "@/services/skill.service";
+import type { ISkill } from "@/types/skill";
 
 type SearchFormProps = {
   onSearch: (data: { skill: string; zipcode: string }) => void;
   className?: string;
 };
 
-export default function SearchForm({onSearch, className = ""}: SearchFormProps) {
-const [skills, setSkills] = useState<{id: number; name: string}[]>([]);
+export default function SearchForm({
+  onSearch,
+  className = "",
+}: SearchFormProps) {
+  const [skills, setSkills] = useState<ISkill[]>([]);
+  const { loading, error, setLoading, setError } = useAsyncState();
 
   useEffect(() => {
+
     const fetchSkills = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/skills/");
+        const data = await getAllSkills();
 
-        setSkills(response.data);
-      } catch (error) {
-        console.error("Error fetching skills:", error);
+        setSkills(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error("Error fetching skills:", err);
+        setError("Impossible de charger les compétences.");
+      } finally {
+        setLoading(false);
       }
     };
+
     fetchSkills();
   }, []);
 
@@ -38,21 +49,37 @@ const [skills, setSkills] = useState<{id: number; name: string}[]>([]);
       <h2 className="text-lg font-semibold mb-6 text-center text-secondary">
         Trouvez des nouvelles compétences proches de chez vous
       </h2>
+
+      {error && <p className="text-red-500 mb-4">{error}</p>}
+
       <div className="mb-4">
         <select
           name="skill"
           className="w-full px-4 py-2 border border-white rounded focus:outline-none focus:ring-2 focus:ring-accent"
           defaultValue=""
+          disabled={loading}
         >
           <option value="" disabled>
-            Sélectionner une compétence
+            {loading
+              ? "Chargement des compétences..."
+              : "Sélectionner une compétence"}
           </option>
-          {skills.map((skill, idx) => (
-            <option key={`${skill.name}-${idx}`} value={skill.name} className="text-secondary">
-              {skill.name}
-            </option>
-          ))}
+
+          {Array.isArray(skills) && skills.length > 0
+            ? skills.map((skill, idx) => (
+                <option
+                  key={`${skill.name}-${idx}`}
+                  value={skill.name}
+                  className="text-secondary"
+                >
+                  {skill.name}
+                </option>
+              ))
+            : !loading && (
+                <option disabled>Aucune compétence disponible</option>
+              )}
         </select>
+        
       </div>
       <div className="mb-6">
         <input
@@ -60,7 +87,6 @@ const [skills, setSkills] = useState<{id: number; name: string}[]>([]);
           name="zipcode"
           placeholder="Code postal"
           className="w-full px-4 py-2 border border-white rounded focus:outline-none focus:ring-2 focus:ring-accent text-white placeholder-white"
-
         />
       </div>
       <button

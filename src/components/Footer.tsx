@@ -17,7 +17,7 @@ export default function Footer() {
         </Link>
       </div>
       <div className="text-sm mb-0">
-        © {new Date().getFullYear()} Tous droits réservés
+        © {new Date().getFullYear()} Tous droits réservés Maxime.M Anthony.M Karine.D Ludovic.F
       </div>
     </footer>
   );
