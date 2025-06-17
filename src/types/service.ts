@@ -2,12 +2,12 @@
 export type IServiceStatus = "en attente" | "accepté" | "terminé"
 
 export interface IService {
-  id: string
+  id: number
   title: string
   giverName: string
   receiverName: string
-  giverId: string
-  receiverId: string
+  giverId: number
+  receiverId: number
   status: IServiceStatus
-  createdAt: string
+  date: string
 }

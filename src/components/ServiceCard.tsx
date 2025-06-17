@@ -1,41 +1,49 @@
-import { Card, CardContent } from "@/components/ui/Card"
-import { Badge } from "@/components/ui/Badge"
-import { Button } from "@/components/ui/Button"
-import { format } from "date-fns"
-import { fr } from "date-fns/locale"
-import type { IService, IServiceStatus } from "@/types/service"
-import { useServiceStatus } from "@/hooks/useServiceStatus"
+import { Card, CardContent } from "@/components/ui/Card";
+import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
+import type { IService, IServiceStatus } from "@/types/service";
+import { useServiceStatus } from "@/hooks/useServiceStatus";
 
 interface ServiceCardProps {
-  service: IService
-  currentUserId: string
-  onStatusUpdate?: (newStatus: IServiceStatus) => void
+  service: IService;
+  currentUserId: number;
+  onStatusUpdate?: (newStatus: IServiceStatus) => void;
 }
 
-export function ServiceCard({ service, currentUserId, onStatusUpdate }: ServiceCardProps) {
-  const { id, giverName, receiverName, giverId, receiverId, title, createdAt } = service
-  const { status, loading, changeStatus } = useServiceStatus(id, service.status)
+export function ServiceCard({
+  service,
+  currentUserId,
+  onStatusUpdate,
+}: ServiceCardProps) {
+  const { id, giverName, receiverName, giverId, receiverId, title, date } =
+    service;
+  const { status, loading, changeStatus } = useServiceStatus(
+    id,
+    service.status
+  );
 
-  const isGiver = currentUserId === giverId
-  const isReceiver = currentUserId === receiverId
+  const isGiver = currentUserId === giverId;
+  const isReceiver = currentUserId === receiverId;
 
   const getBadgeStyle = (status: string) => {
     switch (status) {
       case "en attente":
-        return "bg-yellow-100 text-yellow-800"
+        return "bg-yellow-100 text-yellow-800";
       case "accepté":
-        return "bg-blue-100 text-blue-800"
+        return "bg-blue-100 text-blue-800";
       case "terminé":
-        return "bg-green-100 text-green-800"
+        return "bg-green-100 text-green-800";
       default:
-        return "bg-gray-100 text-gray-800"
+        return "bg-gray-100 text-gray-800";
     }
-  }
+  };
 
   const handleStatusChange = (newStatus: IServiceStatus) => {
-    changeStatus(newStatus)
-    onStatusUpdate?.(newStatus)
-  }
+    changeStatus(newStatus);
+    onStatusUpdate?.(newStatus);
+  };
 
   return (
     <Card className="w-full max-w-md mx-auto">
@@ -52,11 +60,18 @@ export function ServiceCard({ service, currentUserId, onStatusUpdate }: ServiceC
           Receveur : <strong>{receiverName}</strong>
         </div>
         <div className="text-xs text-muted-foreground">
-          Créé le : {format(new Date(createdAt), "dd MMMM yyyy à HH:mm", { locale: fr })}
+          Créé le :{" "}
+          {date && !isNaN(new Date(date).getTime())
+            ? format(new Date(date), "dd MMMM yyyy à HH:mm", { locale: fr })
+            : "Date inconnue"}
         </div>
 
         {status === "en attente" && isGiver && (
-          <Button onClick={() => handleStatusChange("accepté")} disabled={loading} className="mt-2">
+          <Button
+            onClick={() => handleStatusChange("accepté")}
+            disabled={loading}
+            className="mt-2"
+          >
             Accepter le service
           </Button>
         )}
@@ -72,5 +87,5 @@ export function ServiceCard({ service, currentUserId, onStatusUpdate }: ServiceC
         )}
       </CardContent>
     </Card>
-  )
+  );
 }

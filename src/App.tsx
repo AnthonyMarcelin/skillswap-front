@@ -8,6 +8,8 @@ import ProfilePage from "./pages/ProfilePage";
 import PersonalPage from "./pages/PersonalPage";
 import ServicePage from "./pages/ServicePage";
 
+
+
 function App() {
   return (
     <Router>
@@ -17,14 +19,11 @@ function App() {
         <Route path="/search" element={<SearchPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/profilepage/:id" element={<ProfilePage />} />
-        <Route path="/personalpage" element={<PersonalPage />} /> 
-        <Route path="/servicepage"
-        element={<ServicePage />} />
+        <Route path="/personalpage" element={<PersonalPage />} />
+        <Route path="/servicepage/:id" element={<ServicePage />} />
       </Routes>
     </Router>
   );
 }
 
 export default App;
-
-
