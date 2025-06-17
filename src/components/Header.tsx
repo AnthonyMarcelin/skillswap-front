@@ -1,29 +1,35 @@
 import { useState } from "react";
 import { Button } from "./ui/Button";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Logo from "./ui/Logo";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const location = useLocation(); // Donne accès à l'URL actuelle
+
+  // Fonction pour savoir si l'utilisateur est connecté grâce au cookie JWT
+  const isAuthenticated = document.cookie.includes("accessToken=");
+
+  // On vérifie si on est déjà sur la page perso pour ne pas afficher le lien
+  const isOnPersonalPage = location.pathname === "/personalpage";
 
   return (
     <header className="header-container relative flex flex-col w-full">
       <div className="flex justify-between items-center p-2 bg-white text-white">
-        {/* Logo SVG */}
+        {/* Logo avec lien vers l'accueil */}
         <Link to="/">
           <Logo />
         </Link>
-        {/* Title and subtitle */}
-        {/* Uncomment the following lines if you want to display the title and subtitle */}
-        {/* {!open && ( */}
+
+        {/* Titre centré */}
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center w-60 pointer-events-none z-20">
           <h1 className=" text-secondary font-semibold text-2xl text-center w-full">SkillSwap</h1>
           <h2 className="text-secondary text-sm text-center w-full">
             Partagez vos talents, découvrez ceux des autres
           </h2>
         </div>
-        {/* )} */}
-        {/* Burger button */}
+
+        {/* Bouton burger pour le menu mobile */}
         <button
           className="md:hidden flex flex-col justify-center items-center ml-4"
           onClick={() => setOpen(!open)}
@@ -33,34 +39,46 @@ export default function Header() {
           <span className="block w-8 h-1 bg-secondary mb-1 rounded"></span>
           <span className="block w-8 h-1 bg-secondary rounded"></span>
         </button>
-        {/* Menu desktop */}
+
+        {/* Menu en version desktop */}
         <nav className="hidden md:block">
           <ul className="flex gap-4">
-       <Button asChild className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold">
-  <Link to="/">Accueil</Link>
-</Button>
+            <Button asChild className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold">
+              <Link to="/">Accueil</Link>
+            </Button>
 
-<Button asChild className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold">
-  <Link to="/register">Inscription</Link>
-</Button>
+            <Button asChild className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold">
+              <Link to="/register">Inscription</Link>
+            </Button>
 
-<Button asChild className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold">
-  <Link to="/account">Mon compte</Link>
-</Button>
+            {/* ➕ Affiche le bouton "Mon compte" SEULEMENT si connecté ET pas déjà sur la page */}
+            {isAuthenticated && !isOnPersonalPage && (
+              <Button asChild className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold">
+                <Link to="/personalpage">Mon compte</Link>
+              </Button>
+            )}
 
-<Button asChild className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold">
-  <Link to="/search">Rechercher</Link>
-</Button>
+            <Button asChild className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold">
+              <Link to="/search">Rechercher</Link>
+            </Button>
           </ul>
         </nav>
       </div>
-      {/* Menu mobile */}
+
+      {/* Menu mobile (visible quand on clique sur le burger) */}
       {open && (
         <nav className="md:hidden bg-secondary text-white w-full z-10 absolute left-0 top-20">
           <ul className="flex flex-col items-center gap-4 py-4">
             <li><Link to="/" onClick={() => setOpen(false)}>Accueil</Link></li>
             <li><Link to="/register" onClick={() => setOpen(false)}>Connexion / Inscription</Link></li>
-            <li><Link to="/myprofile" onClick={() => setOpen(false)}>Mon compte</Link></li>
+
+            {/* ➕ Idem dans le menu mobile : seulement si connecté */}
+            {isAuthenticated && !isOnPersonalPage && (
+              <li>
+                <Link to="/personalpage" onClick={() => setOpen(false)}>Mon compte</Link>
+              </li>
+            )}
+
             <li><Link to="/search" onClick={() => setOpen(false)}>Rechercher</Link></li>
           </ul>
         </nav>
@@ -68,4 +86,3 @@ export default function Header() {
     </header>
   );
 }
-
