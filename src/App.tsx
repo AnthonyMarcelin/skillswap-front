@@ -6,6 +6,7 @@ import SearchPage from "./pages/SearchPage";
 import RegisterPage from "./pages/Register";
 import ProfilePage from "./pages/ProfilePage";
 import PersonalPage from "./pages/PersonalPage";
+import ServicePage from "./pages/ServicePage";
 
 function App() {
   return (
@@ -17,6 +18,8 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/profilepage/:id" element={<ProfilePage />} />
         <Route path="/personalpage" element={<PersonalPage />} /> 
+        <Route path="/servicepage"
+        element={<ServicePage />} />
       </Routes>
     </Router>
   );
