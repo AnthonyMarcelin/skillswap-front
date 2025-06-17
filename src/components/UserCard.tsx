@@ -55,7 +55,9 @@ export function UserCard() {
 
           {/* Nom + email */}
           <div className="flex-1">
-            <CardTitle>{user.firstname} {user.lastname}</CardTitle>
+            <CardTitle>
+              {user.firstname} {user.lastname}
+            </CardTitle>
             <CardDescription>{user.email}</CardDescription>
           </div>
 

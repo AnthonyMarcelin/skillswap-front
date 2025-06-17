@@ -6,6 +6,7 @@ import SearchPage from "./pages/SearchPage";
 import RegisterPage from "./pages/Register";
 import ProfilePage from "./pages/ProfilePage";
 import PersonalPage from "./pages/PersonalPage";
+import MessagePage from "./pages/MessagePage";
 
 function App() {
   return (
@@ -15,13 +16,12 @@ function App() {
         <Route path="*" element={<NotFound />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/messages/:id" element={<MessagePage />} />
         <Route path="/profilepage/:id" element={<ProfilePage />} />
-        <Route path="/personalpage" element={<PersonalPage />} /> 
+        <Route path="/personalpage" element={<PersonalPage />} />
       </Routes>
     </Router>
   );
 }
 
 export default App;
-
-
