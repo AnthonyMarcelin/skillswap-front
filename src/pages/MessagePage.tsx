@@ -8,6 +8,7 @@ import { getLatestMessagesForUser } from "@/services/message.service";
 import type { IMessage } from "@/types/message";
 import type { IUser } from "@/types/user";
 import type { IConversation } from "@/types/conversation";
+import { useAllUsers } from "@/hooks/useAllUsers";
 
 export default function MessagePage() {
   const [selectedConversation, setSelectedConversation] = useState<
@@ -20,6 +21,8 @@ export default function MessagePage() {
   const [conversations, setConversations] = useState<IConversation[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+
+  const {users} = useAllUsers();
 
   useEffect(() => {
     const fetchConversations = async () => {
@@ -40,64 +43,8 @@ export default function MessagePage() {
     fetchConversations();
   }, [id]);
 
-  // Exemple de données
-  // {
-  //   id: 1,
-  //   user: {
-  //     id: 1,
-  //     firstname: "Sophie",
-  //     lastname: "Martin",
-  //     email: "sophie.martin@example.com",
-  //     profile_picture: "https://i.pravatar.cc/150?img=1",
-  //     skills: [{ id: 1, name: "React" }],
-  //     availability: "Disponible",
-  //     description: "Développeuse Frontend",
-  //     zipcode: "75001",
-  //     city: "Paris",
-  //   },
-  //   lastMessage: {
-  //     id: 1,
-  //     body: "J'aimerais en savoir plus sur vos compétences en développement web",
-  //     sending_date: new Date(),
-  //     updated_at: new Date(),
-  //   },
-  //   unreadCount: 2,
-  // },
-  // {
-  //   id: 2,
-  //   user: {
-  //     id: 2,
-  //     firstname: "Thomas",
-  //     lastname: "Dubois",
-  //     email: "thomas.dubois@example.com",
-  //     profile_picture: "https://i.pravatar.cc/150?img=2",
-  //     skills: [{ id: 2, name: "TypeScript" }],
-  //     availability: "Disponible",
-  //     description: "Développeur Backend",
-  //     zipcode: "69001",
-  //     city: "Lyon",
-  //   },
-  //   lastMessage: {
-  //     id: 2,
-  //     body: "Est-ce que vous êtes disponible pour une session de pair programming ?",
-  //     sending_date: new Date(),
-  //     updated_at: new Date(),
-  //   },
-  //   unreadCount: 0,
-  // },
-  // ]);
 
-  const [messages, setMessages] = useState<IMessage[]>([
-    // Exemple de messages
-    // {
-    //   id: 1,
-    //   sender_id: 1,
-    //   receiver_id: 2,
-    //   body: "Bonjour ! J'ai vu votre profil et je suis très intéressée par vos compétences.",
-    //   sending_date: new Date(),
-    //   updated_at: new Date(),
-    // },
-  ]);
+  const [messages, setMessages] = useState<IMessage[]>([]);
 
   const [newMessage, setNewMessage] = useState("");
 
@@ -125,6 +72,7 @@ export default function MessagePage() {
     setMessages((prev) => [...prev, newMsg]);
     setNewMessage("");
   };
+  console.log('conversations:', conversations);
 
   return (
     <>
@@ -132,7 +80,7 @@ export default function MessagePage() {
       <section className="flex flex-col min-h-screen bg-secondary text-white">
         <div className="container mx-auto px-4 py-4 md:py-8 flex flex-col flex-grow">
           <h1 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6">
-            Messages
+            Mes Derniers Messages
           </h1>
 
           {loading && <p>Chargement des conversations...</p>}
@@ -142,10 +90,24 @@ export default function MessagePage() {
             {/* Liste des conversations */}
             <Card className="bg-white h-[30vh] md:h-[calc(100vh-12rem)] overflow-y-auto">
               <div className="space-y-4 md:space-y-6 p-2">
-                {conversations.map((conversation) => (
+                {conversations
+                .filter((conversation) => conversation)
+                .map((conversation) => {
+                  // Trouver l'utilisateur correspondant à la conversation
+                  const user = users.find(
+                    (user) => user.id === conversation.sender_id,
+                  );
+
+                  // Si l'utilisateur n'est pas trouvé, on continue
+                  if (!user) return null;
+              
+                  return (
                   <div
                     key={conversation.id}
-                    onClick={() => handleConversationClick(conversation.id)}
+                    onClick={() => {
+                      handleConversationClick(conversation.id);
+                      setActiveUser(user);
+                    }}
                     className={`p-4 rounded-lg cursor-pointer transition-colors bg-primary ${
                       selectedConversation === conversation.id
                         ? "opacity-80"
@@ -153,31 +115,32 @@ export default function MessagePage() {
                     }`}
                   >
                     <div className="flex items-center space-x-4">
-                      {conversation.user.profile_picture ? (
+                      {user.profile_picture ? (
                         <img
-                          src={conversation.user.profile_picture}
-                          alt={`${conversation.user.firstname} ${conversation.user.lastname}`}
+                          src={user.profile_picture}
+                          alt={`${user.firstname} ${user.lastname}`}
                           className="w-12 h-12 rounded-full object-cover"
                         />
                       ) : (
                         <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
                           <span className="text-xl font-bold text-gray-500">
-                            {conversation.user.firstname.charAt(0)}
+                            {conversation.sender_id}
                           </span>
                         </div>
                       )}
                       <div className="flex-1 min-w-0">
                         <h3 className="font-semibold text-gray-900 truncate">
-                          {conversation.user.firstname}{" "}
-                          {conversation.user.lastname}
+                          {conversation.sender_id}{" "}
+                          {user.firstname}
                         </h3>
                         <p className="text-sm text-gray-500 truncate max-w-full">
-                          {conversation.lastMessage?.body}
+                          {conversation.body}
                         </p>
                       </div>
                     </div>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             </Card>
 

@@ -7,7 +7,9 @@ export async function getLatestMessagesForUser(
   id: string,
 ): Promise<IConversation[]> {
   const res = await api.get(`/messages/last-conversations/${id}`);
-  return res.data.data;
+  console.log('API response:', res.data);
+
+  return res.data;
 }
 
 export async function getConversation(id: string): Promise<IMessage> {

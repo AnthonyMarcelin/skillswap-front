@@ -1,16 +1,19 @@
-import { useNavigate } from "react-router-dom";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import { logout } from "@/services/auth.service";
 
 export default function PersonalPage() {
-  const navigate = useNavigate();
 
-  const handleLogout = () => {
-    // Si tu utilises un cookie JWT, tu peux le supprimer ici :
-    document.cookie = "accessToken=; Max-Age=0";
-
-    // Redirection vers la page de connexion
-    navigate("/");
+  const handleLogout = async () => {
+    try {
+      await logout();
+      console.log("Déconnexion réussie:", "cookie supprimé" );
+      window.location.href = '/register';
+}
+    catch (error) {
+      console.error("Erreur lors de la déconnexion:", error);
+      // Vous pouvez gérer l'erreur ici, par exemple en affichant un message à l'utilisateur
+    }
   };
 
   return (
