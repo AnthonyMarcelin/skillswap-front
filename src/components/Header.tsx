@@ -2,13 +2,12 @@ import { useState } from "react";
 import { Button } from "./ui/Button";
 import { Link, useLocation } from "react-router-dom";
 import Logo from "./ui/Logo";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
   const location = useLocation(); // Donne accès à l'URL actuelle
-
-  // Fonction pour savoir si l'utilisateur est connecté grâce au cookie JWT
-  const isAuthenticated = document.cookie.includes("accessToken=");
+  const { isAuthenticated, logout } = useAuth();
 
   // On vérifie si on est déjà sur la page perso pour ne pas afficher le lien
   const isOnPersonalPage = location.pathname === "/personalpage";
@@ -46,15 +45,27 @@ export default function Header() {
             <Button asChild className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold">
               <Link to="/">Accueil</Link>
             </Button>
+          {/* Change le bouton se connecter en se déconnecter quand authentifié */}
+            {isAuthenticated ? (
+              <Button
+                onClick={logout}
+                className="bg-destructive hover:bg-red-600 text-white px-6 py-2 text-lg font-semibold"
+              >
+                Se déconnecter
+              </Button>
+            ) : (
+              <Button
+                asChild
+                className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold"
+              >
+                <Link to="/register">Se connecter</Link>
+              </Button>
+         )}
 
-            <Button asChild className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold">
-              <Link to="/register">Inscription</Link>
-            </Button>
-
-            {/* ➕ Affiche le bouton "Mon compte" SEULEMENT si connecté ET pas déjà sur la page */}
+            {/* ➕ Affiche le bouton "Mon profil" SEULEMENT si connecté ET pas déjà sur la page */}
             {isAuthenticated && !isOnPersonalPage && (
               <Button asChild className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold">
-                <Link to="/personalpage">Mon compte</Link>
+                <Link to="/personalpage">Mon profil</Link>
               </Button>
             )}
 
