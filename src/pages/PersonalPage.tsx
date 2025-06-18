@@ -26,7 +26,7 @@ import { getCurrentUser } from "@/services/user.service";
 import { ServiceCard } from "@/components/ServiceCard";
 
 // Typage de l’utilisateur courant
-import type { IUser } from "@/types/user"; 
+import type { IUser } from "@/types/user";
 
 export default function PersonalPage() {
   const navigate = useNavigate();
@@ -99,14 +99,14 @@ export default function PersonalPage() {
           {error ? (
             <p className="text-sm italic text-gray-400">{error}</p>
           ) : currentUser ? (
-            <div className="space-y-4">
+            // On utilise une grille responsive : 1 colonne sur mobile, 2 sur desktop
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {services.map((service) => (
                 <ServiceCard
                   key={service.id}
                   service={service}
                   currentUserId={currentUser.id}
                   onStatusUpdate={(newStatus) => {
-                    // Mise à jour locale du statut dans le tableau
                     setServices((prev) =>
                       prev.map((s) =>
                         s.id === service.id ? { ...s, status: newStatus } : s

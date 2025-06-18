@@ -1,32 +1,32 @@
-// Import des composants UI réutilisables (carte, badge, bouton)
 import { Card, CardContent } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-
-// Formatage de date avec prise en charge de la locale française
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 
-// Import des types TypeScript pour plus de sécurité
 import type { IService, IServiceStatus } from "@/types/service";
-
-// Hook personnalisé pour gérer l’état du statut d’un service
 import { useServiceStatus } from "@/hooks/useServiceStatus";
 
-// Définition des propriétés attendues pour ce composant
+const statusLabels: Record<IServiceStatus | "completed", string> = {
+  pending: "En attente",
+  accepted: "Accepté",
+  done: "Terminé",
+  completed: "Terminé", // Pour gérer le cas où le back retourne "completed"
+};
+
+// Composant d'affichage d'un service individuel (titre, donneur, receveur, date, statut, actions)
 interface ServiceCardProps {
   service: IService;
   currentUserId: number;
   onStatusUpdate?: (newStatus: IServiceStatus) => void;
 }
 
-// Composant d’affichage d’un service avec logique conditionnelle
 export function ServiceCard({
   service,
   currentUserId,
   onStatusUpdate,
 }: ServiceCardProps) {
-  // On extrait les données du service avec des valeurs par défaut de secours
+  // Destructuration des propriétés du service
   const {
     id,
     giverName = "Inconnu",
@@ -37,34 +37,35 @@ export function ServiceCard({
     date,
   } = service;
 
-  // Utilisation du hook personnalisé pour gérer le statut localement
+  // Hook custom pour gérer localement le statut du service
   const { status, loading, changeStatus } = useServiceStatus(
     id,
     service.status
   );
 
-  // On détermine si l’utilisateur connecté est le donneur ou le receveur
+  // On identifie le rôle de l'utilisateur connecté
   const isGiver = currentUserId === giverId;
   const isReceiver = currentUserId === receiverId;
 
-  // Fonction pour retourner une classe CSS selon le statut
+  // Attribution de style différent selon le statut
   const getBadgeStyle = (status: string) => {
     switch (status) {
-      case "en attente":
+      case "pending":
         return "bg-yellow-100 text-yellow-800";
-      case "accepté":
+      case "accepted":
         return "bg-blue-100 text-blue-800";
-      case "terminé":
+      case "done":
+      case "completed":
         return "bg-green-100 text-green-800";
       default:
         return "bg-gray-100 text-gray-800";
     }
   };
 
-  // Fonction appelée lorsqu’un statut change (API + retour parent)
+  // Quand l'utilisateur clique sur un bouton d'action
   const handleStatusChange = (newStatus: IServiceStatus) => {
-    changeStatus(newStatus);
-    onStatusUpdate?.(newStatus);
+    changeStatus(newStatus); // MAJ via API
+    onStatusUpdate?.(newStatus); // Callback pour actualiser en parent si besoin
   };
 
   return (
@@ -72,7 +73,9 @@ export function ServiceCard({
       <CardContent className="p-4 space-y-2">
         <div className="flex justify-between items-center">
           <h3 className="text-lg font-semibold">{title}</h3>
-          <Badge className={getBadgeStyle(status)}>{status}</Badge>
+          <Badge className={getBadgeStyle(status)}>
+            {statusLabels[status] || "Inconnu"}
+          </Badge>
         </div>
 
         <div className="text-sm text-gray-600">
@@ -88,10 +91,10 @@ export function ServiceCard({
             : "Date inconnue"}
         </div>
 
-        {/* Si le service est en attente et que l'utilisateur est le donneur */}
-        {status === "en attente" && isGiver && (
+        {/* Si l'utilisateur est le receveur et que le service est en attente, il peut l'accepter */}
+        {status === "pending" && isReceiver && (
           <Button
-            onClick={() => handleStatusChange("accepté")}
+            onClick={() => handleStatusChange("accepted")}
             disabled={loading}
             className="mt-2"
           >
@@ -99,10 +102,10 @@ export function ServiceCard({
           </Button>
         )}
 
-        {/* Si le service est accepté et que l'utilisateur est le receveur */}
-        {status === "accepté" && isReceiver && (
+        {/* Si l'utilisateur est le receveur et que le service est accepté, il peut le terminer */}
+        {status === "accepted" && isReceiver && (
           <Button
-            onClick={() => handleStatusChange("terminé")}
+            onClick={() => handleStatusChange("done")}
             disabled={loading}
             className="mt-2 bg-green-600 hover:bg-green-700"
           >
