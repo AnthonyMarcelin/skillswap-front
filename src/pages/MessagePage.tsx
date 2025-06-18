@@ -9,8 +9,6 @@ import type { IMessage } from "@/types/message";
 import type { IUser } from "@/types/user";
 import type { IConversation } from "@/types/conversation";
 import { useAllUsers } from "@/hooks/useAllUsers";
-import type { create } from "domain";
-import { login } from "@/services/auth.service";
 
 export default function MessagePage() {
   const [selectedConversation, setSelectedConversation] = useState<
@@ -18,7 +16,6 @@ export default function MessagePage() {
   >(null);
   const [activeUser, setActiveUser] = useState<IUser | null>(null);
   const { id } = useParams();
-  console.log(id);
 
   const [conversations, setConversations] = useState<IConversation[]>([]);
   const [messages, setMessages] = useState<IMessage[]>([]);
@@ -69,7 +66,6 @@ export default function MessagePage() {
         receiver_id: selectedConversation,
         body: newMessage,
       });
-      console.log("Message envoyé :", newMsg);
       
   
       setMessages((prev) => [...prev, newMsg]);

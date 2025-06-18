@@ -14,7 +14,7 @@ export default function Header() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const userId = await getUserById("21");
+        const userId = await getUserById($"authUserId"); // Remplacez "authUserId" par la méthode pour obtenir l'ID de l'utilisateur authentifié
         setAuthUser(userId);
       } catch (error) {
         console.error("Erreur lors du chargement de l'utilisateur : ", error);
@@ -87,7 +87,7 @@ export default function Header() {
               asChild
               className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold"
             >
-              <Link to={`/messages/${authUser?.id || "21"}`}>Messagerie</Link>
+              <Link to={`/messages/${authUser?.id}`}>Messagerie</Link>
             </Button>
 
             <Button

@@ -12,7 +12,6 @@ export async function getLatestMessagesForUser(
 
 export async function getConversation(userId: string, contactId: string): Promise<IMessage[]> {
   const res = await api.get(`/messages/${userId}/${contactId}`);
-  console.log("getConversation", res.data);
   return res.data;
 }
 
