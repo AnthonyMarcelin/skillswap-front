@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { getMyServices, getRawServices } from "@/services/service.service";
 import type { IService } from "@/types/service";
 import ReviewCard from "@/components/ReviewCard";
+import { logout } from "@/services/auth.service";
+import { getCurrentUser } from "@/services/user.service";
 
 export default function PersonalPage() {
   const navigate = useNavigate();
@@ -13,18 +15,23 @@ export default function PersonalPage() {
   const [services, setServices] = useState<IService[]>([]);
   const [error, setError] = useState("");
 
-  // Fonction appelée quand l’utilisateur clique sur “Se déconnecter”
   const handleLogout = async () => {
-    // on supprime le cookie contenant le token
-    document.cookie = "accessToken=; Max-Age=0";
-    console.log("→ Token supprimé");
-    // on redirige vers la page d’accueil
-    navigate("/");
+    try {
+      await logout();
+      console.log("Déconnexion réussie:", "cookie supprimé" );
+      window.location.href = '/register';
+}
+    catch (error) {
+      console.error("Erreur lors de la déconnexion:", error);
+      // Vous pouvez gérer l'erreur ici, par exemple en affichant un message à l'utilisateur
+    }
   };
 
   // Quand le composant s'affiche (et si l'ID change), on va chercher les services
   useEffect(() => {
+    
     const fetchServices = async () => {
+      await getCurrentUser();
       try {
         let data: IService[];
 

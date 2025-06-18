@@ -33,6 +33,11 @@ export async function login(dto: LoginDto) {
 
 export async function logout() {
   // Axios renvoie déjà la promesse du JSON
-  const { data } = await api.post('/auth/logout');
-  return data;
+  await api.post("/auth/logout", {}, 
+    { withCredentials: true });
+}
+
+export async function checkAuth() {
+  const { data } = await api.get("/auth/check", { withCredentials: true });
+  return data;  // attendu { authenticated: boolean, user?: ... }
 }
