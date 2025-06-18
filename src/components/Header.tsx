@@ -3,7 +3,6 @@ import { Button } from "./ui/Button";
 import { Link, useLocation } from "react-router-dom";
 import Logo from "./ui/Logo";
 import { useAuth } from "@/hooks/useAuth";
-
 import { getUserById } from "@/services/user.service";
 import type { IUser } from "@/types/user";
 
@@ -24,28 +23,28 @@ export default function Header() {
   }, []);
 
   const location = useLocation(); // Donne accès à l'URL actuelle
-  const { isAuthenticated, logout } = useAuth();
 
   // On vérifie si on est déjà sur la page perso pour ne pas afficher le lien
   const isOnPersonalPage = location.pathname === "/personalpage";
+  const { isAuthenticated } = useAuth();
 
   return (
     <header className="header-container relative flex flex-col w-full">
       <div className="flex justify-between items-center p-2 bg-white text-white">
-        {/* Logo avec lien vers l'accueil */}
-        <Link to="/">
-          <Logo />
-        </Link>
-
-        {/* Titre centré */}
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center w-60 pointer-events-none z-20">
-          <h1 className=" text-secondary font-semibold text-2xl text-center w-full">
-            SkillSwap
-          </h1>
-          <h2 className="text-secondary text-sm text-center w-full">
-            Partagez vos talents, découvrez ceux des autres
-          </h2>
-        </div>
+    {/* Conteneur logo + titre côte à côte */}
+    <div className="flex items-center">
+      <Link to="/">
+        <Logo />
+      </Link>
+      <Link to="/" className="flex flex-col ml-0">
+        <h1 className="text-secondary font-semibold text-4xl leading-none">
+          SkillSwap
+        </h1>
+        <h2 className="text-secondary text-lg leading-none">
+          Partagez vos talents, découvrez ceux des autres
+        </h2>
+      </Link>
+    </div>
 
         {/* Bouton burger pour le menu mobile */}
         <button
@@ -62,77 +61,59 @@ export default function Header() {
         <nav className="hidden md:block">
           <ul className="flex gap-4">
 
-            <Button
+            {/* <Button
               asChild
               className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold"
             >
               <Link to="/">Accueil</Link>
-            </Button>
-
+            </Button> */}
+{/* 
             <Button
               asChild
               className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold"
             >
               <Link to="/register">Inscription</Link>
-            </Button>
+            </Button> */}
 
             <Button
               asChild
-              className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold"
+              className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
             >
-              <Link to="/account">Mon compte</Link>
+              <Link to="/account">Mon profil</Link>
             </Button>
 
             <Button
               asChild
-              className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold"
+              className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
             >
               <Link to={`/messages/${authUser?.id || "21"}`}>Messagerie</Link>
             </Button>
 
-            <Button
-              asChild
-              className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold"
-            >
-            </Button>
-
-            <Button asChild className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold">
-              <Link to="/">Accueil</Link>
-            </Button>
-          {/* Change le bouton se connecter en se déconnecter quand authentifié */}
-            {isAuthenticated ? (
-              <Button
-                onClick={logout}
-                className="bg-destructive hover:bg-red-600 text-white px-6 py-2 text-lg font-semibold"
-              >
-                Se déconnecter
-              </Button>
-            ) : (
-              <Button
-                asChild
-                className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold"
-              >
-                <Link to="/register">Se connecter</Link>
-              </Button>
-         )}
-
-            {/* ➕ Affiche le bouton "Mon profil" SEULEMENT si connecté ET pas déjà sur la page */}
-            {isAuthenticated && !isOnPersonalPage && (
-              <Button asChild className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold">
-                <Link to="/personalpage">Mon profil</Link>
-              </Button>
-            )}
-
-            <Button asChild className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold">
+            <Button asChild className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold">
 
               <Link to="/search">Rechercher</Link>
             </Button>
-          </ul>
-        </nav>
+            
+            <Button
+      asChild
+      className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
+    >
+      <Link to="/register">Se connecter</Link>
+    </Button>
+
+    {/* Affichage "Mon profil" si connecté et pas sur la page perso */}
+    {isAuthenticated && !isOnPersonalPage && (
+      <Button asChild className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold">
+        <Link to="/personalpage">Mon profil</Link>
+      </Button>
+    )}
+
+  </ul>
+</nav>
       </div>
 
-      {/* Menu mobile (visible quand on clique sur le burger) */}
-      {open && (
+       {/* Menu mobile (visible quand on clique sur le burger) */}
+       {open && (
         <nav className="md:hidden bg-secondary text-white w-full z-10 absolute left-0 top-20">
           <ul className="flex flex-col items-center gap-4 py-4">
 
