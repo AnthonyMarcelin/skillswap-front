@@ -11,24 +11,27 @@ import type { IUser } from "@/types/user";
 
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getUserById } from "@/services/user.service"; // à créer si pas fait
-import { useAsyncState } from "@/hooks/useAsyncState"; // ton hook personnalisé
+import { getUserById, getCurrentUser } from "@/services/user.service"; 
+import { useAsyncState } from "@/hooks/useAsyncState";
 
 export function UserCard() {
-  const { id } = useParams();
+  const { id } = useParams(); // URL : /user/:id OU rien si /personal
   const [user, setUser] = useState<IUser | null>(null);
   const { loading, setLoading, error, setError, reset } = useAsyncState();
 
   useEffect(() => {
-    console.log(id);
-
     const fetchUser = async () => {
       reset();
       try {
         setLoading(true);
-        const data = await getUserById(id!);
+
+        const data = id
+          ? await getUserById(id) // profil public
+          : await getCurrentUser(); // profil connecté
+
         setUser(data);
       } catch (err: any) {
+        console.error("Erreur de chargement du profil :", err);
         setError("Impossible de charger le profil.");
       } finally {
         setLoading(false);
@@ -43,17 +46,15 @@ export function UserCard() {
   if (!user) return null;
 
   return (
-    <div className="max-w-full  bg-secondary text-white">
+    <div className="max-w-full bg-secondary text-white">
       <Card className="border-0 shadow-md">
-        {/* --- En-tête : photo, nom, bouton --- */}
         <CardHeader className="flex items-center gap-4 border-0">
-          {/* Zone photo  */}
           <img
-            src={user.profile_picture || "URL de secours"}
+            src={user.profile_picture || "/default-avatar.png"}
             className="h-16 w-16 rounded-full object-cover"
+            alt="Photo de profil"
           />
 
-          {/* Nom + email */}
           <div className="flex-1">
             <CardTitle>
               {user.firstname} {user.lastname}
@@ -61,22 +62,22 @@ export function UserCard() {
             <CardDescription>{user.email}</CardDescription>
           </div>
 
-          {/* Bouton action */}
-          <CardAction>
-            <Link to="/register">
-              <Button
-                size="sm"
-                className="block w-full display rounded bg-[var(--color-accent)] text-white"
-              >
-                Contacte-Moi
-              </Button>
-            </Link>
-          </CardAction>
+          {/* Affiche bouton seulement si ce n’est pas ton propre profil */}
+          {id && (
+            <CardAction>
+              <Link to="/register">
+                <Button
+                  size="sm"
+                  className="rounded bg-[var(--color-accent)] text-white"
+                >
+                  Contacte-Moi
+                </Button>
+              </Link>
+            </CardAction>
+          )}
         </CardHeader>
 
-        {/* --- Contenu : compétences, dispo, bio --- */}
         <CardContent className="space-y-4">
-          {/* Compétences */}
           <section>
             <h4 className="font-semibold text-sm">Compétences</h4>
             <ul className="mt-1 flex flex-wrap gap-2">
@@ -97,7 +98,6 @@ export function UserCard() {
             </ul>
           </section>
 
-          {/* Disponibilités */}
           <section>
             <h4 className="font-semibold text-sm">Disponibilités</h4>
             <p className="mt-1 inline-block rounded border px-2 py-1 text-xs">
@@ -105,7 +105,6 @@ export function UserCard() {
             </p>
           </section>
 
-          {/* Bio */}
           <section className="space-y-1 bg-primary p-4 rounded max-w-full">
             <h4 className="font-semibold text-sm text-secondary">À propos</h4>
             <p className="whitespace-pre-line text-sm leading-relaxed">

@@ -7,6 +7,8 @@ import RegisterPage from "./pages/Register";
 import ProfilePage from "./pages/ProfilePage";
 import PersonalPage from "./pages/PersonalPage";
 import MessagePage from "./pages/MessagePage";
+import ServicePage from "./pages/ServicePage";
+
 
 function App() {
   return (
@@ -19,6 +21,7 @@ function App() {
         <Route path="/messages/:id" element={<MessagePage />} />
         <Route path="/profilepage/:id" element={<ProfilePage />} />
         <Route path="/personalpage" element={<PersonalPage />} />
+        <Route path="/servicepage/:id" element={<ServicePage />} />
       </Routes>
     </Router>
   );

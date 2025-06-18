@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Button } from "./ui/Button";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Logo from "./ui/Logo";
+import { useAuth } from "@/hooks/useAuth";
 
 import { getUserById } from "@/services/user.service";
 import type { IUser } from "@/types/user";
@@ -22,16 +23,21 @@ export default function Header() {
     fetchUser();
   }, []);
 
+  const location = useLocation(); // Donne accès à l'URL actuelle
+  const { isAuthenticated, logout } = useAuth();
+
+  // On vérifie si on est déjà sur la page perso pour ne pas afficher le lien
+  const isOnPersonalPage = location.pathname === "/personalpage";
+
   return (
     <header className="header-container relative flex flex-col w-full">
       <div className="flex justify-between items-center p-2 bg-white text-white">
-        {/* Logo SVG */}
+        {/* Logo avec lien vers l'accueil */}
         <Link to="/">
           <Logo />
         </Link>
-        {/* Title and subtitle */}
-        {/* Uncomment the following lines if you want to display the title and subtitle */}
-        {/* {!open && ( */}
+
+        {/* Titre centré */}
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center w-60 pointer-events-none z-20">
           <h1 className=" text-secondary font-semibold text-2xl text-center w-full">
             SkillSwap
@@ -40,8 +46,8 @@ export default function Header() {
             Partagez vos talents, découvrez ceux des autres
           </h2>
         </div>
-        {/* )} */}
-        {/* Burger button */}
+
+        {/* Bouton burger pour le menu mobile */}
         <button
           className="md:hidden flex flex-col justify-center items-center ml-4"
           onClick={() => setOpen(!open)}
@@ -51,9 +57,11 @@ export default function Header() {
           <span className="block w-8 h-1 bg-secondary mb-1 rounded"></span>
           <span className="block w-8 h-1 bg-secondary rounded"></span>
         </button>
-        {/* Menu desktop */}
+
+        {/* Menu en version desktop */}
         <nav className="hidden md:block">
           <ul className="flex gap-4">
+
             <Button
               asChild
               className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold"
@@ -86,15 +94,47 @@ export default function Header() {
               asChild
               className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold"
             >
+
+            <Button asChild className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold">
+              <Link to="/">Accueil</Link>
+            </Button>
+          {/* Change le bouton se connecter en se déconnecter quand authentifié */}
+            {isAuthenticated ? (
+              <Button
+                onClick={logout}
+                className="bg-destructive hover:bg-red-600 text-white px-6 py-2 text-lg font-semibold"
+              >
+                Se déconnecter
+              </Button>
+            ) : (
+              <Button
+                asChild
+                className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold"
+              >
+                <Link to="/register">Se connecter</Link>
+              </Button>
+         )}
+
+            {/* ➕ Affiche le bouton "Mon profil" SEULEMENT si connecté ET pas déjà sur la page */}
+            {isAuthenticated && !isOnPersonalPage && (
+              <Button asChild className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold">
+                <Link to="/personalpage">Mon profil</Link>
+              </Button>
+            )}
+
+            <Button asChild className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold">
+
               <Link to="/search">Rechercher</Link>
             </Button>
           </ul>
         </nav>
       </div>
-      {/* Menu mobile */}
+
+      {/* Menu mobile (visible quand on clique sur le burger) */}
       {open && (
         <nav className="md:hidden bg-secondary text-white w-full z-10 absolute left-0 top-20">
           <ul className="flex flex-col items-center gap-4 py-4">
+
             <li>
               <Link to="/" onClick={() => setOpen(false)}>
                 Accueil
@@ -123,6 +163,19 @@ export default function Header() {
                 Rechercher
               </Link>
             </li>
+
+            <li><Link to="/" onClick={() => setOpen(false)}>Accueil</Link></li>
+            <li><Link to="/register" onClick={() => setOpen(false)}>Connexion / Inscription</Link></li>
+
+            {/* ➕ Idem dans le menu mobile : seulement si connecté */}
+            {isAuthenticated && !isOnPersonalPage && (
+              <li>
+                <Link to="/personalpage" onClick={() => setOpen(false)}>Mon compte</Link>
+              </li>
+            )}
+
+            <li><Link to="/search" onClick={() => setOpen(false)}>Rechercher</Link></li>
+
           </ul>
         </nav>
       )}
