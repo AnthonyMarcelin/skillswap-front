@@ -1,11 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "./ui/Button";
 import { Link, useLocation } from "react-router-dom";
 import Logo from "./ui/Logo";
 import { useAuth } from "@/hooks/useAuth";
 
+import { getUserById } from "@/services/user.service";
+import type { IUser } from "@/types/user";
+
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const [authUser, setAuthUser] = useState<IUser | null>(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const userId = await getUserById("21");
+        setAuthUser(userId);
+      } catch (error) {
+        console.error("Erreur lors du chargement de l'utilisateur : ", error);
+      }
+    };
+    fetchUser();
+  }, []);
+
   const location = useLocation(); // Donne accès à l'URL actuelle
   const { isAuthenticated, logout } = useAuth();
 
@@ -22,7 +39,9 @@ export default function Header() {
 
         {/* Titre centré */}
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center w-60 pointer-events-none z-20">
-          <h1 className=" text-secondary font-semibold text-2xl text-center w-full">SkillSwap</h1>
+          <h1 className=" text-secondary font-semibold text-2xl text-center w-full">
+            SkillSwap
+          </h1>
           <h2 className="text-secondary text-sm text-center w-full">
             Partagez vos talents, découvrez ceux des autres
           </h2>
@@ -42,6 +61,41 @@ export default function Header() {
         {/* Menu en version desktop */}
         <nav className="hidden md:block">
           <ul className="flex gap-4">
+
+            <Button
+              asChild
+              className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold"
+            >
+              <Link to="/">Accueil</Link>
+            </Button>
+
+            <Button
+              asChild
+              className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold"
+            >
+              <Link to="/register">Inscription</Link>
+            </Button>
+
+            <Button
+              asChild
+              className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold"
+            >
+              <Link to="/account">Mon compte</Link>
+            </Button>
+
+            <Button
+              asChild
+              className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold"
+            >
+              <Link to={`/messages/${authUser?.id || "21"}`}>Messagerie</Link>
+            </Button>
+
+            <Button
+              asChild
+              className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold"
+            >
+            </Button>
+
             <Button asChild className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold">
               <Link to="/">Accueil</Link>
             </Button>
@@ -70,6 +124,7 @@ export default function Header() {
             )}
 
             <Button asChild className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold">
+
               <Link to="/search">Rechercher</Link>
             </Button>
           </ul>
@@ -80,6 +135,36 @@ export default function Header() {
       {open && (
         <nav className="md:hidden bg-secondary text-white w-full z-10 absolute left-0 top-20">
           <ul className="flex flex-col items-center gap-4 py-4">
+
+            <li>
+              <Link to="/" onClick={() => setOpen(false)}>
+                Accueil
+              </Link>
+            </li>
+            <li>
+              <Link to="/register" onClick={() => setOpen(false)}>
+                Connexion / Inscription
+              </Link>
+            </li>
+            <li>
+              <Link to="/myprofile" onClick={() => setOpen(false)}>
+                Mon compte
+              </Link>
+            </li>
+            <li>
+              <Link
+                to={`/messages/${authUser?.id || "21"}`}
+                onClick={() => setOpen(false)}
+              >
+                Messagerie
+              </Link>
+            </li>
+            <li>
+              <Link to="/search" onClick={() => setOpen(false)}>
+                Rechercher
+              </Link>
+            </li>
+
             <li><Link to="/" onClick={() => setOpen(false)}>Accueil</Link></li>
             <li><Link to="/register" onClick={() => setOpen(false)}>Connexion / Inscription</Link></li>
 
@@ -91,6 +176,7 @@ export default function Header() {
             )}
 
             <li><Link to="/search" onClick={() => setOpen(false)}>Rechercher</Link></li>
+
           </ul>
         </nav>
       )}

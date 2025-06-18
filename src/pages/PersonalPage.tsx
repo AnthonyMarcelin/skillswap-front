@@ -21,6 +21,7 @@ export default function PersonalPage() {
       window.location.href = '/register';
 }
     catch (error) {
+
       console.error("Erreur lors de la déconnexion:", error);
       // Vous pouvez gérer l'erreur ici, par exemple en affichant un message à l'utilisateur
     }
