@@ -22,6 +22,7 @@ export default function PersonalPage() {
       window.location.href = '/register';
 }
     catch (error) {
+
       console.error("Erreur lors de la déconnexion:", error);
       // Vous pouvez gérer l'erreur ici, par exemple en affichant un message à l'utilisateur
     }
@@ -62,6 +63,7 @@ export default function PersonalPage() {
         <h1 className="text-xl font-semibold">
           Bienvenue sur ta page personnelle
         </h1>
+
 
         <button
           onClick={handleLogout}
