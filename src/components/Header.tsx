@@ -31,20 +31,20 @@ export default function Header() {
   return (
     <header className="header-container relative flex flex-col w-full">
       <div className="flex justify-between items-center p-2 bg-white text-white">
-    {/* Conteneur logo + titre côte à côte */}
-    <div className="flex items-center">
-      <Link to="/">
-        <Logo />
-      </Link>
-      <Link to="/" className="flex flex-col ml-0">
-        <h1 className="text-secondary font-semibold text-4xl leading-none">
-          SkillSwap
-        </h1>
-        <h2 className="text-secondary text-lg leading-none">
-          Partagez vos talents, découvrez ceux des autres
-        </h2>
-      </Link>
-    </div>
+        {/* Conteneur logo + titre côte à côte */}
+        <div className="flex items-center">
+          <Link to="/">
+            <Logo />
+          </Link>
+          <Link to="/" className="flex flex-col ml-0">
+            <h1 className="text-secondary font-semibold text-4xl leading-none">
+              SkillSwap
+            </h1>
+            <h2 className="text-secondary text-lg leading-none">
+              Partagez vos talents, découvrez ceux des autres
+            </h2>
+          </Link>
+        </div>
 
         {/* Bouton burger pour le menu mobile */}
         <button
@@ -60,14 +60,13 @@ export default function Header() {
         {/* Menu en version desktop */}
         <nav className="hidden md:block">
           <ul className="flex gap-4">
-
             {/* <Button
               asChild
               className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold"
             >
               <Link to="/">Accueil</Link>
             </Button> */}
-{/* 
+            {/* 
             <Button
               asChild
               className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold"
@@ -89,35 +88,38 @@ export default function Header() {
               <Link to={`/messages/${authUser?.id || "21"}`}>Messagerie</Link>
             </Button>
 
-            <Button asChild className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold">
-
+            <Button
+              asChild
+              className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
+            >
               <Link to="/search">Rechercher</Link>
             </Button>
-            
+
             <Button
-      asChild
-      className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
-    >
-      <Link to="/register">Se connecter</Link>
-    </Button>
+              asChild
+              className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
+            >
+              <Link to="/register">Se connecter</Link>
+            </Button>
 
-    {/* Affichage "Mon profil" si connecté et pas sur la page perso */}
-    {isAuthenticated && !isOnPersonalPage && (
-      <Button asChild className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold">
-        <Link to="/personalpage">Mon profil</Link>
-      </Button>
-    )}
-
-  </ul>
-</nav>
+            {/* Affichage "Mon profil" si connecté et pas sur la page perso */}
+            {isAuthenticated && !isOnPersonalPage && (
+              <Button
+                asChild
+                className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
+              >
+                <Link to="/personalpage">Mon profil</Link>
+              </Button>
+            )}
+          </ul>
+        </nav>
       </div>
 
-       {/* Menu mobile (visible quand on clique sur le burger) */}
-       {open && (
+      {/* Menu mobile (visible quand on clique sur le burger) */}
+      {open && (
         <nav className="md:hidden bg-secondary text-white w-full z-10 absolute left-0 top-20">
           <ul className="flex flex-col items-center gap-4 py-4">
-
-            <li>
+            {/* <li>
               <Link to="/" onClick={() => setOpen(false)}>
                 Accueil
               </Link>
@@ -126,10 +128,10 @@ export default function Header() {
               <Link to="/register" onClick={() => setOpen(false)}>
                 Connexion / Inscription
               </Link>
-            </li>
+            </li> */}
             <li>
-              <Link to="/myprofile" onClick={() => setOpen(false)}>
-                Mon compte
+              <Link to="/account" onClick={() => setOpen(false)}>
+                Mon profil
               </Link>
             </li>
             <li>
@@ -146,18 +148,25 @@ export default function Header() {
               </Link>
             </li>
 
-            <li><Link to="/" onClick={() => setOpen(false)}>Accueil</Link></li>
-            <li><Link to="/register" onClick={() => setOpen(false)}>Connexion / Inscription</Link></li>
+            {/*          <li>
+              <Link to="/" onClick={() => setOpen(false)}>
+                Accueil
+              </Link>
+            </li> */}
+            <li>
+              <Link to="/register" onClick={() => setOpen(false)}>
+                Se connecter
+              </Link>
+            </li>
 
             {/* ➕ Idem dans le menu mobile : seulement si connecté */}
             {isAuthenticated && !isOnPersonalPage && (
               <li>
-                <Link to="/personalpage" onClick={() => setOpen(false)}>Mon compte</Link>
+                <Link to="/personalpage" onClick={() => setOpen(false)}>
+                  Mon compte
+                </Link>
               </li>
             )}
-
-            <li><Link to="/search" onClick={() => setOpen(false)}>Rechercher</Link></li>
-
           </ul>
         </nav>
       )}
