@@ -7,14 +7,13 @@ export async function getLatestMessagesForUser(
   id: string,
 ): Promise<IConversation[]> {
   const res = await api.get(`/messages/last-conversations/${id}`);
-  console.log('API response:', res.data);
-
   return res.data;
 }
 
-export async function getConversation(id: string): Promise<IMessage> {
-  const res = await api.get(`/messages/${id}/${id}`);
-  return res.data.data;
+export async function getConversation(userId: string, contactId: string): Promise<IMessage[]> {
+  const res = await api.get(`/messages/${userId}/${contactId}`);
+  console.log("getConversation", res.data);
+  return res.data;
 }
 
 export async function createMessage(): Promise<IMessage> {

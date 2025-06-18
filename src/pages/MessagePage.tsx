@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { Card } from "@/components/ui/Card";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { getLatestMessagesForUser } from "@/services/message.service";
+import { getConversation, getLatestMessagesForUser } from "@/services/message.service";
 
 import type { IMessage } from "@/types/message";
 import type { IUser } from "@/types/user";
@@ -19,6 +19,9 @@ export default function MessagePage() {
   console.log(id);
 
   const [conversations, setConversations] = useState<IConversation[]>([]);
+  const [messages, setMessages] = useState<IMessage[]>([]);
+  const [newMessage, setNewMessage] = useState("");
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -44,19 +47,16 @@ export default function MessagePage() {
   }, [id]);
 
 
-  const [messages, setMessages] = useState<IMessage[]>([]);
-
-  const [newMessage, setNewMessage] = useState("");
-
-  const handleConversationClick = (conversationId: number) => {
-    setSelectedConversation(conversationId);
-    // Marquer les messages comme lus
-    setConversations((prevConversations) =>
-      prevConversations.map((conv) =>
-        conv.id === conversationId ? { ...conv, unreadCount: 0 } : conv,
-      ),
-    );
-  };
+  const handleConversationClick = async (userId: string, contactId: number, user:IUser) => {
+    setSelectedConversation(contactId);
+    setActiveUser(user);
+    try {
+    const response = await getConversation(userId, contactId.toString());
+    setMessages(Array.isArray(response) ? response : [response]);
+  } catch (error) {
+    setError(error as Error);
+  }
+};
 
   const handleSendMessage = () => {
     if (!newMessage.trim() || !selectedConversation) return;
@@ -93,9 +93,13 @@ export default function MessagePage() {
                 {conversations
                 .filter((conversation) => conversation)
                 .map((conversation) => {
+                  const userId = Number(id);
+                  const contactId = conversation.sender_id === userId
+                    ? conversation.receiver_id
+                    : conversation.sender_id;
                   // Trouver l'utilisateur correspondant à la conversation
                   const user = users.find(
-                    (user) => user.id === conversation.sender_id,
+                    (user) => user.id === contactId,
                   );
 
                   // Si l'utilisateur n'est pas trouvé, on continue
@@ -105,7 +109,7 @@ export default function MessagePage() {
                   <div
                     key={conversation.id}
                     onClick={() => {
-                      handleConversationClick(conversation.id);
+                      handleConversationClick(id!, user.id, user);
                       setActiveUser(user);
                     }}
                     className={`p-4 rounded-lg cursor-pointer transition-colors bg-primary ${
