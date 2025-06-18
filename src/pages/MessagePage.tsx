@@ -3,12 +3,14 @@ import { useParams } from "react-router-dom";
 import { Card } from "@/components/ui/Card";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { getConversation, getLatestMessagesForUser } from "@/services/message.service";
+import { createMessage, getConversation, getLatestMessagesForUser } from "@/services/message.service";
 
 import type { IMessage } from "@/types/message";
 import type { IUser } from "@/types/user";
 import type { IConversation } from "@/types/conversation";
 import { useAllUsers } from "@/hooks/useAllUsers";
+import type { create } from "domain";
+import { login } from "@/services/auth.service";
 
 export default function MessagePage() {
   const [selectedConversation, setSelectedConversation] = useState<
@@ -58,21 +60,24 @@ export default function MessagePage() {
   }
 };
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (!newMessage.trim() || !selectedConversation) return;
 
-    // Simuler l'ajout d'un nouveau message
-    const newMsg: IMessage = {
-      id: messages.length + 1,
-      body: newMessage,
-      sending_date: new Date(),
-      updated_at: new Date(),
-    };
-
-    setMessages((prev) => [...prev, newMsg]);
-    setNewMessage("");
+    try {
+      const newMsg= await createMessage({
+        sender_id: Number(id),
+        receiver_id: selectedConversation,
+        body: newMessage,
+      });
+      console.log("Message envoyé :", newMsg);
+      
+  
+      setMessages((prev) => [...prev, newMsg]);
+      setNewMessage("");
+    } catch (error) {
+      setError(error as Error);
+    }
   };
-  console.log('conversations:', conversations);
 
   return (
     <>

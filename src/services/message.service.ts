@@ -16,7 +16,8 @@ export async function getConversation(userId: string, contactId: string): Promis
   return res.data;
 }
 
-export async function createMessage(): Promise<IMessage> {
-  const res = await api.post("/messages");
-  return res.data.data;
+export async function createMessage(data: Omit<IMessage, "id" | "sending_date" | "updated_at">
+): Promise<IMessage> {
+  const res = await api.post("/messages", data);
+  return res.data;
 }
