@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/Card";
 import { Button } from "./ui/Button";
 import type { IUser } from "@/types/user";
+import { Link } from "react-router-dom";
 
 export function ProfileCard({user} : { user: IUser }) {
 
@@ -41,7 +42,14 @@ export function ProfileCard({user} : { user: IUser }) {
             {user.description}
             </div>
           </CardContent>
-          <CardFooter className="px-0 pt-2">Footer</CardFooter>
+          <CardFooter className="px-0 pt-2">
+            <Link
+              to={`/profilepage/${user.id}`} // l
+              className="text-blue-500 hover:underline"
+            >
+              Voir le profil
+            </Link>
+            </CardFooter>
         </div>
       </CardContent>
     </Card>
