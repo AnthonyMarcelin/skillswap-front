@@ -1,10 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "./ui/Button";
 import { Link } from "react-router-dom";
 import Logo from "./ui/Logo";
 
+import { getUserById } from "@/services/user.service";
+import type { IUser } from "@/types/user";
+
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const [authUser, setAuthUser] = useState<IUser | null>(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const userId = await getUserById("21");
+        setAuthUser(userId);
+      } catch (error) {
+        console.error("Erreur lors du chargement de l'utilisateur : ", error);
+      }
+    };
+    fetchUser();
+  }, []);
 
   return (
     <header className="header-container relative flex flex-col w-full">
@@ -63,13 +79,14 @@ export default function Header() {
               asChild
               className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold"
             >
-              <Link to="/search">Rechercher</Link>
+              <Link to={`/messages/${authUser?.id || "21"}`}>Messagerie</Link>
             </Button>
+
             <Button
               asChild
               className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold"
             >
-              <Link to="/message">Messagerie</Link>
+              <Link to="/search">Rechercher</Link>
             </Button>
           </ul>
         </nav>
@@ -94,7 +111,10 @@ export default function Header() {
               </Link>
             </li>
             <li>
-              <Link to="/message" onClick={() => setOpen(false)}>
+              <Link
+                to={`/messages/${authUser?.id || "21"}`}
+                onClick={() => setOpen(false)}
+              >
                 Messagerie
               </Link>
             </li>
