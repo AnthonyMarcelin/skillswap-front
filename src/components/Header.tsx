@@ -94,6 +94,7 @@ export default function Header() {
               asChild
               className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold"
             >
+            </Button>
 
             <Button asChild className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold">
               <Link to="/">Accueil</Link>
