@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { UserCard } from "@/components/UserCard";
@@ -10,7 +10,6 @@ import { logout } from "@/services/auth.service";
 import { getCurrentUser } from "@/services/user.service";
 
 export default function PersonalPage() {
-  const navigate = useNavigate();
   const { id } = useParams();
   const [services, setServices] = useState<IService[]>([]);
   const [error, setError] = useState("");
@@ -63,13 +62,6 @@ export default function PersonalPage() {
           Bienvenue sur ta page personnelle
         </h1>
 
-        <button
-          onClick={handleLogout}
-          className="rounded bg-red-500 text-white px-4 py-2 hover:bg-red-600"
-        >
-          Se déconnecter
-        </button>
-
         <UserCard />
 
         <div className="mt-8 text-left">
@@ -98,6 +90,12 @@ export default function PersonalPage() {
         </div>
       </main>
       <ReviewCard />
+      <button
+          onClick={handleLogout}
+          className="rounded bg-red-500 text-white px-4 py-2 hover:bg-red-600"
+        >
+          Se déconnecter
+        </button>
       <Footer />
     </>
   );
