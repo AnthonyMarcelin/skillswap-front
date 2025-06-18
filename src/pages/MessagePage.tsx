@@ -183,19 +183,47 @@ export default function MessagePage() {
 
                   {/* Messages */}
                   <div className="text-black flex-1 overflow-y-auto space-y-4 mb-4">
-                    {messages.map((message) => (
+                    {messages.map((message) => {
+                      const sender = users.find(
+                        (user) => user.id === message.sender_id);
+                      return (
                       <div key={message.id} className="flex justify-start">
-                        <div className="max-w-[70%] p-3 rounded-lg bg-gray-100">
-                          <p>{message.body}</p>
-                          <span className="text-xs text-gray-500 mt-1 block">
-                            {new Date(
-                              message.sending_date,
-                            ).toLocaleTimeString()}
-                          </span>
-                        </div>
+                        {sender && sender.profile_picture? (
+                          <img
+                            src={sender.profile_picture || ""}
+                            alt={`${sender.firstname} ${sender.lastname}`}
+                            className="w-8 h-8 rounded-full object-cover mr-2"
+                          />
+                        ) : (
+                          <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+                            <span className="text-base font-bold text-gray-500">
+                              {sender ? sender.firstname.charAt(0) : "?"}
+                            </span>
+                          </div>
+                        )}
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="font-semibold text-primary">
+                              {sender ? sender.firstname : "Utilisateur"}
+                            </span>
+                          </div>
+                          <div className="max-w-[70%] p-3 rounded-lg bg-gray-100">
+                            <p>{message.body}</p>
+                            <span className="text-xs text-gray-500 mt-1 block">
+                              {new Date(message.sending_date).toLocaleString("fr-FR", {
+                                day: "2-digit",
+                                month: "2-digit",
+                                year: "numeric",
+                                hour: "2-digit",
+                                minute: "2-digit"
+                              })}
+                            </span>
+                          </div>
                       </div>
-                    ))}
                   </div>
+                );
+                    })}
+                </div>
 
                   {/* Zone de saisie */}
                   <div className="border-t pt-4">
