@@ -3,7 +3,7 @@ import { Button } from "./ui/Button";
 import { Link, useLocation } from "react-router-dom";
 import Logo from "./ui/Logo";
 import { useAuth } from "@/hooks/useAuth";
-import { getUserById } from "@/services/user.service";
+import { getCurrentUser, getUserById } from "@/services/user.service";
 import type { IUser } from "@/types/user";
 
 export default function Header() {
@@ -11,17 +11,17 @@ export default function Header() {
   const [authUser, setAuthUser] = useState<IUser | null>(null);
 
   useEffect(() => {
+
     const fetchUser = async () => {
       try {
-        const userId = await getUserById($"authUserId"); // Remplacez "authUserId" par la méthode pour obtenir l'ID de l'utilisateur authentifié
-        setAuthUser(userId);
+        const user = await getCurrentUser();
+        setAuthUser(user);
       } catch (error) {
         console.error("Erreur lors du chargement de l'utilisateur : ", error);
       }
     };
     fetchUser();
   }, []);
-
   const location = useLocation(); // Donne accès à l'URL actuelle
 
   // On vérifie si on est déjà sur la page perso pour ne pas afficher le lien

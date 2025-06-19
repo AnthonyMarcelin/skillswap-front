@@ -80,9 +80,8 @@ export default function MessagePage() {
       <Header />
       <section className="flex flex-col min-h-screen bg-secondary text-white">
         <div className="container mx-auto px-4 py-4 md:py-8 flex flex-col flex-grow">
-          <h1 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6">
-            Mes Derniers Messages
-          </h1>
+          <h1 className="text-1xl md:text-3xl font-bold mb-4 md:mb-6">
+            {users.find(u => u.id === Number(id))?.firstname ?? "Utilisateur"}, bienvenue sur votre messagerie</h1>
 
           {loading && <p>Chargement des conversations...</p>}
           {error && <p className="text-red-500">Erreur : {error.message}</p>}
@@ -135,8 +134,7 @@ export default function MessagePage() {
                       )}
                       <div className="flex-1 min-w-0">
                         <h3 className="font-semibold text-gray-900 truncate">
-                          {conversation.sender_id}{" "}
-                          {user.firstname}
+                          {user.firstname} {user.lastname}   
                         </h3>
                         <p className="text-sm text-gray-500 truncate max-w-full">
                           {conversation.body}
