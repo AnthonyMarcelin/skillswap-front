@@ -3,7 +3,7 @@ import { Button } from "./ui/Button";
 import { Link, useLocation } from "react-router-dom";
 import Logo from "./ui/Logo";
 import { useAuth } from "@/hooks/useAuth";
-import { getUserById } from "@/services/user.service";
+import { getCurrentUser, getUserById } from "@/services/user.service";
 import type { IUser } from "@/types/user";
 
 export default function Header() {
@@ -11,17 +11,17 @@ export default function Header() {
   const [authUser, setAuthUser] = useState<IUser | null>(null);
 
   useEffect(() => {
+
     const fetchUser = async () => {
       try {
-        const userId = await getUserById("21");
-        setAuthUser(userId);
+        const user = await getCurrentUser();
+        setAuthUser(user);
       } catch (error) {
         console.error("Erreur lors du chargement de l'utilisateur : ", error);
       }
     };
     fetchUser();
   }, []);
-
   const location = useLocation(); // Donne accès à l'URL actuelle
 
   // On vérifie si on est déjà sur la page perso pour ne pas afficher le lien
@@ -86,7 +86,7 @@ export default function Header() {
               asChild
               className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
             >
-              <Link to={`/messages/${authUser?.id || "21"}`}>Messagerie</Link>
+              <Link to={`/messages/${authUser?.id}`}>Messagerie</Link>
             </Button>
 
             <Button asChild className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold">

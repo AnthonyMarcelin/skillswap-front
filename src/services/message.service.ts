@@ -12,11 +12,11 @@ export async function getLatestMessagesForUser(
 
 export async function getConversation(userId: string, contactId: string): Promise<IMessage[]> {
   const res = await api.get(`/messages/${userId}/${contactId}`);
-  console.log("getConversation", res.data);
   return res.data;
 }
 
-export async function createMessage(): Promise<IMessage> {
-  const res = await api.post("/messages");
-  return res.data.data;
+export async function createMessage(data: Omit<IMessage, "id" | "sending_date" | "updated_at">
+): Promise<IMessage> {
+  const res = await api.post("/messages", data);
+  return res.data;
 }

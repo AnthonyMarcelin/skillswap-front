@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { Card } from "@/components/ui/Card";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { getConversation, getLatestMessagesForUser } from "@/services/message.service";
+import { createMessage, getConversation, getLatestMessagesForUser } from "@/services/message.service";
 
 import type { IMessage } from "@/types/message";
 import type { IUser } from "@/types/user";
@@ -16,7 +16,6 @@ export default function MessagePage() {
   >(null);
   const [activeUser, setActiveUser] = useState<IUser | null>(null);
   const { id } = useParams();
-  console.log(id);
 
   const [conversations, setConversations] = useState<IConversation[]>([]);
   const [messages, setMessages] = useState<IMessage[]>([]);
@@ -58,30 +57,31 @@ export default function MessagePage() {
   }
 };
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (!newMessage.trim() || !selectedConversation) return;
 
-    // Simuler l'ajout d'un nouveau message
-    const newMsg: IMessage = {
-      id: messages.length + 1,
-      body: newMessage,
-      sending_date: new Date(),
-      updated_at: new Date(),
-    };
-
-    setMessages((prev) => [...prev, newMsg]);
-    setNewMessage("");
+    try {
+      const newMsg= await createMessage({
+        sender_id: Number(id),
+        receiver_id: selectedConversation,
+        body: newMessage,
+      });
+      
+  
+      setMessages((prev) => [...prev, newMsg]);
+      setNewMessage("");
+    } catch (error) {
+      setError(error as Error);
+    }
   };
-  console.log('conversations:', conversations);
 
   return (
     <>
       <Header />
       <section className="flex flex-col min-h-screen bg-secondary text-white">
         <div className="container mx-auto px-4 py-4 md:py-8 flex flex-col flex-grow">
-          <h1 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6">
-            Mes Derniers Messages
-          </h1>
+          <h1 className="text-1xl md:text-3xl font-bold mb-4 md:mb-6">
+            {users.find(u => u.id === Number(id))?.firstname ?? "Utilisateur"}, bienvenue sur votre messagerie</h1>
 
           {loading && <p>Chargement des conversations...</p>}
           {error && <p className="text-red-500">Erreur : {error.message}</p>}
@@ -134,8 +134,7 @@ export default function MessagePage() {
                       )}
                       <div className="flex-1 min-w-0">
                         <h3 className="font-semibold text-gray-900 truncate">
-                          {conversation.sender_id}{" "}
-                          {user.firstname}
+                          {user.firstname} {user.lastname}   
                         </h3>
                         <p className="text-sm text-gray-500 truncate max-w-full">
                           {conversation.body}
