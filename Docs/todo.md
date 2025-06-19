@@ -5,7 +5,7 @@
 - créer un toast qui indique que vous avez séléctionné déjà trois compétences
 - Rendre cliquable la ProfileCard. Pour etre redirigé vers la PRofilePage/{id} : Question ? profilecard entierement cliquable ou création d'un Bouton ?
 - PersonalPage a finir (en cours Karine && Antho)
-- css en deux colonnes sur la modal choix des compétences
+- css en deux colonnes sur la modal choix des compétences 
 - Mode Desktop a mettre en place CSS
 - Vérifier si tout les buttons dirige sur la bonne page
 - SearchPage : Rendre bouton "Voir plus" actif.

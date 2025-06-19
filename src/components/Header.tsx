@@ -3,7 +3,7 @@ import { Button } from "./ui/Button";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "./ui/Logo";
 import { useAuth } from "@/hooks/useAuth";
-import { getUserById } from "@/services/user.service";
+import { getCurrentUser, getUserById } from "@/services/user.service";
 import type { IUser } from "@/types/user";
 
 export default function Header() {
@@ -13,10 +13,11 @@ export default function Header() {
   const { isAuthenticated, logout } = useAuth();
 
   useEffect(() => {
+
     const fetchUser = async () => {
       try {
-        const userId = await getUserById("21");
-        setAuthUser(userId);
+        const user = await getCurrentUser();
+        setAuthUser(user);
       } catch (error) {
         console.error("Erreur lors du chargement de l'utilisateur : ", error);
       }
@@ -33,6 +34,7 @@ export default function Header() {
       console.error("Erreur lors de la déconnexion:", error);
     }
   };
+
 
   console.log("Etat d'authentification : ", isAuthenticated);
 
@@ -72,6 +74,13 @@ export default function Header() {
               asChild
               className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
             >
+
+              <Link to={`/messages/${authUser?.id}`}>Messagerie</Link>
+            </Button>
+
+            <Button asChild className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold">
+
+
               <Link to="/search">Rechercher</Link>
             </Button>
 
