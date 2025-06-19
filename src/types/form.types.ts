@@ -14,4 +14,5 @@ export interface SignupFormData  {
   zip: string;
   category: string;
   photo: File | null;
+  avatarUrl?: string; // URL de l'avatar, optionnel
 };

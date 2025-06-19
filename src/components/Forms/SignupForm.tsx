@@ -6,10 +6,12 @@ import { register } from "@/services/auth.service";
 import { useAsyncState } from "@/hooks/useAsyncState";
 import type { SignupFormData } from "@/types/form.types";
 import { mapFormDataToRegisterDto } from "@/types/dto.types";
+import AvatarPicker from "../AvatarPicker";
+import Modal from "../ui/Modal";
 
 export default function SignupForm() {
   // Contenu du formulaire
-  const [formData, setFormData] = useState<SignupFormData>({
+  const [formData, setFormData] = useState<SignupFormData & { avatarUrl?: string }>({
     firstName: "",
     lastName: "",
     email: "",
@@ -23,27 +25,22 @@ export default function SignupForm() {
     zip: "",
     category: "",
     photo: null,
+    avatarUrl: undefined,
   });
 
-  // Ouverture de la modale, état de chargement, gestion des erreurs
+  // Ouverture des modales, état de chargement, gestion des erreurs
   const [showModal, setShowModal] = useState(false);
+  const [showAvatarModal, setShowAvatarModal] = useState(false);
+
   const { loading, error, setLoading, setError, reset } = useAsyncState();
   const navigate = useNavigate();
 
   // Gère les champs texte, sélection et zone texte
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value.trimStart() }));
-  };
-
-  // Gère l’ajout de la photo
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null;
-    setFormData((prev) => ({ ...prev, photo: file }));
   };
 
   // Quand on valide le formulaire
@@ -84,18 +81,26 @@ export default function SignupForm() {
         {/* Partie photo + infos générales */}
         <div className="grid grid-cols-[220px_minmax(0,1fr)] gap-6">
           <div className="flex flex-col items-center gap-3">
-            {formData.photo ? (
+            {formData.avatarUrl ? (
               <img
-                src={URL.createObjectURL(formData.photo)}
-                alt="Aperçu"
+                src={formData.avatarUrl}
+                alt="Avatar sélectionné"
                 className="w-[220px] h-[220px] rounded-md object-cover shadow"
               />
             ) : (
               <div className="w-[220px] h-[220px] flex items-center justify-center rounded-md bg-gray-300 text-gray-600 shadow">
-                Photo
+                Aucun avatar sélectionné
               </div>
             )}
-            <input type="file" accept="image/*" onChange={handleFileChange} />
+
+            {/* Bouton pour ouvrir la modale AvatarPicker */}
+            <button
+              type="button"
+              onClick={() => setShowAvatarModal(true)}
+              className="rounded border px-4 py-2 bg-[var(--color-primary)] text-white hover:opacity-90"
+            >
+              Choisir un avatar
+            </button>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -247,6 +252,19 @@ export default function SignupForm() {
           onClose={() => setShowModal(false)}
           onSave={(skills) => setFormData((p) => ({ ...p, skills }))}
         />
+      )}
+
+      {/* Modale AvatarPicker */}
+      {showAvatarModal && (
+        <Modal onClose={() => setShowAvatarModal(false)}>
+          <AvatarPicker
+            selectedUrl={formData.avatarUrl ?? null}
+            onSelect={(url) => {
+              setFormData((prev) => ({ ...prev, avatarUrl: url }));
+              setShowAvatarModal(false);
+            }}
+          />
+        </Modal>
       )}
     </>
   );
