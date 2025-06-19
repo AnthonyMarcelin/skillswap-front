@@ -1,15 +1,15 @@
 import { useNavigate, useParams } from "react-router-dom";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import { UserCard } from "@/components/UserCard";
-import ReviewCard from "@/components/ReviewCard";
 import { useEffect, useState } from "react";
 import { getMyServices, getRawServices } from "@/services/service.service";
 import type { IService } from "@/types/service";
 import { logout } from "@/services/auth.service";
-import { getCurrentUser } from "@/services/user.service";
+import { getCurrentUser, updateUser } from "@/services/user.service";
 import { ServiceCard } from "@/components/ServiceCard";
 import type { IUser } from "@/types/user";
+import { Pencil, Save } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/Card";
 
 export default function PersonalPage() {
   const navigate = useNavigate();
@@ -17,7 +17,9 @@ export default function PersonalPage() {
   const [services, setServices] = useState<IService[]>([]);
   const [currentUser, setCurrentUser] = useState<IUser | null>(null);
   const [error, setError] = useState("");
-  const [showServices, setShowServices] = useState(false); // ← Pour le bouton mobile
+  const [showServices, setShowServices] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedUser, setEditedUser] = useState<IUser | null>(null);
 
   const handleLogout = async () => {
     try {
@@ -25,6 +27,17 @@ export default function PersonalPage() {
       window.location.href = "/register";
     } catch (error) {
       console.error("Erreur lors de la déconnexion:", error);
+    }
+  };
+
+  const handleSave = async () => {
+    if (!editedUser) return;
+    try {
+      const updated = await updateUser(editedUser.id, editedUser);
+      setCurrentUser(updated);
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour :", error);
     }
   };
 
@@ -37,6 +50,7 @@ export default function PersonalPage() {
           ? await getRawServices(Number(id))
           : await getMyServices();
         setServices(data);
+        setEditedUser(user);
       } catch (err) {
         console.error("Erreur lors du chargement des services", err);
         setError("Aucune réservation trouvée.");
@@ -49,34 +63,124 @@ export default function PersonalPage() {
   return (
     <>
       <Header />
-
       <main className="p-6 bg-secondary text-white min-h-screen">
         <h1 className="text-center text-2xl font-bold mb-6">
           Bienvenue sur ta page personnelle
         </h1>
 
         <div className="grid md:grid-cols-2 gap-6">
-          {/* Bloc gauche : profil et avis */}
-          <div className="bg-primary rounded-xl shadow-lg p-6 space-y-6">
-            <UserCard />
-            <ReviewCard />
-          </div>
-
-          {/* Bouton mobile pour afficher les services */}
-          <div className="md:hidden mb-4">
-            <button
-              onClick={() => setShowServices(!showServices)}
-              className="w-full bg-accent text-white py-2 rounded shadow hover:bg-opacity-80 transition"
+          {/* Bloc gauche */}
+          <div>
+            <div
+              className={`
+              bg-primary rounded-xl shadow-lg p-6 space-y-4 scrollbar-custom
+              ${showServices ? "block" : "hidden"}
+              md:block md:max-h-[600px] md:overflow-y-auto
+            `}
             >
-              {showServices ? "Masquer mes services" : "Voir mes services"}
-            </button>
+              <h2 className="text-xl font-semibold text-secondary mb-4 text-center">
+                Mes Réservations
+              </h2>
+              <Card className="bg-blue-300 border border-white rounded-md shadow-md">
+                <CardContent className="p-4 relative space-y-3">
+                  {/* Bouton édition */}
+                  {isEditing ? (
+                    <button
+                      onClick={handleSave}
+                      className="absolute top-2 right-2 text-white hover:text-green-400"
+                    >
+                      <Save />
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => setIsEditing(true)}
+                      className="absolute top-2 right-2 text-white hover:text-yellow-400"
+                    >
+                      <Pencil />
+                    </button>
+                  )}
+
+                  {/* Champs utilisateur */}
+                  {editedUser && (
+                    <>
+                      <div>
+                        <span className="block text-xl text-secondary">
+                          Prénom :
+                        </span>
+                        {isEditing ? (
+                          <input
+                            className="w-full px-2 py-1 rounded text-accent"
+                            value={editedUser.firstname}
+                            onChange={(e) =>
+                              setEditedUser((prev) =>
+                                prev
+                                  ? { ...prev, firstname: e.target.value }
+                                  : prev
+                              )
+                            }
+                          />
+                        ) : (
+                          <p className="text-white font-medium">
+                            {editedUser.firstname}
+                          </p>
+                        )}
+                      </div>
+
+                      <div>
+                        <span className="block text-xl text-secondary">
+                          Ville :
+                        </span>
+                        {isEditing ? (
+                          <input
+                            className="w-full px-2 py-1 rounded text-accent"
+                            value={editedUser.city}
+                            onChange={(e) =>
+                              setEditedUser((prev) =>
+                                prev ? { ...prev, city: e.target.value } : prev
+                              )
+                            }
+                          />
+                        ) : (
+                          <p className="text-white font-medium">
+                            {editedUser.city}
+                          </p>
+                        )}
+                      </div>
+
+                      <div>
+                        <span className="block text-xl text-secondary">
+                          À propos :
+                        </span>
+                        {isEditing ? (
+                          <textarea
+                            className="w-full px-2 py-1 rounded text-accent"
+                            rows={3}
+                            value={editedUser.description}
+                            onChange={(e) =>
+                              setEditedUser((prev) =>
+                                prev
+                                  ? { ...prev, description: e.target.value }
+                                  : prev
+                              )
+                            }
+                          />
+                        ) : (
+                          <p className="italic text-white font-medium">
+                            {editedUser.description}
+                          </p>
+                        )}
+                      </div>
+                    </>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
           </div>
 
-          {/* Bloc droit : services */}
           <div
             className={`
               bg-primary rounded-xl shadow-lg p-6 space-y-4 scrollbar-custom
-              ${showServices ? "block" : "hidden"} 
+              ${showServices ? "block" : "hidden"}
               md:block md:max-h-[600px] md:overflow-y-auto
             `}
           >
@@ -111,7 +215,6 @@ export default function PersonalPage() {
           </div>
         </div>
 
-        {/* Bouton de déconnexion, toujours visible */}
         <div className="flex justify-center mt-10">
           <button
             onClick={handleLogout}

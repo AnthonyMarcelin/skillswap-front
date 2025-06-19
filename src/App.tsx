@@ -19,7 +19,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/messages/:id" element={<MessagePage />} />
         <Route path="/profilepage/:id" element={<ProfilePage />} />
-        <Route path="/personalpage" element={<PersonalPage />} />
+        <Route path="/personalpage/:id" element={<PersonalPage />} />
         <Route path="/servicepage/:id" element={<ServicePage />} />
       </Routes>
     </Router>
