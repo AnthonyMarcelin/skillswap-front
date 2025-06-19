@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button } from "./ui/Button";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "./ui/Logo";
 import { useAuth } from "@/hooks/useAuth";
 import { getUserById } from "@/services/user.service";
@@ -11,10 +11,6 @@ export default function Header() {
   const [authUser, setAuthUser] = useState<IUser | null>(null);
   const navigate = useNavigate();
   const { isAuthenticated, logout } = useAuth();
-
-  // // On vérifie si on est déjà sur la page perso pour ne pas afficher le lien
-  // const location = useLocation(); // Donne accès à l'URL actuelle
-  // const isOnPersonalPage = location.pathname === "/personalpage";
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -110,87 +106,6 @@ export default function Header() {
                 <Link to="/register">Se connecter / S'enregistrer</Link>
               </Button>
             )}
-            {/* <Button
-              asChild
-              className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold"
-            >
-              <Link to="/">Accueil</Link>
-            </Button> */}
-            {/* 
-            <Button
-              asChild
-              className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold"
-            >
-              <Link to="/register">Inscription</Link>
-            </Button> */}
-
-            {/* Menu pour les utilisateurs connectés */}
-            {/* <div className={isAuthenticated ? "block" : "hidden"}>
-              <Button
-                asChild
-                className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
-              >
-                <Link to="/personalpage">Mon profil</Link>
-              </Button>
-
-              <Button
-                asChild
-                className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
-              >
-                <Link to={`/messages/${authUser?.id || "21"}`}>Messagerie</Link>
-              </Button>
-
-              <Button
-                asChild
-                className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
-              >
-                <button onClick={logout}>Se déconnecter</button>
-              </Button>
-            </div> */}
-
-            {/* Menu pour les utilisateurs non connectés */}
-            {/* <Button
-              asChild
-              className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
-            >
-              <Link to="/search">Rechercher</Link>
-            </Button>
-
-            <div className={!isAuthenticated ? "block" : "hidden"}>
-              <Button
-                asChild
-                className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
-              >
-                <Link to="/register">Se connecter / S'enregistrer</Link>
-              </Button>
-            </div> */}
-
-            {/*             <Button
-              asChild
-              className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
-            >
-              {isAuthenticated ? (
-                <button onClick={logout}>Se déconnecter</button>
-              ) : (
-                <Link to="/register">Se connecter</Link>
-              )}
-            </Button> */}
-            {/*             <Button
-              asChild
-              className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
-            >
-              <Link to="/register">Se connecter</Link>
-            </Button> */}
-
-            {/* Affichage "Mon profil" si connecté et pas sur la page perso */}
-            {/* {isAuthenticated && !isOnPersonalPage && (
-              <Button
-                asChild
-                className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
-              >
-                <Link to="/personalpage">Mon profil</Link>
-              </Button>
-            )} */}
           </ul>
         </nav>
       </div>
