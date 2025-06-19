@@ -31,6 +31,22 @@ export default function SignupForm() {
   // Ouverture des modales, état de chargement, gestion des erreurs
   const [showModal, setShowModal] = useState(false);
   const [showAvatarModal, setShowAvatarModal] = useState(false);
+  // Pour pouvoir enlever l'avatar lors de l'inscription si on change d'avis
+  const [previousAvatar, setPreviousAvatar] = useState<string | undefined>(undefined);
+
+   // Ouvrir la modale avatar
+   const openAvatarModal = () => {
+    setPreviousAvatar(formData.avatarUrl); // mémoriser l'avatar actuel
+    setShowAvatarModal(true);
+  };
+  
+  const closeAvatarModal = () => {
+    // Si on ferme sans changement, on efface le choix précédent
+    if (formData.avatarUrl === previousAvatar || !formData.avatarUrl) {
+      setFormData((prev) => ({ ...prev, avatarUrl: undefined }));
+    }
+    setShowAvatarModal(false);
+  };
 
   const { loading, error, setLoading, setError, reset } = useAsyncState();
   const navigate = useNavigate();
@@ -77,173 +93,171 @@ export default function SignupForm() {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Partie photo + infos générales */}
-        <div className="grid grid-cols-[220px_minmax(0,1fr)] gap-6">
-          <div className="flex flex-col items-center gap-3">
-            {formData.avatarUrl ? (
-              <img
-                src={formData.avatarUrl}
-                alt="Avatar sélectionné"
-                className="w-[220px] h-[220px] rounded-md object-cover shadow"
-              />
-            ) : (
-              <div className="w-[220px] h-[220px] flex items-center justify-center rounded-md bg-gray-300 text-gray-600 shadow">
-                Aucun avatar sélectionné
-              </div>
-            )}
-
-            {/* Bouton pour ouvrir la modale AvatarPicker */}
-            <button
-              type="button"
-              onClick={() => setShowAvatarModal(true)}
-              className="rounded border px-4 py-2 bg-[var(--color-primary)] text-white hover:opacity-90"
-            >
-              Choisir un avatar
-            </button>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <input
-              name="firstName"
-              value={formData.firstName}
-              onChange={handleChange}
-              placeholder="Prénom"
-              required
-              className="rounded border px-3 py-2 bg-white text-black"
+      <form onSubmit={handleSubmit} className="space-y-6 px-4 max-w-4xl mx-auto">
+  {/* Container responsive */}
+  <div className="flex flex-col lg:grid lg:grid-cols-[220px_minmax(0,1fr)] gap-6">
+    {/* Avatar */}
+    <div className="flex flex-col items-center gap-3">
+          {formData.avatarUrl ? (
+            <img
+              src={formData.avatarUrl}
+              alt="Avatar sélectionné"
+              className="w-[180px] h-[180px] rounded-md object-cover shadow"
             />
-            <input
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleChange}
-              placeholder="Nom"
-              required
-              className="rounded border px-3 py-2 bg-white text-black"
-            />
-            <input
-              name="email"
-              type="email"
-              autoComplete="off"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Email"
-              required
-              className="col-span-2 rounded border px-3 py-2 bg-white text-black"
-            />
-            <input
-              name="password"
-              type="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Mot de passe"
-              autoComplete="new-password"
-              required
-              minLength={8}
-              className="col-span-2 rounded border px-3 py-2 bg-white text-black"
-            />
-            <input
-              name="confirmPassword"
-              type="password"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              placeholder="Confirmer"
-              autoComplete="new-password"
-              required
-              minLength={8}
-              className="col-span-2 rounded border px-3 py-2 bg-white text-black"
-            />
-          </div>
+          ) : (
+            <div className="w-[180px] h-[180px] flex items-center justify-center rounded-md bg-gray-300 text-gray-600 shadow">
+              Aucun avatar
+            </div>
+          )}
+          <button
+            type="button"
+            onClick={openAvatarModal} // utilise la nouvelle fonction ici
+            className="rounded border px-4 py-2 bg-[var(--color-primary)] text-white hover:opacity-90"
+          >
+            Choisir un avatar
+          </button>
         </div>
 
-        {/* Adresse complète */}
-        <input
-          name="address"
-          value={formData.address}
-          onChange={handleChange}
-          placeholder="Adresse"
-          required
-          className="w-full rounded border px-3 py-2 bg-white text-black"
-        />
-        <div className="grid grid-cols-3 gap-4">
-          <input
-            name="city"
-            value={formData.city}
-            onChange={handleChange}
-            placeholder="Ville"
-            required
-            className="col-span-2 rounded border px-3 py-2 bg-white text-black"
-          />
-          <input
-            name="zip"
-            value={formData.zip}
-            onChange={handleChange}
-            placeholder="Code postal"
-            required
-            className="rounded border px-3 py-2 bg-white text-black"
-          />
-        </div>
+    {/* Champs généraux */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <input
+        name="firstName"
+        value={formData.firstName}
+        onChange={handleChange}
+        placeholder="Prénom"
+        required
+        className="rounded border px-3 py-2 bg-white text-black"
+      />
+      <input
+        name="lastName"
+        value={formData.lastName}
+        onChange={handleChange}
+        placeholder="Nom"
+        required
+        className="rounded border px-3 py-2 bg-white text-black"
+      />
+      <input
+        name="email"
+        type="email"
+        autoComplete="off"
+        value={formData.email}
+        onChange={handleChange}
+        placeholder="Email"
+        required
+        className="sm:col-span-2 rounded border px-3 py-2 bg-white text-black"
+      />
+      <input
+        name="password"
+        type="password"
+        value={formData.password}
+        onChange={handleChange}
+        placeholder="Mot de passe"
+        autoComplete="new-password"
+        required
+        minLength={8}
+        className="sm:col-span-2 rounded border px-3 py-2 bg-white text-black"
+      />
+      <input
+        name="confirmPassword"
+        type="password"
+        value={formData.confirmPassword}
+        onChange={handleChange}
+        placeholder="Confirmer"
+        autoComplete="new-password"
+        required
+        minLength={8}
+        className="sm:col-span-2 rounded border px-3 py-2 bg-white text-black"
+      />
+    </div>
+  </div>
 
-        {/* Compétences à choisir via modale */}
-        <label className="text-sm mb-1">Compétences :</label>
-        <button
-          type="button"
-          onClick={() => setShowModal(true)}
-          className="w-full rounded border px-3 py-2 bg-[var(--color-primary)] text-[var(--color-secondary)] font-semibold hover:opacity-90 mb-3"
+  {/* Adresse complète */}
+  <input
+    name="address"
+    value={formData.address}
+    onChange={handleChange}
+    placeholder="Adresse"
+    required
+    className="w-full rounded border px-3 py-2 bg-white text-black"
+  />
+  <input
+    name="zip"
+    value={formData.zip}
+    onChange={handleChange}
+    placeholder="Code postal"
+    required
+    className="w-full rounded border px-3 py-2 bg-white text-black"
+  />
+  <input
+    name="city"
+    value={formData.city}
+    onChange={handleChange}
+    placeholder="Ville"
+    required
+    className="w-full rounded border px-3 py-2 bg-white text-black"
+  />
+
+  {/* Compétences */}
+  <label className="text-sm mb-1 block">Compétences :</label>
+  <button
+    type="button"
+    onClick={() => setShowModal(true)}
+    className="w-full rounded border px-3 py-2 bg-[var(--color-primary)] text-[var(--color-secondary)] font-semibold hover:opacity-90 mb-3"
+  >
+    Choisir mes compétences
+  </button>
+
+  {formData.skills.length > 0 && (
+    <div className="flex flex-wrap gap-2 mb-4">
+      {formData.skills.map((s) => (
+        <span
+          key={s}
+          className="inline-block bg-[var(--color-primary)] text-[var(--color-whitish)] rounded-full px-4 py-1 text-sm"
         >
-          Choisir mes compétences
-        </button>
+          {s}
+        </span>
+      ))}
+    </div>
+  )}
 
-        {formData.skills.length > 0 && (
-          <div className="flex flex-wrap gap-2 mb-4">
-            {formData.skills.map((s) => (
-              <span
-                key={s}
-                className="inline-block bg-[var(--color-primary)] text-[var(--color-whitish)] rounded-full px-4 py-1 text-sm"
-              >
-                {s}
-              </span>
-            ))}
-          </div>
-        )}
+  {/* Disponibilités */}
+  <label className="text-sm mb-1 block">Disponibilités :</label>
+  <select
+    name="availability"
+    value={formData.availability}
+    onChange={handleChange}
+    className="w-full rounded border px-3 py-2 bg-white text-black mb-4"
+  >
+    <option value="">Choisir</option>
+    <option value="weekdays">Semaine</option>
+    <option value="weekend">Week-end</option>
+  </select>
 
-        {/* Disponibilités */}
-        <label className="text-sm mb-1">Disponibilités :</label>
-        <select
-          name="availability"
-          value={formData.availability}
-          onChange={handleChange}
-          className="w-full rounded border px-3 py-2 bg-white text-black mb-4"
-        >
-          <option value="">Choisir</option>
-          <option value="weekdays">Semaine</option>
-          <option value="weekend">Week-end</option>
-        </select>
+  {/* À propos */}
+  <label className="text-sm mb-1 block">À propos :</label>
+  <textarea
+    name="about"
+    rows={3}
+    value={formData.about}
+    onChange={handleChange}
+    placeholder="Parle-nous de toi"
+    className="w-full resize-none rounded border px-3 py-2 bg-white text-black mb-4"
+  />
 
-        {/* Présentation de soi */}
-        <label className="text-sm mb-1">À propos :</label>
-        <textarea
-          name="about"
-          rows={3}
-          value={formData.about}
-          onChange={handleChange}
-          placeholder="Parle-nous de toi"
-          className="w-full resize-none rounded border px-3 py-2 bg-white text-black mb-4"
-        />
+  {/* Submit */}
+  <button
+    type="submit"
+    disabled={loading}
+    className="w-full rounded bg-[var(--color-accent)] py-2 font-semibold text-white hover:opacity-90 disabled:opacity-50"
+  >
+    {loading ? "Enregistrement…" : "S’inscrire"}
+  </button>
 
-        {/* Bouton pour s’inscrire */}
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full rounded bg-[var(--color-accent)] py-2 font-semibold text-white hover:opacity-90 disabled:opacity-50"
-        >
-          {loading ? "Enregistrement…" : "S’inscrire"}
-        </button>
+  {error && (
+    <p className="text-center text-red-500 font-semibold mt-2">{error}</p>
+  )}
+</form>
 
-        {/* Erreur affichée si besoin */}
-        {error && (
-          <p className="text-center text-red-500 font-semibold mt-2">{error}</p>
-        )}
-      </form>
 
       {/* Modale d’ajout de compétences */}
       {showModal && (
@@ -256,7 +270,7 @@ export default function SignupForm() {
 
       {/* Modale AvatarPicker */}
       {showAvatarModal && (
-        <Modal onClose={() => setShowAvatarModal(false)}>
+        <Modal onClose={closeAvatarModal}>
           <AvatarPicker
             selectedUrl={formData.avatarUrl ?? null}
             onSelect={(url) => {
