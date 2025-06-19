@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import type { IUser } from "@/types/user";
+import MessageModal  from "@/components/MessageModal"; // Assurez-vous que ce composant existe
 
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -18,6 +19,7 @@ export function UserCard() {
   const { id } = useParams(); // URL : /user/:id OU rien si /personal
   const [user, setUser] = useState<IUser | null>(null);
   const { loading, setLoading, error, setError, reset } = useAsyncState();
+  const [showMessageModal, setShowMessageModal] = useState(false);  
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -65,14 +67,17 @@ export function UserCard() {
           {/* Affiche bouton seulement si ce n’est pas ton propre profil */}
           {id && (
             <CardAction>
-              <Link to="/register">
                 <Button
+                  onClick={() => setShowMessageModal(true)}
                   size="sm"
                   className="rounded bg-[var(--color-accent)] text-white"
                 >
                   Contacte-Moi
                 </Button>
-              </Link>
+              {showMessageModal && (
+                <MessageModal onClose={() => setShowMessageModal(false)}
+                receiverId={Number(id)} />
+              )}
             </CardAction>
           )}
         </CardHeader>

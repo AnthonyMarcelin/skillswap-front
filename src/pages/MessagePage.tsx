@@ -60,19 +60,37 @@ export default function MessagePage() {
   const handleSendMessage = async () => {
     if (!newMessage.trim() || !selectedConversation) return;
 
-    try {
-      const newMsg= await createMessage({
-        sender_id: Number(id),
-        receiver_id: selectedConversation,
-        body: newMessage,
-      });
-      
-  
-      setMessages((prev) => [...prev, newMsg]);
-      setNewMessage("");
-    } catch (error) {
-      setError(error as Error);
-    }
+     try {
+    const messageData = {
+      sender_id: id,
+      receiver_id: selectedConversation,
+      body: newMessage,
+    };
+    console.log("Sending message data:", messageData); // Log des données envoyées
+
+    const newMsg = await createMessage(messageData, selectedConversation.toString());
+    console.log("Received new message:", newMsg); // Log de la réponse
+    setMessages((prev) => [...prev, newMsg]);
+    setNewMessage("");
+  } catch (error) {
+    console.error("Error sending message:", error); // Log de l'erreur
+    setError(error as Error);
+  }
+
+    // try {
+    //   const newMsg= await createMessage({
+    //     sender_id: Number(id),
+    //     receiver_id: selectedConversation,
+    //     body: newMessage,
+    //   },
+    //   selectedConversation.toString());
+    //   console.log(newMsg);
+        
+    //   setMessages((prev) => [...prev, newMsg]);
+    //   setNewMessage("");
+    // } catch (error) {
+    //   setError(error as Error);
+    // }
   };
 
   return (
