@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button } from "./ui/Button";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Logo from "./ui/Logo";
 import { useAuth } from "@/hooks/useAuth";
 import { getUserById } from "@/services/user.service";
@@ -9,6 +9,12 @@ import type { IUser } from "@/types/user";
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [authUser, setAuthUser] = useState<IUser | null>(null);
+  const navigate = useNavigate();
+  const { isAuthenticated, logout } = useAuth();
+
+  // // On vérifie si on est déjà sur la page perso pour ne pas afficher le lien
+  // const location = useLocation(); // Donne accès à l'URL actuelle
+  // const isOnPersonalPage = location.pathname === "/personalpage";
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -22,11 +28,17 @@ export default function Header() {
     fetchUser();
   }, []);
 
-  const location = useLocation(); // Donne accès à l'URL actuelle
+  const handleLogout = async () => {
+    try {
+      await logout();
+      setOpen(false);
+      navigate("/");
+    } catch (error) {
+      console.error("Erreur lors de la déconnexion:", error);
+    }
+  };
 
-  // On vérifie si on est déjà sur la page perso pour ne pas afficher le lien
-  const isOnPersonalPage = location.pathname === "/personalpage";
-  const { isAuthenticated } = useAuth();
+  console.log("Etat d'authentification : ", isAuthenticated);
 
   return (
     <header className="header-container relative flex flex-col w-full">
@@ -60,6 +72,44 @@ export default function Header() {
         {/* Menu en version desktop */}
         <nav className="hidden md:block">
           <ul className="flex gap-4">
+            <Button
+              asChild
+              className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
+            >
+              <Link to="/search">Rechercher</Link>
+            </Button>
+
+            {isAuthenticated ? (
+              <>
+                <Button
+                  asChild
+                  className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
+                >
+                  <Link to="/personalpage">Mon profil</Link>
+                </Button>
+
+                <Button
+                  asChild
+                  className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
+                >
+                  <Link to={`/messages/${authUser?.id}`}>Messagerie</Link>
+                </Button>
+
+                <Button
+                  asChild
+                  className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
+                >
+                  <button onClick={handleLogout}>Se déconnecter</button>
+                </Button>
+              </>
+            ) : (
+              <Button
+                asChild
+                className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
+              >
+                <Link to="/register">Se connecter / S'enregistrer</Link>
+              </Button>
+            )}
             {/* <Button
               asChild
               className="bg-accent hover:bg-secondary text-white px-6 py-2 text-lg font-semibold"
@@ -74,43 +124,73 @@ export default function Header() {
               <Link to="/register">Inscription</Link>
             </Button> */}
 
-            <Button
-              asChild
-              className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
-            >
-              <Link to="/account">Mon profil</Link>
-            </Button>
-
-            <Button
-              asChild
-              className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
-            >
-              <Link to={`/messages/${authUser?.id || "21"}`}>Messagerie</Link>
-            </Button>
-
-            <Button
-              asChild
-              className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
-            >
-              <Link to="/search">Rechercher</Link>
-            </Button>
-
-            <Button
-              asChild
-              className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
-            >
-              <Link to="/register">Se connecter</Link>
-            </Button>
-
-            {/* Affichage "Mon profil" si connecté et pas sur la page perso */}
-            {isAuthenticated && !isOnPersonalPage && (
+            {/* Menu pour les utilisateurs connectés */}
+            {/* <div className={isAuthenticated ? "block" : "hidden"}>
               <Button
                 asChild
                 className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
               >
                 <Link to="/personalpage">Mon profil</Link>
               </Button>
-            )}
+
+              <Button
+                asChild
+                className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
+              >
+                <Link to={`/messages/${authUser?.id || "21"}`}>Messagerie</Link>
+              </Button>
+
+              <Button
+                asChild
+                className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
+              >
+                <button onClick={logout}>Se déconnecter</button>
+              </Button>
+            </div> */}
+
+            {/* Menu pour les utilisateurs non connectés */}
+            {/* <Button
+              asChild
+              className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
+            >
+              <Link to="/search">Rechercher</Link>
+            </Button>
+
+            <div className={!isAuthenticated ? "block" : "hidden"}>
+              <Button
+                asChild
+                className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
+              >
+                <Link to="/register">Se connecter / S'enregistrer</Link>
+              </Button>
+            </div> */}
+
+            {/*             <Button
+              asChild
+              className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
+            >
+              {isAuthenticated ? (
+                <button onClick={logout}>Se déconnecter</button>
+              ) : (
+                <Link to="/register">Se connecter</Link>
+              )}
+            </Button> */}
+            {/*             <Button
+              asChild
+              className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
+            >
+              <Link to="/register">Se connecter</Link>
+            </Button> */}
+
+            {/* Affichage "Mon profil" si connecté et pas sur la page perso */}
+            {/* {isAuthenticated && !isOnPersonalPage && (
+              <Button
+                asChild
+                className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
+              >
+                <Link to="/personalpage">Mon profil</Link>
+              </Button>
+            )} */}
           </ul>
         </nav>
       </div>
@@ -119,51 +199,45 @@ export default function Header() {
       {open && (
         <nav className="md:hidden bg-secondary text-white w-full z-10 absolute left-0 top-20">
           <ul className="flex flex-col items-center gap-4 py-4">
-            {/* <li>
-              <Link to="/" onClick={() => setOpen(false)}>
-                Accueil
-              </Link>
-            </li>
-            <li>
-              <Link to="/register" onClick={() => setOpen(false)}>
-                Connexion / Inscription
-              </Link>
-            </li> */}
-            <li>
-              <Link to="/account" onClick={() => setOpen(false)}>
-                Mon profil
-              </Link>
-            </li>
-            <li>
-              <Link
-                to={`/messages/${authUser?.id || "21"}`}
-                onClick={() => setOpen(false)}
-              >
-                Messagerie
-              </Link>
-            </li>
             <li>
               <Link to="/search" onClick={() => setOpen(false)}>
                 Rechercher
               </Link>
             </li>
 
-            {/*          <li>
-              <Link to="/" onClick={() => setOpen(false)}>
-                Accueil
-              </Link>
-            </li> */}
-            <li>
-              <Link to="/register" onClick={() => setOpen(false)}>
-                Se connecter
-              </Link>
-            </li>
-
-            {/* ➕ Idem dans le menu mobile : seulement si connecté */}
-            {isAuthenticated && !isOnPersonalPage && (
+            {isAuthenticated ? (
+              <>
+                {/* Menu pour utilisateurs connectés */}
+                <li>
+                  <Link to="/personalpage" onClick={() => setOpen(false)}>
+                    Mon profil
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to={`/messages/${authUser?.id}`}
+                    onClick={() => setOpen(false)}
+                  >
+                    Messagerie
+                  </Link>
+                </li>
+                <li>
+                  <button
+                    onClick={handleLogout}
+                    // onClick={() => {
+                    //   logout();
+                    //   setOpen(false);
+                    // }}
+                  >
+                    Se déconnecter
+                  </button>
+                </li>
+              </>
+            ) : (
+              /* Menu pour utilisateurs non connectés */
               <li>
-                <Link to="/personalpage" onClick={() => setOpen(false)}>
-                  Mon compte
+                <Link to="/register" onClick={() => setOpen(false)}>
+                  Se connecter / S'enregistrer
                 </Link>
               </li>
             )}

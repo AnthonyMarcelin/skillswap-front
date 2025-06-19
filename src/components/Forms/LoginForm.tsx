@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { login } from "@/services/auth.service";
+// import { login } from "@/services/auth.service";
+import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 
 export default function LoginForm() {
@@ -14,6 +15,7 @@ export default function LoginForm() {
 
   // Hook React Router pour la redirection après connexion
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   // Fonction appelée à chaque frappe dans un champ
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,9 +45,11 @@ export default function LoginForm() {
     try {
       // Réinitialisation de l'erreur avant la tentative de connexion
       setError(null);
+      console.log("Tentative de connexion avec :", loginData);
 
       // Appel de la fonction login (API POST vers /auth/login)
       const response = await login(loginData);
+      console.log("Reponse login: ", response);
 
       // Connexion réussie, affichage facultatif pour le debug
       console.log("Connexion réussie :", response);
@@ -53,6 +57,8 @@ export default function LoginForm() {
       // Redirection vers la page de profil de l'utilisateur
       navigate("/personalpage");
     } catch (err: any) {
+      console.log("Erreur complète : ", err);
+
       // Si erreur côté API (401, 500...), on affiche le message retourné
       const msg = err.response?.data?.message ?? "Erreur lors de la connexion.";
       setError(msg);
