@@ -3,9 +3,18 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
+
 import type { IService, IServiceStatus } from "@/types/service";
 import { useServiceStatus } from "@/hooks/useServiceStatus";
 
+const statusLabels: Record<IServiceStatus | "completed", string> = {
+  pending: "En attente",
+  accepted: "Accepté",
+  done: "Terminé",
+  completed: "Terminé", // Pour gérer le cas où le back retourne "completed"
+};
+
+// Composant d'affichage d'un service individuel (titre, donneur, receveur, date, statut, actions)
 interface ServiceCardProps {
   service: IService;
   currentUserId: number;
@@ -17,32 +26,49 @@ export function ServiceCard({
   currentUserId,
   onStatusUpdate,
 }: ServiceCardProps) {
-  const { id, giverName, receiverName, giverId, receiverId, title, date } =
-    service;
+  // Destructuration des propriétés du service
+  const {
+    id,
+    giverName = "Inconnu",
+    receiverName = "Inconnu",
+    giverId,
+    receiverId,
+    title = "Sans titre",
+    date,
+  } = service;
+
+  // Hook custom pour gérer localement le statut du service
   const { status, loading, changeStatus } = useServiceStatus(
     id,
     service.status
   );
 
+  // On identifie le rôle de l'utilisateur connecté
   const isGiver = currentUserId === giverId;
   const isReceiver = currentUserId === receiverId;
 
+  // Attribution de style différent selon le statut
   const getBadgeStyle = (status: string) => {
     switch (status) {
-      case "en attente":
+      case "pending":
         return "bg-yellow-100 text-yellow-800";
-      case "accepté":
+      case "accepted":
         return "bg-blue-100 text-blue-800";
-      case "terminé":
+      case "done":
+      case "completed":
         return "bg-green-100 text-green-800";
       default:
         return "bg-gray-100 text-gray-800";
     }
   };
 
+  // Quand l'utilisateur clique sur un bouton d'action
   const handleStatusChange = (newStatus: IServiceStatus) => {
-    changeStatus(newStatus);
-    onStatusUpdate?.(newStatus);
+    changeStatus(newStatus); // MAJ via API
+    console.log(
+      `Tentative de mise à jour du service ID ${id} vers le statut : "${newStatus}"`
+    );
+    onStatusUpdate?.(newStatus); // Callback pour actualiser en parent si besoin
   };
 
   return (
@@ -50,7 +76,9 @@ export function ServiceCard({
       <CardContent className="p-4 space-y-2">
         <div className="flex justify-between items-center">
           <h3 className="text-lg font-semibold">{title}</h3>
-          <Badge className={getBadgeStyle(status)}>{status}</Badge>
+          <Badge className={getBadgeStyle(status)}>
+            {statusLabels[status] || "Inconnu"}
+          </Badge>
         </div>
 
         <div className="text-sm text-gray-600">
@@ -66,9 +94,10 @@ export function ServiceCard({
             : "Date inconnue"}
         </div>
 
-        {status === "en attente" && isGiver && (
+        {/* Si l'utilisateur est le receveur et que le service est en attente, il peut l'accepter */}
+        {status === "pending" && isReceiver && (
           <Button
-            onClick={() => handleStatusChange("accepté")}
+            onClick={() => handleStatusChange("accepted")}
             disabled={loading}
             className="mt-2"
           >
@@ -76,9 +105,10 @@ export function ServiceCard({
           </Button>
         )}
 
-        {status === "accepté" && isReceiver && (
+        {/* Si l'utilisateur est le receveur et que le service est accepté, il peut le terminer */}
+        {status === "accepted" && isReceiver && (
           <Button
-            onClick={() => handleStatusChange("terminé")}
+            onClick={() => handleStatusChange("done")}
             disabled={loading}
             className="mt-2 bg-green-600 hover:bg-green-700"
           >

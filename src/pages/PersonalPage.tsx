@@ -1,46 +1,65 @@
-import { useParams } from "react-router-dom";
+// Imports React Router pour la navigation et l’accès aux paramètres d’URL
+import { useNavigate, useParams } from "react-router-dom";
+
+// Imports des composants globaux de la page
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { UserCard } from "@/components/UserCard";
-import { useEffect, useState } from "react";
-import { getMyServices, getRawServices } from "@/services/service.service";
-import type { IService } from "@/types/service";
 import ReviewCard from "@/components/ReviewCard";
+
+// Import de hooks et fonctions React
+import { useEffect, useState } from "react";
+
+// Appels aux services liés aux réservations
+import { getMyServices, getRawServices } from "@/services/service.service";
+
+// Typage des données de service
+import type { IService } from "@/types/service";
+
+// Gestion de l’authentification (déconnexion)
 import { logout } from "@/services/auth.service";
+
+// Récupération des infos de l’utilisateur connecté
 import { getCurrentUser } from "@/services/user.service";
 
+// Composant réutilisable d'affichage d'un service
+import { ServiceCard } from "@/components/ServiceCard";
+
+// Typage de l’utilisateur courant
+import type { IUser } from "@/types/user";
+
 export default function PersonalPage() {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [services, setServices] = useState<IService[]>([]);
+  const [currentUser, setCurrentUser] = useState<IUser | null>(null);
   const [error, setError] = useState("");
 
+  // Fonction de déconnexion
   const handleLogout = async () => {
     try {
       await logout();
-      console.log("Déconnexion réussie:", "cookie supprimé" );
-      window.location.href = '/register';
-}
-    catch (error) {
-
+      console.log("Déconnexion réussie:", "cookie supprimé");
+      window.location.href = "/register";
+    } catch (error) {
       console.error("Erreur lors de la déconnexion:", error);
-      // Vous pouvez gérer l'erreur ici, par exemple en affichant un message à l'utilisateur
     }
   };
 
-  // Quand le composant s'affiche (et si l'ID change), on va chercher les services
+  // Effet qui se déclenche à l'affichage ou si l'ID change
   useEffect(() => {
-    
     const fetchServices = async () => {
-      await getCurrentUser();
       try {
+        const user = await getCurrentUser();
+        setCurrentUser(user); // On stocke l'utilisateur courant
+
         let data: IService[];
 
-        // Si on a un ID dans l’URL : on affiche les services de l'utilisateur
+        // Si un id est présent dans l'URL, on affiche les services publics de cet utilisateur
         if (id) {
-          // Si un id est présent dans l'URL, on affiche ses services publics
           data = await getRawServices(Number(id));
         } else {
-          // Sinon, on récupère les services de l'utilisateur connecté
+          // Sinon, on affiche les services liés à l'utilisateur connecté
           data = await getMyServices();
         }
 
@@ -52,7 +71,7 @@ export default function PersonalPage() {
     };
 
     fetchServices();
-  }, [id]); // on relance la fonction si l'id change
+  }, [id]);
 
   return (
     <>
@@ -63,40 +82,49 @@ export default function PersonalPage() {
           Bienvenue sur ta page personnelle
         </h1>
 
+        <button
+          onClick={handleLogout}
+          className="rounded bg-red-500 text-white px-4 py-2 hover:bg-red-600"
+        >
+          Se déconnecter
+        </button>
+
         <UserCard />
 
         <div className="mt-8 text-left">
           <h2 className="text-lg font-bold text-white mb-4">
             Mes Réservations
           </h2>
+
           {error ? (
             <p className="text-sm italic text-gray-400">{error}</p>
-          ) : (
-            <ul className="space-y-2">
+          ) : currentUser ? (
+            // On utilise une grille responsive : 1 colonne sur mobile, 2 sur desktop
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {services.map((service) => (
-                <li
+                <ServiceCard
                   key={service.id}
-                  className="bg-gray-800 p-4 rounded text-white"
-                >
-                  <p className="font-semibold">{service.title}</p>
-                  <p className="text-sm">Statut : {service.status}</p>
-                  <p className="text-xs italic">
-                    Donné par : {service.giverName} → Reçu par :{" "}
-                    {service.receiverName}
-                  </p>
-                </li>
+                  service={service}
+                  currentUserId={currentUser.id}
+                  onStatusUpdate={(newStatus) => {
+                    setServices((prev) =>
+                      prev.map((s) =>
+                        s.id === service.id ? { ...s, status: newStatus } : s
+                      )
+                    );
+                  }}
+                />
               ))}
-            </ul>
+            </div>
+          ) : (
+            <p className="text-sm italic text-gray-400">
+              Chargement des données utilisateur...
+            </p>
           )}
         </div>
       </main>
+
       <ReviewCard />
-      <button
-          onClick={handleLogout}
-          className="rounded bg-red-500 text-white px-4 py-2 hover:bg-red-600"
-        >
-          Se déconnecter
-        </button>
       <Footer />
     </>
   );
