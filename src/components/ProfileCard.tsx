@@ -10,9 +10,8 @@ import { Button } from "./ui/Button";
 import type { IUser } from "@/types/user";
 import { Link } from "react-router-dom";
 
-export function ProfileCard({user} : { user: IUser }) {
-
-// TODO: Loading
+export function ProfileCard({ user }: { user: IUser }) {
+  // TODO: Loading
 
   return (
     <Card className=" w-80 h-full mx-auto bg-accent">
@@ -26,21 +25,24 @@ export function ProfileCard({user} : { user: IUser }) {
         </div>
         <div className="flex flex-col justify-between flex-1">
           <CardHeader className="px-0 pb-2">
-            <CardTitle>{user.firstname} {user.lastname}</CardTitle>
+            <CardTitle>
+              {user.firstname} {user.lastname}
+            </CardTitle>
             <CardDescription>{user.city}</CardDescription>
-            <div className="flex w-full h-10 gap-2">
+
+            <div className="flex flex-wrap w-full gap-2 pt-2">
               {user.skills.map((skill) => (
-                <Button key={skill.id} className="h-6 bg-secondary">
+                <Button
+                  key={skill.id}
+                  className="h-6 bg-secondary text-white text-sm px-2 py-1 rounded"
+                >
                   {skill.name}
                 </Button>
-                ))  
-            }
+              ))}
             </div>
           </CardHeader>
           <CardContent className="px-0 pt-0">
-            <div className="text-white text-sm">
-            {user.description}
-            </div>
+            <div className="text-white text-sm">{user.description}</div>
           </CardContent>
           <CardFooter className="px-0 pt-2">
             <Link
@@ -49,7 +51,7 @@ export function ProfileCard({user} : { user: IUser }) {
             >
               Voir le profil
             </Link>
-            </CardFooter>
+          </CardFooter>
         </div>
       </CardContent>
     </Card>
