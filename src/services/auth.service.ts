@@ -9,7 +9,7 @@
    street: string;
    zipcode: string;
    city: string;
-   profil_photo: string;     
+   profile_picture: string;     
    description: string;
    availability: string;
  }

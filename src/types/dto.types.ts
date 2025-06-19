@@ -7,7 +7,7 @@ export interface RegisterDto {
   street: string;
   zipcode: string;
   city: string;
-  profil_photo: string;
+  profile_picture: string;
   description: string;
   availability: string;
 }
@@ -15,7 +15,7 @@ export interface RegisterDto {
 import type { SignupFormData } from "./form.types";
 
 // Fonction pour convertir les données du formulaire en données backend (DTO d’inscription)
-export function mapFormDataToRegisterDto(form: SignupFormData): RegisterDto {
+export function mapFormDataToRegisterDto(form: SignupFormData & { avatarUrl?: string } ): RegisterDto {
   return {
     email: form.email,
     password: form.password,
@@ -24,7 +24,7 @@ export function mapFormDataToRegisterDto(form: SignupFormData): RegisterDto {
     street: form.address,
     zipcode: form.zip,
     city: form.city,
-    profil_photo: "", // à compléter plus tard si upload
+    profile_picture: form.avatarUrl ?? "", // on envoie l'avatar s’il est défini, sinon une chaîne vide
     description: form.about,
     availability: form.availability,
   };
