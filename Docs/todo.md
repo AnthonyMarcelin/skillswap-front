@@ -7,11 +7,12 @@
 - PersonalPage a finir (en cours Karine && Antho)
 - css en deux colonnes sur la modal choix des compétences 
 - Mode Desktop a mettre en place CSS
-- Vérifier si tout les buttons dirige sur la bonne page 
+- Vérifier si tout les buttons dirige sur la bonne page
 - SearchPage : Rendre bouton "Voir plus" actif.
 - Page Politique de confidentialité
 - Page Mentions légales.
 
 # A améliorer
+
 - ProfileCard.tsx : Faire en sorte que les skills affichées ne soient pas coupées".
 - Page 404 (notFound à améliorer design)
