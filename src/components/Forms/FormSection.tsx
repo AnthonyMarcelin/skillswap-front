@@ -31,7 +31,7 @@ export default function FormSection() {
             <SignupForm />
           </div>
 
-          {/* Formulaire de connexion dans une carte blanche */}
+          {/* Formulaire de connexion dans une card */}
           <div className={showLoginCol}>
             <div className="md:bg-primary md:text-black md:rounded-xl md:p-6 md:shadow-md md:border md:border-white">
               <LoginForm />
