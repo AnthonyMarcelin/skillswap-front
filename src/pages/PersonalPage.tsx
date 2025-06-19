@@ -100,7 +100,7 @@ export default function PersonalPage() {
             <p className="text-sm italic text-gray-400">{error}</p>
           ) : currentUser ? (
             // On utilise une grille responsive : 1 colonne sur mobile, 2 sur desktop
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {services.map((service) => (
                 <ServiceCard
                   key={service.id}

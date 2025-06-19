@@ -65,6 +65,9 @@ export function ServiceCard({
   // Quand l'utilisateur clique sur un bouton d'action
   const handleStatusChange = (newStatus: IServiceStatus) => {
     changeStatus(newStatus); // MAJ via API
+    console.log(
+      `Tentative de mise à jour du service ID ${id} vers le statut : "${newStatus}"`
+    );
     onStatusUpdate?.(newStatus); // Callback pour actualiser en parent si besoin
   };
 

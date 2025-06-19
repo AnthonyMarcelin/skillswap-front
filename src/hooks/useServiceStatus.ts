@@ -2,27 +2,27 @@ import { useState } from "react"
 import { updateServiceStatus } from "@/services/service.service"
 import type { IServiceStatus } from "@/types/service"
 
-// Hook personnalisé pour gérer le statut d’un service (local + API)
+// Hook personnalisé pour gérer le statut d’un service
 export function useServiceStatus(serviceId: string, initialStatus: IServiceStatus) {
-  // État local du statut du service (ex : "pending", "accepted", etc.)
   const [status, setStatus] = useState<IServiceStatus>(initialStatus)
-
-  // État de chargement (utile pour désactiver les boutons pendant l’appel)
   const [loading, setLoading] = useState(false)
 
-  // Fonction pour changer le statut via l'API, et mettre à jour l’état local
   const changeStatus = async (newStatus: IServiceStatus) => {
-    setLoading(true) // Active l’indicateur de chargement
+    setLoading(true)
+    console.log(`🔄 Tentative de changement du statut du service ${serviceId} vers "${newStatus}"...`)
+
     try {
-      await updateServiceStatus(serviceId, newStatus) // Envoie la MAJ au backend
-      setStatus(newStatus) // Met à jour le statut local si tout s’est bien passé
+      const response = await updateServiceStatus(serviceId, newStatus)
+      setStatus(newStatus)
+      console.log(`Statut mis à jour avec succès : nouveau statut : "${newStatus}"`)
+      console.log("Réponse de l'API :", response)
     } catch (error) {
-      console.error("Erreur mise à jour statut", error) // Log en cas d’erreur
+      console.error("Échec de la mise à jour du statut :", error)
     } finally {
-      setLoading(false) // Toujours désactiver le chargement à la fin
+      setLoading(false)
+      console.log("Fin de la tentative de mise à jour du statut")
     }
   }
 
-  // Le hook expose le statut courant, l’état de chargement et la fonction d’action
   return { status, loading, changeStatus }
 }
