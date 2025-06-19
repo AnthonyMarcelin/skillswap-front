@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const styles = ["adventurer", "avataaars", "big-smile", "gridy", "personas"];
+const styles = ["adventurer", "avataaars", "big-smile", "open-peeps", "personas"];
 
 export default function AvatarPicker({
   selectedUrl,
@@ -14,7 +14,7 @@ export default function AvatarPicker({
   >([]);
 
   useEffect(() => {
-    const seeds = generateSeeds(8);
+    const seeds = generateSeeds(15);
     const newAvatars = seeds.map((seed) => {
       const randomStyle = styles[Math.floor(Math.random() * styles.length)];
       const url = `https://api.dicebear.com/7.x/${randomStyle}/svg?seed=${encodeURIComponent(seed)}`;
@@ -25,21 +25,19 @@ export default function AvatarPicker({
 
   return (
     <div>
-      <p>Choisis ton avatar :</p>
-      <div style={{ display: "flex", gap: 10 }}>
+      <p className="text-lg font-semibold mb-4 text-center">Choisis ton avatar :</p>
+      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4">
         {avatars.map(({ seed, style, url }) => (
           <img
             key={`${style}-${seed}`}
             src={url}
             alt={`Avatar ${seed} style ${style}`}
-            style={{
-              width: 80,
-              height: 80,
-              cursor: "pointer",
-              border: selectedUrl === url ? "3px solid blue" : "1px solid gray",
-              borderRadius: 10,
-            }}
             onClick={() => onSelect(url)}
+            className={`w-full aspect-square rounded-md cursor-pointer border ${
+              selectedUrl === url
+                ? "border-4 border-blue-500"
+                : "border-gray-300"
+            } hover:scale-105 transition-transform duration-150`}
           />
         ))}
       </div>
