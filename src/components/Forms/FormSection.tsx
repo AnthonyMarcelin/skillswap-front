@@ -27,13 +27,13 @@ export default function FormSection() {
       <div className="mx-auto max-w-[1200px] px-4">
         <div className="grid gap-12 md:grid-cols-2">
           {/* Formulaire d'inscription */}
-          <div className={showSignupCol}>
+          <div className={`${showSignupCol} md:bg-primary md:text-black md:rounded-xl md:p-6 md:shadow-md md:border md:border-white`}>
             <SignupForm />
           </div>
 
           {/* Formulaire de connexion dans une carte blanche */}
           <div className={showLoginCol}>
-            <div className="md:bg-white md:text-black md:rounded md:p-6 md:shadow">
+            <div className="md:bg-primary md:text-black md:rounded-xl md:p-6 md:shadow-md md:border md:border-white">
               <LoginForm />
             </div>
           </div>
