@@ -16,7 +16,6 @@ export default function SearchForm({
   const { loading, error, setLoading, setError } = useAsyncState();
 
   useEffect(() => {
-
     const fetchSkills = async () => {
       try {
         const data = await getAllSkills();
@@ -44,7 +43,7 @@ export default function SearchForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className={`mt-10 bg-primary shadow p-8 m-5 $ ${className}`}
+      className={`mt-10 bg-primary shadow p-8 m-5 rounded-xl border border-white ${className}`}
     >
       <h2 className="text-lg font-semibold mb-6 text-center text-secondary">
         Trouvez des nouvelles compétences proches de chez vous
@@ -55,7 +54,7 @@ export default function SearchForm({
       <div className="mb-4">
         <select
           name="skill"
-          className="w-full px-4 py-2 border border-white rounded focus:outline-none focus:ring-2 focus:ring-accent"
+          className="w-full px-4 py-2 border border-secondary rounded focus:outline-none focus:ring-2 focus:ring-accent text-secondary"
           defaultValue=""
           disabled={loading}
         >
@@ -79,14 +78,13 @@ export default function SearchForm({
                 <option disabled>Aucune compétence disponible</option>
               )}
         </select>
-        
       </div>
       <div className="mb-6">
         <input
           type="text"
           name="zipcode"
           placeholder="Code postal"
-          className="w-full px-4 py-2 border border-white rounded focus:outline-none focus:ring-2 focus:ring-accent text-white placeholder-white"
+          className="w-full px-4 py-2 border border-secondary rounded focus:outline-none focus:ring-2 focus:ring-accent text-secondary placeholder:text-secondary"
         />
       </div>
       <button

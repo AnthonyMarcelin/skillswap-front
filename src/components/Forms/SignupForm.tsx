@@ -183,20 +183,6 @@ export default function SignupForm() {
           />
         </div>
 
-        {/* Catégorie métier */}
-        <label className="text-sm mb-1">Catégorie :</label>
-        <select
-          name="category"
-          value={formData.category}
-          onChange={handleChange}
-          className="w-full rounded border px-3 py-2 bg-white text-black mb-3"
-        >
-          <option value="">Choisir une catégorie</option>
-          <option value="developpeur">Développeur</option>
-          <option value="designer">Designer</option>
-          <option value="chefprojet">Chef de projet</option>
-        </select>
-
         {/* Compétences à choisir via modale */}
         <label className="text-sm mb-1">Compétences :</label>
         <button

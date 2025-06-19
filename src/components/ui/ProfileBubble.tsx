@@ -31,7 +31,10 @@ export default function ProfileBubble() {
   
   return (
     <div className="flex flex-wrap pt-8 justify-center items-center gap-5 pl-2 pr-2">
-      {users.map((user) => (
+      {users
+      // Solution pour pas afficher tant qu il n y a pas de photo
+      .filter((user) => !!user.profile_picture)
+      .map((user) => (
         <div key={user.id} className="flex flex-col items-center">
           <img
             src={user.profile_picture}

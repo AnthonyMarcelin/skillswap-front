@@ -1,36 +1,56 @@
-
 import { CarouselPlugin } from "./ui/CarouselPlugin";
 import SearchForm from "./Forms/SearchForm";
 import SkillBubble from "./ui/SkillBubble";
 import ProfileBubble from "./ui/ProfileBubble";
 import WishToRegister from "./WishToRegister";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { IUser } from "@/types/user";
 import { useAllUsers } from "@/hooks/useAllUsers";
+import { UserCard } from "@/components/UserCard";
+import { useState } from "react";
+import { ProfileCard } from "./ProfileCard";
 
 export default function Homepage() {
-   const [users, setUsers] = useState<IUser[]>([]);
-   const [filteredUsers, setFilteredUsers] = useState<IUser[]>([]);
-   const navigate = useNavigate();
-  // Utilisation du hook personnalisé pour récupérer tous les utilisateurs
-  useAllUsers();
+  const { users, loading, error } = useAllUsers();
+  const [filteredUsers, setFilteredUsers] = useState<IUser[]>([]);
+  const navigate = useNavigate();
 
-    function handleSearch({ skill, zipcode}: { skill: string; zipcode: string }) {
-      const filtered = users.filter((user) =>
-        user.skills.some((s) => s.name === skill) &&
-        user.zipcode === zipcode
-);
-      setFilteredUsers(filtered);
-      navigate("/search", { state: { filteredUsers: filtered } });
-    }
+  function handleSearch({
+    skill,
+    zipcode,
+  }: {
+    skill: string;
+    zipcode: string;
+  }) {
+    const filtered = users.filter(
+      (user) =>
+        user.skills.some((s) => s.name === skill) && user.zipcode === zipcode
+    );
+    setFilteredUsers(filtered);
+    navigate("/search", { state: { filteredUsers: filtered } });
+  }
+
+  if (loading) {
+    return (
+      <p className="text-white text-sm italic text-center mt-10">
+        Chargement des utilisateurs...
+      </p>
+    );
+  }
+
+  if (error) {
+    return (
+      <p className="text-red-500 text-sm italic text-center mt-10">
+        {error.message}
+      </p>
+    );
+  }
 
   return (
-   
     <div className="w-full">
-      <CarouselPlugin />
-
-      <section className="flex flex-col items-center min-h-screen bg-secondary text-white m-0 pt-5">
+      {/* VERSION MOBILE */}
+      <section className="block md:hidden flex flex-col items-center bg-secondary text-white">
+        <CarouselPlugin />
         <div className="text-center text-lg p-6 font-bold">
           “Apprenez gratuitement ce que vous ne savez pas encore, en donnant ce
           que vous maîtrisez déjà.”
@@ -40,14 +60,55 @@ export default function Homepage() {
           Top compétences
         </div>
         <SkillBubble />
-      </section>
-      <WishToRegister />
-      <section className="flex flex-col items-center min-h-auto bg-primary text-white m-0 pt-5 pb-10">
-        <div className="pt-8 text-secondary text-lg text-center items-start font-semibold">
-          Les derniers profils inscrits
+        <WishToRegister />
+        <div className="pt-8 text-lg font-semibold text-center">
+          Nos derniers inscrits
         </div>
         <ProfileBubble />
-      </section>   
+      </section>
+
+      {/* VERSION DESKTOP */}
+      <section className="hidden md:grid grid-cols-3 gap-8 px-8 py-12 bg-secondary text-white">
+        {/* Colonne 1 */}
+        <div className="space-y-8">
+          <h2 className=" font-semibold text-center text-2xl">Découvrez des profils</h2>
+          <div className="space-y-4 p-4">
+            {users.slice(0, 2).map((user) => (
+              <ProfileCard key={user.id} user={user} />
+            ))}
+          </div>
+        </div>
+
+        {/* Colonne 2 */}
+        <div className="flex flex-col items-center gap-10">
+          <div className="bg-white text-black p-6 rounded-xl shadow-lg max-w-md text-center text-lg">
+            <p className="italic font-medium">
+              “Apprenez gratuitement ce que vous ne savez pas encore, en donnant
+              ce que vous maîtrisez déjà.”
+            </p>
+          </div>
+          <div className="w-full max-w-md">
+            <SearchForm onSearch={handleSearch} className="rounded-2xl border-2 border-white shadow-lg bg-accent p-4"/>
+          </div>
+          <div className="w-full max-w-md text-center">
+            <h2 className="text-2xl font-semibold mb-4 text-center">Compétences</h2>
+            <SkillBubble />
+          </div>
+        </div>
+
+        {/* Colonne 3 */}
+        <div className="space-y-8">
+          <div className="bg-white text-black rounded-xl shadow-md p-6">
+            <WishToRegister />
+          </div>
+          <div>
+            <h2 className="text-2xl font-semibold mb-2 text-center">
+              Nos derniers inscrits
+            </h2>
+            <ProfileBubble />
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

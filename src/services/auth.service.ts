@@ -1,5 +1,5 @@
- // src/services/auth.service.ts
- import api from '@/api/axios';
+// src/services/auth.service.ts
+import api from "@/api/axios";
 
  export interface RegisterDto {
    email: string;

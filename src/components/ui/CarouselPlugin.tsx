@@ -19,7 +19,12 @@ import { useAsyncState } from "@/hooks/useAsyncState";
 import { getRandomUsers } from "@/services/user.service";
 import type { IUser } from "@/types/user";
 
-export function CarouselPlugin() {
+// Ajout du type props
+type CarouselPluginProps = {
+  className?: string;
+};
+
+export function CarouselPlugin({ className = "" }: CarouselPluginProps) {
   const plugin = React.useRef(
     Autoplay({ delay: 2000, stopOnInteraction: true })
   );
@@ -51,7 +56,7 @@ export function CarouselPlugin() {
 
 
   return (
-    <section className="bg-primary p-6">
+    <section className={`bg-primary p-6 ${className}`}>
       <Carousel
         plugins={[plugin.current]}
         className="w-full max-w-xs mx-auto relative p-1 bg-primary text-white"

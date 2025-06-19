@@ -1,7 +1,6 @@
 import Header from "@/components/Header";
 import { ProfileCard } from "@/components/ProfileCard";
 import SearchForm from "@/components/Forms/SearchForm";
-import { Button } from "@/components/ui/Button";
 import Footer from "@/components/Footer";
 import { useLocation } from "react-router-dom";
 import type { IUser } from "@/types/user";
@@ -22,29 +21,29 @@ export default function SearchPage() {
     skill: string;
     zipcode: string;
   }) {
-    console.log("Recherche avec :", skill, zipcode, users);
     handleSearch({ skill, zipcode }, users);
   }
-  console.log("Filtered Users:", filteredUsers);
 
   return (
     <>
       <Header />
       <section className="flex flex-col items-center min-h-screen bg-secondary text-white m-0 pt-5">
-        <div>
-          <div className="text-center p-6 pb-2 font-semibold">
-            “Des nouvelles compétences à portée de clics proches de chez vous.”
-          </div>
-          <div className="pb-6 w-full flex justify-center">
-            <SearchForm
-              className="w-full max-w-2xl"
-              onSearch={handleGlobalSearch}
-            />
-          </div>
-          <div className="text-start pl-6 pt-6 font-semibold bg-primary text-secondary">
+        <div className="text-center p-6 pb-2 font-semibold text-lg">
+          “Des nouvelles compétences à portée de clics proches de chez vous.”
+        </div>
+
+        <div className="pb-6 w-full flex justify-center">
+          <SearchForm
+            className="w-full max-w-2xl"
+            onSearch={handleGlobalSearch}
+          />
+        </div>
+
+        <div className="bg-primary text-secondary border border-white rounded-xl shadow w-full max-w-4xl mx-auto mb-10">
+          <div className="text-start px-6 pt-6 font-semibold text-lg">
             Résultat de votre recherche
           </div>
-          <div className="flex flex-col p-6 gap-8 bg-primary">
+          <div className="flex flex-col p-6 gap-8">
             {filteredUsers.length === 0 ? (
               <div className="text-center text-secondary">
                 Aucune compétence trouvée pour cette recherche.
@@ -54,9 +53,6 @@ export default function SearchPage() {
                 <ProfileCard key={user.id} user={user} />
               ))
             )}
-            <Button className="bg-accent hover:bg-secondary text-white">
-              Voir plus
-            </Button>
           </div>
         </div>
       </section>
