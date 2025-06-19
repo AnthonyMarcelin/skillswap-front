@@ -72,7 +72,7 @@ export function ServiceCard({
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto">
+    <Card className="w-full max-w-md mx-auto bg-blue-300">
       <CardContent className="p-4 space-y-2">
         <div className="flex justify-between items-center">
           <h3 className="text-lg font-semibold">{title}</h3>

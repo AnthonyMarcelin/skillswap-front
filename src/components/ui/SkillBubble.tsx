@@ -56,3 +56,7 @@ export default function SkillBubble() {
     </div>
   );
 }
+          {/* Pas eu le temps pour le MVP */}
+            {/* <Button className="bg-accent hover:bg-secondary text-white">
+              Voir plus
+            </Button> */}
