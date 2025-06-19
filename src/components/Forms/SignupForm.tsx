@@ -59,6 +59,15 @@ export default function SignupForm() {
     setFormData((prev) => ({ ...prev, [name]: value.trimStart() }));
   };
 
+  const isPasswordStrong = (password: string): string | null => {
+    if (password.length < 8) return "Le mot de passe doit contenir au moins 8 caractères.";
+    if (!/[A-Z]/.test(password)) return "Le mot de passe doit contenir une majuscule.";
+    if (!/[a-z]/.test(password)) return "Le mot de passe doit contenir une minuscule.";
+    if (!/\d/.test(password)) return "Le mot de passe doit contenir un chiffre.";
+    if (!/[^A-Za-z0-9]/.test(password)) return "Le mot de passe doit contenir un caractère spécial.";
+    return null; // valide
+  };
+
   // Quand on valide le formulaire
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -74,6 +83,12 @@ export default function SignupForm() {
       alert("Les mots de passe ne correspondent pas.");
       return;
     }
+
+    const passwordError = isPasswordStrong(formData.password);
+    if (passwordError) {
+    alert(passwordError);
+    return;
+  }
 
     // Transforme les données du formulaire en données pour l’API
     const dto = mapFormDataToRegisterDto(formData);
