@@ -29,5 +29,5 @@
     "noUncheckedSideEffectImports": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src", "vitest.config.ts"]
+  "include": ["src", "vitest.config.ts", "cypress/e2e/cypress_e2e_userSearch.cy.ts"]
 }
