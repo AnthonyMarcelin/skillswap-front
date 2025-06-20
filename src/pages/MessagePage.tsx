@@ -77,20 +77,6 @@ export default function MessagePage() {
     setError(error as Error);
   }
 
-    // try {
-    //   const newMsg= await createMessage({
-    //     sender_id: Number(id),
-    //     receiver_id: selectedConversation,
-    //     body: newMessage,
-    //   },
-    //   selectedConversation.toString());
-    //   console.log(newMsg);
-        
-    //   setMessages((prev) => [...prev, newMsg]);
-    //   setNewMessage("");
-    // } catch (error) {
-    //   setError(error as Error);
-    // }
   };
 
   return (
