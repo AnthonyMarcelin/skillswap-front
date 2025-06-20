@@ -40,6 +40,7 @@ export default function MessageModal({
       console.log("Received new message:", newMsg); // Log de la réponse
 
       setNewMessage("");
+      onClose(); // Ferme la modale après l'envoi
   } catch (error) {
     console.error("Error sending message:", error); // Log de l'erreur
     setError(error as Error);
