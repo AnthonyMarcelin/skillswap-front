@@ -1,4 +1,7 @@
+// Configuration de la navigation client (SPA) avec React Router
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+// Import de toutes les pages principales
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import SearchPage from "./pages/SearchPage";

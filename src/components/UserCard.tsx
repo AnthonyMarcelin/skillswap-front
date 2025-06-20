@@ -10,30 +10,42 @@ import { Button } from "@/components/ui/Button";
 import type { IUser } from "@/types/user";
 import MessageModal from "@/components/MessageModal"; // Assurez-vous que ce composant existe
 
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getUserById, getCurrentUser } from "@/services/user.service";
 import { useAsyncState } from "@/hooks/useAsyncState";
+import ServiceModal from "./Modals/Service.modal";
+
 import { useAuth } from "@/hooks/useAuth";
 
 export function UserCard() {
-  const { id } = useParams(); // URL : /user/:id OU rien si /personal
+  const { id } = useParams();
+  const navigate = useNavigate();
+
   const [user, setUser] = useState<IUser | null>(null);
+  const [loggedInUser, setLoggedInUser] = useState<IUser | null>(null);
+  const [showModal, setShowModal] = useState(false);
   const { loading, setLoading, error, setError, reset } = useAsyncState();
   const [showMessageModal, setShowMessageModal] = useState(false);
   const { user: authUser } = useAuth(); // Récupère l'utilisateur connecté
   // console.log("authUser", authUser);
+
   useEffect(() => {
     const fetchUser = async () => {
       reset();
       try {
         setLoading(true);
-
-        const data = id
-          ? await getUserById(id) // profil public
-          : await getCurrentUser(); // profil connecté
+        const data = id ? await getUserById(id) : await getCurrentUser();
 
         setUser(data);
+
+        // 🔐 essaie de récupérer l'utilisateur connecté si possible
+        try {
+          const current = await getCurrentUser();
+          setLoggedInUser(current);
+        } catch {
+          setLoggedInUser(null); // ← pas connecté, mais pas bloquant
+        }
       } catch (err: any) {
         console.error("Erreur de chargement du profil :", err);
         setError("Impossible de charger le profil.");
@@ -44,6 +56,14 @@ export function UserCard() {
 
     fetchUser();
   }, [id]);
+
+  const handleAskService = () => {
+    if (!loggedInUser) {
+      navigate("/register"); // 🔄 redirection si pas connecté
+    } else {
+      setShowModal(true);
+    }
+  };
 
   if (loading) return <p className="text-white">Chargement du profil…</p>;
   if (error) return <p className="text-red-500">{error}</p>;
@@ -66,9 +86,8 @@ export function UserCard() {
             <CardDescription>{user.email}</CardDescription>
           </div>
 
-          {/* Affiche bouton seulement si ce n’est pas ton propre profil */}
-          {id && (
-            <CardAction>
+          {authUser?.id !== user.id && id && (
+            <CardAction className="flex flex-col gap-2">
               <Button
                 onClick={() => setShowMessageModal(true)}
                 size="sm"
@@ -76,13 +95,14 @@ export function UserCard() {
               >
                 Contacte-Moi
               </Button>
-              {showMessageModal && authUser?.id && (
-                <MessageModal
-                  onClose={() => setShowMessageModal(false)}
-                  receiverId={Number(id)}
-                  userId={authUser.id}
-                />
-              )}
+
+              <Button
+                size="sm"
+                className="rounded bg-[var(--color-accent)] text-white"
+                onClick={handleAskService}
+              >
+                Demander un service
+              </Button>
             </CardAction>
           )}
         </CardHeader>
@@ -116,13 +136,31 @@ export function UserCard() {
           </section>
 
           <section className="space-y-1 bg-primary p-4 rounded max-w-full">
-            <h4 className="font-semibold text-sm text-secondary">À propos</h4>
+            <h4 className="font-semibold text-sm text-secondary">A propos</h4>
             <p className="whitespace-pre-line text-sm leading-relaxed">
               {user.description}
             </p>
           </section>
         </CardContent>
       </Card>
+
+      {/* 🌟 Modale de message */}
+      {showMessageModal && authUser?.id && (
+        <MessageModal
+          onClose={() => setShowMessageModal(false)}
+          receiverId={user.id}
+          userId={authUser.id}
+        />
+      )}
+
+      {/* 🌟 Modale de service */}
+      {showModal && (
+        <ServiceModal
+          isOpen={showModal}
+          onClose={() => setShowModal(false)}
+          receiverId={user.id}
+        />
+      )}
     </div>
   );
 }

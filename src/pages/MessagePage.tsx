@@ -73,13 +73,13 @@ export default function MessagePage() {
         receiver_id: selectedConversation,
         body: newMessage,
       };
-      // console.log("Sending message data:", messageData); // Log des données envoyées
+      console.log("Sending message data:", messageData); // Log des données envoyées
 
       const newMsg = await createMessage(
         messageData,
         selectedConversation.toString(),
       );
-      // console.log("Received new message:", newMsg); // Log de la réponse
+      console.log("Received new message:", newMsg); // Log de la réponse
       setMessages((prev) => [...prev, newMsg]);
       setNewMessage("");
     } catch (error) {
