@@ -29,7 +29,9 @@ export async function register(dto: RegisterDto) {
 
 export async function login(dto: LoginDto) {
   // Axios renvoie déjà la promesse du JSON
-  const { data } = await api.post("/auth/login", dto);
+  const { data } = await api.post("/auth/login", dto, {
+    withCredentials: true,
+  });
   return data;
 }
 

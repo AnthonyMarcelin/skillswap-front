@@ -98,7 +98,7 @@ export default function Header() {
                   asChild
                   className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
                 >
-                  <Link to="/personalpage">Mon profil</Link>
+                  <Link to={`/personalpage/${authUser?.id}`}>Mon profil</Link>
                 </Button>
 
                 <Button

@@ -1,8 +1,8 @@
 # A mettre en place
 
-- Homepage : Afficher quatre compétences (popular si assez de temps)
-- Au click sur une "BubbleProfile" (nos derniers inscrits) de la homePage = être redirigé sur la profilepage/{id}.
-- créer un toast qui indique que vous avez séléctionné déjà trois compétences
+- Homepage : Afficher quatre compétences (popular si assez de temps) => fait
+- Au click sur une "BubbleProfile" (nos derniers inscrits) de la homePage = être redirigé sur la profilepage/{id}. 
+- créer un toast qui indique que vous avez séléctionné déjà trois compétences 
 - Rendre cliquable la ProfileCard. Pour etre redirigé vers la PRofilePage/{id} : Question ? profilecard entierement cliquable ou création d'un Bouton ?
 - PersonalPage a finir (en cours Karine && Antho)
 - css en deux colonnes sur la modal choix des compétences 
