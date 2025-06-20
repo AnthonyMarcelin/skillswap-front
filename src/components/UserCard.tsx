@@ -73,6 +73,14 @@ export function UserCard() {
                   Contacte-Moi
                 </Button>
               </Link>
+              <Link to="/register">
+                <Button
+                  size="sm"
+                  className="rounded bg-[var(--color-accent)] text-white "
+                >
+                  Demander un service
+                </Button>
+              </Link>
             </CardAction>
           )}
         </CardHeader>
