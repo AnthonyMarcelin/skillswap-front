@@ -1,6 +1,3 @@
-{
-  /* Pour l'instant récupération données en dur */
-}
 import { useAsyncState } from "@/hooks/useAsyncState";
 import { getAllSkills } from "@/services/skill.service";
 import type { ISkill } from "@/types/skill";
@@ -32,7 +29,7 @@ export default function SkillSelector({ selectedSkills, onChange }: Props) {
     };
 
     fetchSkills();
-  }, []);
+  }, [setError, setLoading]);
 
   // État local pour suivre la catégorie actuellement sélectionnée
   const handleCheckboxChange = (skill: string) => {

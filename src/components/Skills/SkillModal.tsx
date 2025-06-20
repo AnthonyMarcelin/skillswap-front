@@ -1,7 +1,3 @@
-{
-  /* Pour l'instant récupération données en dur */
-}
-
 import { useState } from "react";
 import SkillSelector from "../Skills/SkillSelector"; // Import du composant de sélection des compétences
 

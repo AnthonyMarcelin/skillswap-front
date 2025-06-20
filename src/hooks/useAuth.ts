@@ -9,13 +9,13 @@ export function useAuth() {
 
   const checkAuthentication = useCallback(async () => {
     try {
-      console.log("Vérification de l'authentification...");
+      // console.log("Vérification de l'authentification...");
 
       const data = await authService.checkAuth();
-      console.log("Réponse de checkAuth :", data);
+      // console.log("Réponse de checkAuth :", data);
 
       setIsAuthenticated(data.authenticated);
-      console.log("Etat mis a jour :", data.authenticated);
+      // console.log("Etat mis a jour :", data.authenticated);
 
       setUser(data.user || null); // Met à jour l'utilisateur si nécessaire
     } catch (error) {
@@ -26,7 +26,7 @@ export function useAuth() {
   }, []);
 
   useEffect(() => {
-    console.log("useEffect déclenché"); // Log du cycle de vie
+    // console.log("useEffect déclenché"); // Log du cycle de vie
 
     checkAuthentication();
   }, [checkAuthentication]);
@@ -34,11 +34,11 @@ export function useAuth() {
   // Ajout de la fonction login
   const login = async (credentials: { email: string; password: string }) => {
     try {
-      console.log("Tentative de login..."); // Log de début
+      // console.log("Tentative de login..."); // Log de début
 
       const response = await authService.login(credentials);
 
-      console.log("Login réussi:", response); // Log de debug
+      // console.log("Login réussi:", response); // Log de debug
       await checkAuthentication(); // Vérifie l'état d'auth après login
       return response;
     } catch (error) {
