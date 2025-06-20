@@ -4,7 +4,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from "@/components/ui/dialog";
+} from "@/components/ui/Dialog";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
@@ -62,7 +62,7 @@ export default function ServiceModal({
       <DialogContent className="max-w-[90%] sm:max-w-lg w-full bg-[var(--color-whitish)] text-[var(--color-secondary)] p-6 rounded-2xl shadow-2xl border border-[var(--color-primary)] animate-fadeIn scrollbar-custom">
         <DialogHeader>
           <DialogTitle className="text-lg font-bold text-[var(--color-secondary)]">
-            Proposer un service
+            Demander un service
           </DialogTitle>
         </DialogHeader>
 

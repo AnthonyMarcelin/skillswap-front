@@ -28,7 +28,7 @@ export function UserCard() {
   const { loading, setLoading, error, setError, reset } = useAsyncState();
   const [showMessageModal, setShowMessageModal] = useState(false);
   const { user: authUser } = useAuth(); // Récupère l'utilisateur connecté
-  console.log("authUser", authUser);
+
   useEffect(() => {
     const fetchUser = async () => {
       reset();
@@ -85,7 +85,7 @@ export function UserCard() {
             <CardDescription>{user.email}</CardDescription>
           </div>
 
-          {id && (
+          {authUser?.id !== user.id && id && (
             <CardAction className="flex flex-col gap-2">
               <Button
                 onClick={() => setShowMessageModal(true)}
@@ -94,11 +94,6 @@ export function UserCard() {
               >
                 Contacte-Moi
               </Button>
-                {showMessageModal && authUser?.id && (
-                  <MessageModal onClose={() => setShowMessageModal(false)}
-                  receiverId={Number(id)}
-                  userId={authUser.id} />
-                )}
 
               <Button
                 size="sm"
@@ -140,7 +135,7 @@ export function UserCard() {
           </section>
 
           <section className="space-y-1 bg-primary p-4 rounded max-w-full">
-            <h4 className="font-semibold text-sm text-secondary">À propos</h4>
+            <h4 className="font-semibold text-sm text-secondary">A propos</h4>
             <p className="whitespace-pre-line text-sm leading-relaxed">
               {user.description}
             </p>
@@ -148,7 +143,16 @@ export function UserCard() {
         </CardContent>
       </Card>
 
-      {/* 🌟 Modale */}
+      {/* 🌟 Modale de message */}
+      {showMessageModal && authUser?.id && (
+        <MessageModal
+          onClose={() => setShowMessageModal(false)}
+          receiverId={user.id}
+          userId={authUser.id}
+        />
+      )}
+
+      {/* 🌟 Modale de service */}
       {showModal && (
         <ServiceModal
           isOpen={showModal}
