@@ -10,17 +10,19 @@ import { Button } from "@/components/ui/Button";
 import type { IUser } from "@/types/user";
 import MessageModal  from "@/components/MessageModal"; // Assurez-vous que ce composant existe
 
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getUserById, getCurrentUser } from "@/services/user.service"; 
 import { useAsyncState } from "@/hooks/useAsyncState";
+import { useAuth } from "@/hooks/useAuth";
 
 export function UserCard() {
   const { id } = useParams(); // URL : /user/:id OU rien si /personal
   const [user, setUser] = useState<IUser | null>(null);
   const { loading, setLoading, error, setError, reset } = useAsyncState();
-  const [showMessageModal, setShowMessageModal] = useState(false);  
-
+  const [showMessageModal, setShowMessageModal] = useState(false); 
+  const { user: authUser } = useAuth(); // Récupère l'utilisateur connecté
+  console.log("authUser", authUser);
   useEffect(() => {
     const fetchUser = async () => {
       reset();
@@ -74,9 +76,10 @@ export function UserCard() {
                 >
                   Contacte-Moi
                 </Button>
-              {showMessageModal && (
+              {showMessageModal && authUser?.id && (
                 <MessageModal onClose={() => setShowMessageModal(false)}
-                receiverId={Number(id)} />
+                receiverId={Number(id)}
+                userId={authUser.id} />
               )}
             </CardAction>
           )}

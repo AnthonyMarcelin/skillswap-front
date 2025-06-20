@@ -1,10 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
 import * as authService from "@/services/auth.service";
+import type { IUser } from "@/types/user";
 
 export function useAuth() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   // Optionnel : tu peux aussi stocker les infos user si tu veux
-  // const [user, setUser] = useState<IUser | null>(null);
+  const [user, setUser] = useState<IUser | null>(null);
 
   const checkAuthentication = useCallback(async () => {
     try {
@@ -16,7 +17,7 @@ export function useAuth() {
       setIsAuthenticated(data.authenticated);
       console.log("Etat mis a jour :", data.authenticated);
 
-      // setUser(data.user);
+      setUser(data.user || null); // Met à jour l'utilisateur si nécessaire
     } catch (error) {
       console.log("Erreur de checkAuth :", error);
 
@@ -57,7 +58,7 @@ export function useAuth() {
 
   return {
     isAuthenticated,
-
+    user,
     login,
     logout,
     checkAuthentication, // au cas où tu veux rafraîchir manuellement

@@ -1,45 +1,50 @@
 import { createMessage } from "@/services/message.service";
 import { useEffect, useState } from "react";
 
+
 export default function MessageModal({ 
     onClose,
-    receiverId }: {
+    receiverId,
+    userId }: {
     onClose: () => void;
     receiverId: number;
+    userId:number
 }) {
+  const [error, setError] = useState<Error | null>(null);
+  const [newMessage, setNewMessage] = useState("");
   useEffect(() => {
     // Bloque le scroll du body quand la modale est ouverte
     document.body.style.overflow = "hidden";
-
     return () => {
       // Restaure le scroll quand la modale est fermée
       document.body.style.overflow = "auto";
     };
   }, []);
-  const [error, setError] = useState<Error | null>(null);
-  const [newMessage, setNewMessage] = useState("");
-  const [messages, setMessages] = useState("");
   
 
     const handleSendMessage = async () => {
-    if (!newMessage.trim() || !selectedConversation) return;
 
-     try {
-    const messageData = {
-      sender_id: id,
-      receiver_id: selectedConversation,
-      body: newMessage,
-    };
-    console.log("Sending message data:", messageData); // Log des données envoyées
+      if (!newMessage.trim()) return;
 
-    const newMsg = await createMessage(messageData, selectedConversation.toString());
-    console.log("Received new message:", newMsg); // Log de la réponse
-    setMessages((prev) => [...prev, newMsg]);
-    setNewMessage("");
+      try {
+      const messageData = {
+        sender_id: userId,
+        receiver_id: receiverId,
+        body: newMessage,
+      };
+
+      console.log("Sending message data:", messageData); // Log des données envoyées
+
+      const newMsg = await createMessage(messageData, receiverId.toString());
+
+      console.log("Received new message:", newMsg); // Log de la réponse
+
+      setNewMessage("");
   } catch (error) {
     console.error("Error sending message:", error); // Log de l'erreur
     setError(error as Error);
   }
+};
 
     return (
     <div
@@ -87,4 +92,5 @@ export default function MessageModal({
         </section> 
         </div>   
         </div>
-  )}
+  )
+}
