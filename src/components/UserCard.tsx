@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import type { IUser } from "@/types/user";
-import MessageModal from "@/components/MessageModal"; // Assurez-vous que ce composant existe
 
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
