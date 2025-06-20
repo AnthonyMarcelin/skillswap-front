@@ -9,14 +9,19 @@ import {
 import { Button } from "@/components/ui/Button";
 import type { IUser } from "@/types/user";
 
-import { Link, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getUserById, getCurrentUser } from "@/services/user.service"; 
+import { getUserById, getCurrentUser } from "@/services/user.service";
 import { useAsyncState } from "@/hooks/useAsyncState";
+import ServiceModal from "./Modals/Service.modal";
 
 export function UserCard() {
-  const { id } = useParams(); // URL : /user/:id OU rien si /personal
+  const { id } = useParams();
+  const navigate = useNavigate();
+
   const [user, setUser] = useState<IUser | null>(null);
+  const [loggedInUser, setLoggedInUser] = useState<IUser | null>(null);
+  const [showModal, setShowModal] = useState(false);
   const { loading, setLoading, error, setError, reset } = useAsyncState();
 
   useEffect(() => {
@@ -24,12 +29,17 @@ export function UserCard() {
       reset();
       try {
         setLoading(true);
-
-        const data = id
-          ? await getUserById(id) // profil public
-          : await getCurrentUser(); // profil connecté
+        const data = id ? await getUserById(id) : await getCurrentUser();
 
         setUser(data);
+
+        // 🔐 essaie de récupérer l'utilisateur connecté si possible
+        try {
+          const current = await getCurrentUser();
+          setLoggedInUser(current);
+        } catch {
+          setLoggedInUser(null); // ← pas connecté, mais pas bloquant
+        }
       } catch (err: any) {
         console.error("Erreur de chargement du profil :", err);
         setError("Impossible de charger le profil.");
@@ -40,6 +50,14 @@ export function UserCard() {
 
     fetchUser();
   }, [id]);
+
+  const handleAskService = () => {
+    if (!loggedInUser) {
+      navigate("/register"); // 🔄 redirection si pas connecté
+    } else {
+      setShowModal(true);
+    }
+  };
 
   if (loading) return <p className="text-white">Chargement du profil…</p>;
   if (error) return <p className="text-red-500">{error}</p>;
@@ -62,25 +80,21 @@ export function UserCard() {
             <CardDescription>{user.email}</CardDescription>
           </div>
 
-          {/* Affiche bouton seulement si ce n’est pas ton propre profil */}
           {id && (
-            <CardAction>
-              <Link to="/register">
-                <Button
-                  size="sm"
-                  className="rounded bg-[var(--color-accent)] text-white"
-                >
-                  Contacte-Moi
-                </Button>
-              </Link>
-              <Link to="/register">
-                <Button
-                  size="sm"
-                  className="rounded bg-[var(--color-accent)] text-white "
-                >
-                  Demander un service
-                </Button>
-              </Link>
+            <CardAction className="flex flex-col gap-2">
+              <Button
+                size="sm"
+                className="rounded bg-[var(--color-accent)] text-white"
+              >
+                Contacte-Moi
+              </Button>
+              <Button
+                size="sm"
+                className="rounded bg-[var(--color-accent)] text-white"
+                onClick={handleAskService}
+              >
+                Demander un service
+              </Button>
             </CardAction>
           )}
         </CardHeader>
@@ -121,6 +135,15 @@ export function UserCard() {
           </section>
         </CardContent>
       </Card>
+
+      {/* 🌟 Modale */}
+      {showModal && (
+        <ServiceModal
+          isOpen={showModal}
+          onClose={() => setShowModal(false)}
+          receiverId={user.id}
+        />
+      )}
     </div>
   );
 }
