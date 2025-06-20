@@ -1,6 +1,3 @@
-{
-  /* Pour l'instant récupération données en dur */
-}
 import { useAsyncState } from "@/hooks/useAsyncState";
 import { getAllSkills } from "@/services/skill.service";
 import type { ISkill } from "@/types/skill";
@@ -13,10 +10,12 @@ type Props = {
   onChange: (skills: string[]) => void; // Fonction à appeler quand la liste change
 };
 
+// Composant pour afficher une liste de compétences avec des cases à cocher
 export default function SkillSelector({ selectedSkills, onChange }: Props) {
   const [skills, setSkills] = useState<ISkill[]>([]);
   const { loading, error, setLoading, setError } = useAsyncState();
 
+  // Récupération des compétences au montage du composant
   useEffect(() => {
     const fetchSkills = async () => {
       try {
@@ -34,10 +33,10 @@ export default function SkillSelector({ selectedSkills, onChange }: Props) {
     fetchSkills();
   }, []);
 
-  // État local pour suivre la catégorie actuellement sélectionnée
+  // Fonction appelée à chaque clic sur une checkbox
   const handleCheckboxChange = (skill: string) => {
     const isSelected = selectedSkills.includes(skill);
-    // Si on essaie d'en ajouter une 4e → ne rien faire
+    // Empêche de dépasser 3 compétences sélectionnées
     if (!isSelected && selectedSkills.length >= 3) {
       alert("Vous ne pouvez sélectionner que 3 compétences maximum.");
       return;

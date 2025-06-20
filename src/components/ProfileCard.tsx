@@ -11,7 +11,6 @@ import type { IUser } from "@/types/user";
 import { Link } from "react-router-dom";
 
 export function ProfileCard({ user }: { user: IUser }) {
-  // TODO: Loading
 
   return (
     <Card className=" w-80 h-full mx-auto bg-accent">

@@ -7,7 +7,7 @@ import { fr } from "date-fns/locale";
 import type { IService, IServiceStatus } from "@/types/service";
 import { useServiceStatus } from "@/hooks/useServiceStatus";
 
-
+// Traduction des statuts internes pour affichage
 const statusLabels: Record<IServiceStatus | "completed", string> = {
   pending: "En attente",
   accepted: "Accepté",
@@ -22,6 +22,7 @@ interface ServiceCardProps {
   onStatusUpdate?: (newStatus: IServiceStatus) => void;
 }
 
+// Composant qui affiche un service sous forme de carte
 export function ServiceCard({
   service,
   currentUserId,
@@ -44,7 +45,7 @@ export function ServiceCard({
     service.status
   );
 
-  // On identifie le rôle de l'utilisateur connecté
+  // Vérifie si l'utilisateur est le donneur ou le receveur du service
   const isGiver = currentUserId === giverId;
   const isReceiver = currentUserId === receiverId;
 
