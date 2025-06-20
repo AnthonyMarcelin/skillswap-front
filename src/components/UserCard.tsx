@@ -94,6 +94,11 @@ export function UserCard() {
               >
                 Contacte-Moi
               </Button>
+                {showMessageModal && authUser?.id && (
+                  <MessageModal onClose={() => setShowMessageModal(false)}
+                  receiverId={Number(id)}
+                  userId={authUser.id} />
+                )}
 
               <Button
                 size="sm"
