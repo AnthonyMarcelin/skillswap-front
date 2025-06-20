@@ -184,6 +184,41 @@ export default function PersonalPage() {
                         </p>
                       )}
                     </div>
+                    <div>
+                      <span className="block text-xl text-secondary">
+                        Compétences :
+                      </span>
+                      {isEditing ? (
+                        <textarea
+                          className="w-full px-2 py-1 rounded text-accent"
+                          rows={2}
+                          value={editedUser.skills
+                            .map((s) => s.name)
+                            .join(", ")}
+                          onChange={(e) =>
+                            setEditedUser((prev) =>
+                              prev
+                                ? {
+                                    ...prev,
+                                    skills: e.target.value
+                                      .split(",")
+                                      .map((s, i) => ({
+                                        id: i + 1, // valeur fictive
+                                        name: s.trim(),
+                                      })),
+                                  }
+                                : prev
+                            )
+                          }
+                        />
+                      ) : (
+                        <ul className="list-disc list-inside text-white font-medium italic mt-1">
+                          {editedUser.skills.map((skill) => (
+                            <li key={skill.id}>{skill.name}</li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
                   </>
                 )}
               </CardContent>
