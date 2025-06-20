@@ -28,3 +28,10 @@ export async function getCurrentUser(): Promise<IUser> {
   });
   return res.data;
 }
+
+export async function updateUser(id: number, data: Partial<IUser>): Promise<IUser> {
+  const res = await api.put(`/users/${id}`, data, {
+    withCredentials: true,
+  });
+  return res.data.data;
+}

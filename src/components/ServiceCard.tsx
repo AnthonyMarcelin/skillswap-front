@@ -7,6 +7,7 @@ import { fr } from "date-fns/locale";
 import type { IService, IServiceStatus } from "@/types/service";
 import { useServiceStatus } from "@/hooks/useServiceStatus";
 
+
 const statusLabels: Record<IServiceStatus | "completed", string> = {
   pending: "En attente",
   accepted: "Accepté",

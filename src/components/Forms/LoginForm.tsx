@@ -55,7 +55,7 @@ export default function LoginForm() {
       console.log("Connexion réussie :", response);
 
       // Redirection vers la page de profil de l'utilisateur
-      navigate("/personalpage");
+      navigate(`/personalpage/${response.user.id}`)
     } catch (err: any) {
       console.log("Erreur complète : ", err);
 
