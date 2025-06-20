@@ -10,7 +10,6 @@ export default function ProfilePage() {
     <>
       <Header />
       <UserCard />
-      <ReviewCard />
       <WishToRegister />
       <Footer />
     </>

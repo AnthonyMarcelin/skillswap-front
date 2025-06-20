@@ -13,6 +13,8 @@ export default function Homepage() {
   const { users, loading, error } = useAllUsers();
   const [filteredUsers, setFilteredUsers] = useState<IUser[]>([]);
   const navigate = useNavigate();
+  const shuffled = [...users].sort(() => 0.5 - Math.random());
+  const randomUsers = shuffled.slice(0, 2);
 
   function handleSearch({
     skill,
@@ -66,7 +68,7 @@ export default function Homepage() {
         </div>
         <SearchForm onSearch={handleSearch} />
         <div className="pt-10 items-start text-lg font-semibold">
-          Top compétences
+          Compétences
         </div>
         <SkillBubble />
         <WishToRegister />
@@ -80,13 +82,13 @@ export default function Homepage() {
       <section className="hidden md:grid grid-cols-3 gap-8 px-8 py-12 bg-secondary text-white">
         {/* Colonne 1 */}
         <div className="space-y-8">
-          <h2 className=" font-semibold text-center text-2xl">
-            Découvrez des profils
-          </h2>
-          <div className="space-y-4 p-4">
-            {users.slice(0, 2).map((user) => (
-              <ProfileCard key={user.id} user={user} />
-            ))}
+        <h2 className="font-semibold text-center text-2xl">
+        Découvrez des profils
+        </h2>
+        <div className="space-y-4 p-4">
+          {randomUsers.map((user) => (
+           <ProfileCard key={user.id} user={user} />
+          ))}
           </div>
         </div>
 
