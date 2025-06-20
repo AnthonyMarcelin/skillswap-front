@@ -1,5 +1,4 @@
 import { useState } from "react";
-// import { login } from "@/services/auth.service";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 
@@ -45,17 +44,17 @@ export default function LoginForm() {
     try {
       // Réinitialisation de l'erreur avant la tentative de connexion
       setError(null);
-      console.log("Tentative de connexion avec :", loginData);
+      // console.log("Tentative de connexion avec :", loginData);
 
       // Appel de la fonction login (API POST vers /auth/login)
       const response = await login(loginData);
-      console.log("Reponse login: ", response);
+      // console.log("Reponse login: ", response);
 
       // Connexion réussie, affichage facultatif pour le debug
-      console.log("Connexion réussie :", response);
+      // console.log("Connexion réussie :", response);
 
       // Redirection vers la page de profil de l'utilisateur
-      navigate(`/personalpage/${response.user.id}`)
+      navigate(`/personalpage/${response.user.id}`);
     } catch (err: any) {
       console.log("Erreur complète : ", err);
 

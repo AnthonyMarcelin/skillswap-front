@@ -4,14 +4,11 @@ import SkillBubble from "./ui/SkillBubble";
 import ProfileBubble from "./ui/ProfileBubble";
 import WishToRegister from "./WishToRegister";
 import { useNavigate } from "react-router-dom";
-import type { IUser } from "@/types/user";
 import { useAllUsers } from "@/hooks/useAllUsers";
-import { useState } from "react";
 import { ProfileCard } from "./ProfileCard";
 
 export default function Homepage() {
   const { users, loading, error } = useAllUsers();
-  const [filteredUsers, setFilteredUsers] = useState<IUser[]>([]);
   const navigate = useNavigate();
   const shuffled = [...users].sort(() => 0.5 - Math.random());
   const randomUsers = shuffled.slice(0, 2);
@@ -25,7 +22,7 @@ export default function Homepage() {
   }) {
     const filtered = users.filter((user) => {
       const hasSkill = user.skills.some((s) =>
-        s.name.toLowerCase().includes(skill.toLowerCase())
+        s.name.toLowerCase().includes(skill.toLowerCase()),
       );
 
       // Si un code postal est fourni, on filtre aussi dessus
@@ -37,7 +34,6 @@ export default function Homepage() {
       return hasSkill;
     });
 
-    setFilteredUsers(filtered);
     navigate("/search", { state: { filteredUsers: filtered } });
   }
 
@@ -82,13 +78,13 @@ export default function Homepage() {
       <section className="hidden md:grid grid-cols-3 gap-8 px-8 py-12 bg-secondary text-white">
         {/* Colonne 1 */}
         <div className="space-y-8">
-        <h2 className="font-semibold text-center text-2xl">
-        Découvrez des profils
-        </h2>
-        <div className="space-y-4 p-4">
-          {randomUsers.map((user) => (
-           <ProfileCard key={user.id} user={user} />
-          ))}
+          <h2 className="font-semibold text-center text-2xl">
+            Découvrez des profils
+          </h2>
+          <div className="space-y-4 p-4">
+            {randomUsers.map((user) => (
+              <ProfileCard key={user.id} user={user} />
+            ))}
           </div>
         </div>
 

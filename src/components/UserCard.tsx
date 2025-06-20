@@ -28,6 +28,7 @@ export function UserCard() {
   const { loading, setLoading, error, setError, reset } = useAsyncState();
   const [showMessageModal, setShowMessageModal] = useState(false);
   const { user: authUser } = useAuth(); // Récupère l'utilisateur connecté
+  // console.log("authUser", authUser);
 
   useEffect(() => {
     const fetchUser = async () => {

@@ -35,7 +35,7 @@ export default function SignupForm() {
   const [showAvatarModal, setShowAvatarModal] = useState(false);
   // Pour pouvoir enlever l'avatar lors de l'inscription si on change d'avis
   const [previousAvatar, setPreviousAvatar] = useState<string | undefined>(
-    undefined
+    undefined,
   );
 
   // Ouvrir la modale avatar
@@ -59,18 +59,23 @@ export default function SignupForm() {
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    >,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value.trimStart() }));
   };
 
   const isPasswordStrong = (password: string): string | null => {
-    if (password.length < 8) return "Le mot de passe doit contenir au moins 8 caractères.";
-    if (!/[A-Z]/.test(password)) return "Le mot de passe doit contenir une majuscule.";
-    if (!/[a-z]/.test(password)) return "Le mot de passe doit contenir une minuscule.";
-    if (!/\d/.test(password)) return "Le mot de passe doit contenir un chiffre.";
-    if (!/[^A-Za-z0-9]/.test(password)) return "Le mot de passe doit contenir un caractère spécial.";
+    if (password.length < 8)
+      return "Le mot de passe doit contenir au moins 8 caractères.";
+    if (!/[A-Z]/.test(password))
+      return "Le mot de passe doit contenir une majuscule.";
+    if (!/[a-z]/.test(password))
+      return "Le mot de passe doit contenir une minuscule.";
+    if (!/\d/.test(password))
+      return "Le mot de passe doit contenir un chiffre.";
+    if (!/[^A-Za-z0-9]/.test(password))
+      return "Le mot de passe doit contenir un caractère spécial.";
     return null; // valide
   };
 
@@ -92,9 +97,9 @@ export default function SignupForm() {
 
     const passwordError = isPasswordStrong(formData.password);
     if (passwordError) {
-    alert(passwordError);
-    return;
-  }
+      alert(passwordError);
+      return;
+    }
 
     // Transforme les données du formulaire en données pour l’API
     const dto = mapFormDataToRegisterDto(formData);
@@ -103,7 +108,7 @@ export default function SignupForm() {
       reset();
       setLoading(true);
       const response = await register(dto);
-      console.log("Réponse après register :", response);
+      // console.log("Réponse après register :", response);
 
       if (response?.user?.id) {
         navigate(`/personalpage/${response.user.id}`);

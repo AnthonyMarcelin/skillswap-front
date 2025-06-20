@@ -26,34 +26,31 @@ type CarouselPluginProps = {
 
 export function CarouselPlugin({ className = "" }: CarouselPluginProps) {
   const plugin = React.useRef(
-    Autoplay({ delay: 2000, stopOnInteraction: true })
+    Autoplay({ delay: 2000, stopOnInteraction: true }),
   );
 
-   const [users, setUsers] = useState<IUser[]>([]);
-    const { loading, setLoading, error, setError, reset } = useAsyncState();
-   
-  
-    useEffect(() => {
-      const fetchUsers = async () => {
-        reset();
-        try {
-          setLoading(true);
-          const users = await getRandomUsers();
-          setUsers(users);
+  const [users, setUsers] = useState<IUser[]>([]);
+  const { loading, setLoading, error, setError, reset } = useAsyncState();
 
-        } catch (error) {
-          setError("Error fetching users:");
-        } finally {
-          setLoading(false);
-        }
-      };
-      fetchUsers();
-    }, []);
+  useEffect(() => {
+    const fetchUsers = async () => {
+      reset();
+      try {
+        setLoading(true);
+        const users = await getRandomUsers();
+        setUsers(users);
+      } catch (error) {
+        setError("Error fetching users:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUsers();
+  }, []);
 
   if (loading) return <p className="text-white">Chargement du profil…</p>;
   if (error) return <p className="text-red-500">{error}</p>;
   if (!users) return null;
-
 
   return (
     <section className={`bg-primary p-6 ${className}`}>
@@ -64,13 +61,17 @@ export function CarouselPlugin({ className = "" }: CarouselPluginProps) {
         onMouseLeave={plugin.current.reset}
       >
         <CarouselContent>
-          {Array.isArray(users) && users.map((user:any, index) => (
-            <CarouselItem key={user.id || index} className="flex justify-center">
-              <div className="p-1">
-                <ProfileCard user={user} />
-              </div>
-            </CarouselItem>
-          ))}
+          {Array.isArray(users) &&
+            users.map((user: any, index) => (
+              <CarouselItem
+                key={user.id || index}
+                className="flex justify-center"
+              >
+                <div className="p-1">
+                  <ProfileCard user={user} />
+                </div>
+              </CarouselItem>
+            ))}
         </CarouselContent>
         <CarouselPrevious className="ml-2 text-accent" />
         <CarouselNext className="mr-2 text-accent" />

@@ -16,8 +16,8 @@ export default function Header() {
     const fetchUser = async () => {
       try {
         const user = await getCurrentUser();
-        console.log("Données complètes de l'utilisateur:", user);
-        console.log("Prénom de l'utilisateur:", user.firstname);
+        // console.log("Données complètes de l'utilisateur:", user);
+        // console.log("Prénom de l'utilisateur:", user.firstname);
         setAuthUser(user);
       } catch (error) {
         console.error("Erreur lors du chargement de l'utilisateur : ", error);
@@ -36,7 +36,7 @@ export default function Header() {
     }
   };
 
-  console.log("Etat d'authentification : ", isAuthenticated);
+  // console.log("Etat d'authentification : ", isAuthenticated);
 
   return (
     <header className="header-container relative flex flex-col w-full">
@@ -69,7 +69,7 @@ export default function Header() {
 
         {/* Menu en version desktop */}
 
-        {/* Message de bienvenue au centre en position absolue */}
+        {/* Message de bienvenue dynamique */}
         <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2">
           {isAuthenticated && authUser && (
             <span className="text-secondary font-extrabold text-3xl">
@@ -79,12 +79,6 @@ export default function Header() {
         </div>
         <nav className="hidden md:block">
           <ul className="flex gap-4">
-            {/* {isAuthenticated && authUser && (
-              <li className="text-secondary font-extrabold text-xl">
-                Bonjour {authUser.firstname} 👋
-              </li>
-            )} */}
-
             <Button
               asChild
               className="bg-accent hover:bg-secondary text-white px-3 py-1 text-lg font-semibold"
@@ -159,15 +153,7 @@ export default function Header() {
                   </Link>
                 </li>
                 <li>
-                  <button
-                    onClick={handleLogout}
-                    // onClick={() => {
-                    //   logout();
-                    //   setOpen(false);
-                    // }}
-                  >
-                    Se déconnecter
-                  </button>
+                  <button onClick={handleLogout}>Se déconnecter</button>
                 </li>
               </>
             ) : (

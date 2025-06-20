@@ -30,7 +30,7 @@ export default function SearchForm({
     };
 
     fetchSkills();
-  }, []);
+  }, [setError, setLoading]);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
