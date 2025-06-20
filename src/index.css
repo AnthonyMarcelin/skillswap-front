@@ -1,15 +1,14 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* Ton style custom DOIT venir après */
 @theme {
-  --color-primary: #A8D0E6;
-  --color-secondary: #24305E;
-  --color-accent: #BF350B;
-  --color-whitish: #FAF5F5;
+  --color-primary: #a8d0e6;
+  --color-secondary: #24305e;
+  --color-accent: #bf350b;
+  --color-whitish: #faf5f5;
 
-  --font-regular: 'Nunito', sans-serif;
-  --font-bold : 'Nunito', sans-serif;
+  --font-regular: "Nunito", sans-serif;
+  --font-bold: "Nunito", sans-serif;
 }
 
 .scrollbar-custom::-webkit-scrollbar {
@@ -23,7 +22,7 @@
 .scrollbar-custom::-webkit-scrollbar-thumb {
   background-color: black;
   border-radius: 10px;
-  border: 5px solid transparent; /* Supprime le "rétrécissement" visuel */
+  border: 5px solid transparent; /* Supprime le rétrécissement visuel */
   background-clip: content-box; /* Assure que le fond reste visible au centre */
 }
 
@@ -35,7 +34,3 @@
   scrollbar-width: thin; /* Firefox */
   scrollbar-color: var(--color-accent) transparent;
 }
-
-
-
-

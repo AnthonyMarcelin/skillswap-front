@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { useEffect, useState } from "react";
@@ -12,7 +12,6 @@ import { Pencil, Save } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/Card";
 
 export default function PersonalPage() {
-  const navigate = useNavigate();
   const { id } = useParams();
   const [services, setServices] = useState<IService[]>([]);
   const [currentUser, setCurrentUser] = useState<IUser | null>(null);
@@ -129,7 +128,7 @@ export default function PersonalPage() {
                             setEditedUser((prev) =>
                               prev
                                 ? { ...prev, firstname: e.target.value }
-                                : prev
+                                : prev,
                             )
                           }
                         />
@@ -150,7 +149,7 @@ export default function PersonalPage() {
                           value={editedUser.city}
                           onChange={(e) =>
                             setEditedUser((prev) =>
-                              prev ? { ...prev, city: e.target.value } : prev
+                              prev ? { ...prev, city: e.target.value } : prev,
                             )
                           }
                         />
@@ -174,7 +173,7 @@ export default function PersonalPage() {
                             setEditedUser((prev) =>
                               prev
                                 ? { ...prev, description: e.target.value }
-                                : prev
+                                : prev,
                             )
                           }
                         />
@@ -214,8 +213,8 @@ export default function PersonalPage() {
                     onStatusUpdate={(newStatus) =>
                       setServices((prev) =>
                         prev.map((s) =>
-                          s.id === service.id ? { ...s, status: newStatus } : s
-                        )
+                          s.id === service.id ? { ...s, status: newStatus } : s,
+                        ),
                       )
                     }
                   />
