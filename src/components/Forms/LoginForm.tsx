@@ -15,6 +15,7 @@ export default function LoginForm() {
 
   // Hook React Router pour la redirection après connexion
   const navigate = useNavigate();
+  // Fonction de connexion (via contexte d'authentification)
   const { login } = useAuth();
 
   // Fonction appelée à chaque frappe dans un champ

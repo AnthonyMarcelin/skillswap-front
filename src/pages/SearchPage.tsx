@@ -14,6 +14,7 @@ export default function SearchPage() {
 
   const { filteredUsers, handleSearch } = useUserSearch(initialUsers);
 
+  // Fonction exécutée lors du submit du SearchForm
   function handleGlobalSearch({
     skill,
     zipcode,

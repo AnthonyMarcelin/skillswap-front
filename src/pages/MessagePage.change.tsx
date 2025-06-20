@@ -121,7 +121,7 @@ export default function MessagePage() {
                           <p>{message.body}</p>
                           <span className="text-xs text-gray-500 mt-1 block">
                             {new Date(
-                              message.sending_date,
+                              message.sending_date
                             ).toLocaleTimeString()}
                           </span>
                         </div>

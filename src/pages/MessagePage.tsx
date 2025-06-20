@@ -1,9 +1,18 @@
+// Hooks React
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+
+// Composants UI
 import { Card } from "@/components/ui/Card";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { createMessage, getConversation, getLatestMessagesForUser } from "@/services/message.service";
+
+// Services pour charger et envoyer les messages
+import {
+  createMessage,
+  getConversation,
+  getLatestMessagesForUser,
+} from "@/services/message.service";
 
 import type { IMessage } from "@/types/message";
 import type { IUser } from "@/types/user";
@@ -24,7 +33,7 @@ export default function MessagePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
-  const {users} = useAllUsers();
+  const { users } = useAllUsers();
 
   useEffect(() => {
     const fetchConversations = async () => {
@@ -45,38 +54,43 @@ export default function MessagePage() {
     fetchConversations();
   }, [id]);
 
-
-  const handleConversationClick = async (userId: string, contactId: number, user:IUser) => {
+  const handleConversationClick = async (
+    userId: string,
+    contactId: number,
+    user: IUser
+  ) => {
     setSelectedConversation(contactId);
     setActiveUser(user);
     try {
-    const response = await getConversation(userId, contactId.toString());
-    setMessages(Array.isArray(response) ? response : [response]);
-  } catch (error) {
-    setError(error as Error);
-  }
-};
+      const response = await getConversation(userId, contactId.toString());
+      setMessages(Array.isArray(response) ? response : [response]);
+    } catch (error) {
+      setError(error as Error);
+    }
+  };
 
   const handleSendMessage = async () => {
     if (!newMessage.trim() || !selectedConversation) return;
 
-     try {
-    const messageData = {
-      sender_id: id,
-      receiver_id: selectedConversation,
-      body: newMessage,
-    };
-    console.log("Sending message data:", messageData); // Log des données envoyées
+    try {
+      const messageData = {
+        sender_id: id,
+        receiver_id: selectedConversation,
+        body: newMessage,
+      };
+      console.log("Sending message data:", messageData); // Log des données envoyées
 
-    const newMsg = await createMessage(messageData, selectedConversation.toString());
-    console.log("Received new message:", newMsg); // Log de la réponse
-    setMessages((prev) => [...prev, newMsg]);
-    setNewMessage("");
-  } catch (error) {
-    console.error("Error sending message:", error); // Log de l'erreur
-    setError(error as Error);
-  }
-
+      const newMsg = await createMessage(
+        messageData,
+        selectedConversation.toString()
+      );
+      console.log("Received new message:", newMsg); // Log de la réponse
+      setMessages((prev) => [...prev, newMsg]);
+      setNewMessage("");
+    } catch (error) {
+      console.error("Error sending message:", error); // Log de l'erreur
+      setError(error as Error);
+    }
   };
 
   return (
@@ -85,7 +99,9 @@ export default function MessagePage() {
       <section className="flex flex-col min-h-screen bg-secondary text-white">
         <div className="container mx-auto px-4 py-4 md:py-8 flex flex-col flex-grow">
           <h1 className="text-1xl md:text-3xl font-bold mb-4 md:mb-6">
-            {users.find(u => u.id === Number(id))?.firstname ?? "Utilisateur"}, bienvenue sur votre messagerie</h1>
+            {users.find((u) => u.id === Number(id))?.firstname ?? "Utilisateur"}
+            , bienvenue sur votre messagerie
+          </h1>
 
           {loading && <p>Chargement des conversations...</p>}
           {error && <p className="text-red-500">Erreur : {error.message}</p>}
@@ -95,59 +111,58 @@ export default function MessagePage() {
             <Card className="bg-white h-[30vh] md:h-[calc(100vh-12rem)] overflow-y-auto">
               <div className="space-y-4 md:space-y-6 p-2">
                 {conversations
-                .filter((conversation) => conversation)
-                .map((conversation) => {
-                  const userId = Number(id);
-                  const contactId = conversation.sender_id === userId
-                    ? conversation.receiver_id
-                    : conversation.sender_id;
-                  // Trouver l'utilisateur correspondant à la conversation
-                  const user = users.find(
-                    (user) => user.id === contactId,
-                  );
+                  .filter((conversation) => conversation)
+                  .map((conversation) => {
+                    const userId = Number(id);
+                    const contactId =
+                      conversation.sender_id === userId
+                        ? conversation.receiver_id
+                        : conversation.sender_id;
+                    // Trouver l'utilisateur correspondant à la conversation
+                    const user = users.find((user) => user.id === contactId);
 
-                  // Si l'utilisateur n'est pas trouvé, on continue
-                  if (!user) return null;
-              
-                  return (
-                  <div
-                    key={conversation.id}
-                    onClick={() => {
-                      handleConversationClick(id!, user.id, user);
-                      setActiveUser(user);
-                    }}
-                    className={`p-4 rounded-lg cursor-pointer transition-colors bg-primary ${
-                      selectedConversation === conversation.id
-                        ? "opacity-80"
-                        : "hover:opacity-90"
-                    }`}
-                  >
-                    <div className="flex items-center space-x-4">
-                      {user.profile_picture ? (
-                        <img
-                          src={user.profile_picture}
-                          alt={`${user.firstname} ${user.lastname}`}
-                          className="w-12 h-12 rounded-full object-cover"
-                        />
-                      ) : (
-                        <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
-                          <span className="text-xl font-bold text-gray-500">
-                            {conversation.sender_id}
-                          </span>
+                    // Si l'utilisateur n'est pas trouvé, on continue
+                    if (!user) return null;
+
+                    return (
+                      <div
+                        key={conversation.id}
+                        onClick={() => {
+                          handleConversationClick(id!, user.id, user);
+                          setActiveUser(user);
+                        }}
+                        className={`p-4 rounded-lg cursor-pointer transition-colors bg-primary ${
+                          selectedConversation === conversation.id
+                            ? "opacity-80"
+                            : "hover:opacity-90"
+                        }`}
+                      >
+                        <div className="flex items-center space-x-4">
+                          {user.profile_picture ? (
+                            <img
+                              src={user.profile_picture}
+                              alt={`${user.firstname} ${user.lastname}`}
+                              className="w-12 h-12 rounded-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
+                              <span className="text-xl font-bold text-gray-500">
+                                {conversation.sender_id}
+                              </span>
+                            </div>
+                          )}
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-semibold text-gray-900 truncate">
+                              {user.firstname} {user.lastname}
+                            </h3>
+                            <p className="text-sm text-gray-500 truncate max-w-full">
+                              {conversation.body}
+                            </p>
+                          </div>
                         </div>
-                      )}
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-gray-900 truncate">
-                          {user.firstname} {user.lastname}   
-                        </h3>
-                        <p className="text-sm text-gray-500 truncate max-w-full">
-                          {conversation.body}
-                        </p>
                       </div>
-                    </div>
-                  </div>
-                  );
-                })}
+                    );
+                  })}
               </div>
             </Card>
 
@@ -188,45 +203,49 @@ export default function MessagePage() {
                   <div className="text-black flex-1 overflow-y-auto space-y-4 mb-4">
                     {messages.map((message) => {
                       const sender = users.find(
-                        (user) => user.id === message.sender_id);
+                        (user) => user.id === message.sender_id
+                      );
                       return (
-                      <div key={message.id} className="flex justify-start">
-                        {sender && sender.profile_picture? (
-                          <img
-                            src={sender.profile_picture || ""}
-                            alt={`${sender.firstname} ${sender.lastname}`}
-                            className="w-8 h-8 rounded-full object-cover mr-2"
-                          />
-                        ) : (
-                          <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
-                            <span className="text-base font-bold text-gray-500">
-                              {sender ? sender.firstname.charAt(0) : "?"}
-                            </span>
+                        <div key={message.id} className="flex justify-start">
+                          {sender && sender.profile_picture ? (
+                            <img
+                              src={sender.profile_picture || ""}
+                              alt={`${sender.firstname} ${sender.lastname}`}
+                              className="w-8 h-8 rounded-full object-cover mr-2"
+                            />
+                          ) : (
+                            <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+                              <span className="text-base font-bold text-gray-500">
+                                {sender ? sender.firstname.charAt(0) : "?"}
+                              </span>
+                            </div>
+                          )}
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="font-semibold text-primary">
+                                {sender ? sender.firstname : "Utilisateur"}
+                              </span>
+                            </div>
+                            <div className="max-w-[70%] p-3 rounded-lg bg-gray-100">
+                              <p>{message.body}</p>
+                              <span className="text-xs text-gray-500 mt-1 block">
+                                {new Date(message.sending_date).toLocaleString(
+                                  "fr-FR",
+                                  {
+                                    day: "2-digit",
+                                    month: "2-digit",
+                                    year: "numeric",
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                  }
+                                )}
+                              </span>
+                            </div>
                           </div>
-                        )}
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <span className="font-semibold text-primary">
-                              {sender ? sender.firstname : "Utilisateur"}
-                            </span>
-                          </div>
-                          <div className="max-w-[70%] p-3 rounded-lg bg-gray-100">
-                            <p>{message.body}</p>
-                            <span className="text-xs text-gray-500 mt-1 block">
-                              {new Date(message.sending_date).toLocaleString("fr-FR", {
-                                day: "2-digit",
-                                month: "2-digit",
-                                year: "numeric",
-                                hour: "2-digit",
-                                minute: "2-digit"
-                              })}
-                            </span>
-                          </div>
-                      </div>
-                  </div>
-                );
+                        </div>
+                      );
                     })}
-                </div>
+                  </div>
 
                   {/* Zone de saisie */}
                   <div className="border-t pt-4">

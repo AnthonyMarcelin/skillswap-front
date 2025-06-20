@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import api from "@/api/axios";
 
+// Props attendues pour ouvrir/fermer la modale et envoyer un service
 interface ServiceModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -17,6 +18,7 @@ interface ServiceModalProps {
   onSuccess?: () => void;
 }
 
+// Modale permettant d’envoyer une demande de service à un utilisateur
 export default function ServiceModal({
   isOpen,
   onClose,

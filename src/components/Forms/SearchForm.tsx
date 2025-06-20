@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+// hook pour gérer loading et erreur
 import { useAsyncState } from "@/hooks/useAsyncState";
 import { getAllSkills } from "@/services/skill.service";
 import type { ISkill } from "@/types/skill";
@@ -8,6 +9,7 @@ type SearchFormProps = {
   className?: string;
 };
 
+// Formulaire de recherche des utilisateurs par compétence + code postal
 export default function SearchForm({
   onSearch,
   className = "",
@@ -51,6 +53,7 @@ export default function SearchForm({
 
       {error && <p className="text-red-500 mb-4">{error}</p>}
 
+      {/* Liste déroulante des compétences */}
       <div className="mb-4">
         <select
           name="skill"
@@ -64,6 +67,7 @@ export default function SearchForm({
               : "Sélectionner une compétence"}
           </option>
 
+          {/* Si compétences disponibles, on les affiche en options */}
           {Array.isArray(skills) && skills.length > 0
             ? skills.map((skill, idx) => (
                 <option

@@ -10,7 +10,7 @@ import AvatarPicker from "../AvatarPicker";
 import Modal from "../ui/Modal";
 
 export default function SignupForm() {
-  // Contenu du formulaire
+  // Initialisation de l'état du formulaire
   const [formData, setFormData] = useState<
     SignupFormData & { avatarUrl?: string }
   >({
@@ -30,7 +30,7 @@ export default function SignupForm() {
     avatarUrl: undefined,
   });
 
-  // Ouverture des modales, état de chargement, gestion des erreurs
+  // État local pour gérer les modales (avatar et compétences)
   const [showModal, setShowModal] = useState(false);
   const [showAvatarModal, setShowAvatarModal] = useState(false);
   // Pour pouvoir enlever l'avatar lors de l'inscription si on change d'avis
@@ -65,12 +65,18 @@ export default function SignupForm() {
     setFormData((prev) => ({ ...prev, [name]: value.trimStart() }));
   };
 
+  // Vérification de la force du mot de passe
   const isPasswordStrong = (password: string): string | null => {
-    if (password.length < 8) return "Le mot de passe doit contenir au moins 8 caractères.";
-    if (!/[A-Z]/.test(password)) return "Le mot de passe doit contenir une majuscule.";
-    if (!/[a-z]/.test(password)) return "Le mot de passe doit contenir une minuscule.";
-    if (!/\d/.test(password)) return "Le mot de passe doit contenir un chiffre.";
-    if (!/[^A-Za-z0-9]/.test(password)) return "Le mot de passe doit contenir un caractère spécial.";
+    if (password.length < 8)
+      return "Le mot de passe doit contenir au moins 8 caractères.";
+    if (!/[A-Z]/.test(password))
+      return "Le mot de passe doit contenir une majuscule.";
+    if (!/[a-z]/.test(password))
+      return "Le mot de passe doit contenir une minuscule.";
+    if (!/\d/.test(password))
+      return "Le mot de passe doit contenir un chiffre.";
+    if (!/[^A-Za-z0-9]/.test(password))
+      return "Le mot de passe doit contenir un caractère spécial.";
     return null; // valide
   };
 
@@ -92,9 +98,9 @@ export default function SignupForm() {
 
     const passwordError = isPasswordStrong(formData.password);
     if (passwordError) {
-    alert(passwordError);
-    return;
-  }
+      alert(passwordError);
+      return;
+    }
 
     // Transforme les données du formulaire en données pour l’API
     const dto = mapFormDataToRegisterDto(formData);

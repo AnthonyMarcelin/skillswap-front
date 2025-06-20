@@ -2,11 +2,7 @@ import { useState } from "react";
 import SignupForm from "./SignupForm";
 import LoginForm from "./LoginForm";
 
-/**
- * Section d’inscription / connexion
- * - Desktop : 2 colonnes (Inscription | Connexion)
- * - Mobile : bascule via un bouton
- */
+// Section d’inscription / connexion avec bascule mobile
 export default function FormSection() {
   const [showSignup, setShowSignup] = useState(true);
 

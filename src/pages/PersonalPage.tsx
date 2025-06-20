@@ -1,3 +1,4 @@
+// Import des outils de routing
 import { useNavigate, useParams } from "react-router-dom";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
@@ -8,23 +9,30 @@ import { logout } from "@/services/auth.service";
 import { getCurrentUser, updateUser } from "@/services/user.service";
 import { ServiceCard } from "@/components/ServiceCard";
 import type { IUser } from "@/types/user";
+
+// Icônes d’édition
 import { Pencil, Save } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/Card";
 
 export default function PersonalPage() {
   const navigate = useNavigate();
   const { id } = useParams();
+  // Liste des services de l’utilisateur
   const [services, setServices] = useState<IService[]>([]);
+  // Utilisateur connecté
   const [currentUser, setCurrentUser] = useState<IUser | null>(null);
   const [error, setError] = useState("");
+  // Affichage conditionnel (mobile toggle)
   const [showServices, setShowServices] = useState(false);
+  // Mode édition
   const [isEditing, setIsEditing] = useState(false);
+  // Données modifiables
   const [editedUser, setEditedUser] = useState<IUser | null>(null);
 
   const handleLogout = async () => {
     try {
       await logout();
-      window.location.href = "/register";
+      navigate("/register");
     } catch (error) {
       console.error("Erreur lors de la déconnexion:", error);
     }

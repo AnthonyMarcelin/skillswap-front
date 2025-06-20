@@ -1,4 +1,4 @@
-// Type exact attendu par le backend quand on s’inscrit
+// Données attendues lors de l'inscription d'un utilisateur
 export interface RegisterDto {
   email: string;
   password: string;
