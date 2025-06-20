@@ -40,12 +40,9 @@ export default function SearchPage() {
         </div>
 
         <div className="bg-primary text-secondary border border-white rounded-xl shadow w-full max-w-4xl mx-auto mb-10">
-          <div className="text-start px-6 pt-6 font-semibold text-lg">
-            Résultat de votre recherche
-          </div>
-          <div className="flex flex-col p-6 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
             {filteredUsers.length === 0 ? (
-              <div className="text-center text-secondary">
+              <div className="col-span-full text-center text-secondary">
                 Aucune compétence trouvée pour cette recherche.
               </div>
             ) : (

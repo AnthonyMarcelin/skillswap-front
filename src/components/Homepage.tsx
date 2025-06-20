@@ -6,7 +6,6 @@ import WishToRegister from "./WishToRegister";
 import { useNavigate } from "react-router-dom";
 import type { IUser } from "@/types/user";
 import { useAllUsers } from "@/hooks/useAllUsers";
-import { UserCard } from "@/components/UserCard";
 import { useState } from "react";
 import { ProfileCard } from "./ProfileCard";
 
@@ -22,10 +21,20 @@ export default function Homepage() {
     skill: string;
     zipcode: string;
   }) {
-    const filtered = users.filter(
-      (user) =>
-        user.skills.some((s) => s.name === skill) && user.zipcode === zipcode
-    );
+    const filtered = users.filter((user) => {
+      const hasSkill = user.skills.some((s) =>
+        s.name.toLowerCase().includes(skill.toLowerCase())
+      );
+
+      // Si un code postal est fourni, on filtre aussi dessus
+      if (zipcode.trim()) {
+        return hasSkill && user.zipcode === zipcode;
+      }
+
+      // Sinon, on ne filtre que par compétence
+      return hasSkill;
+    });
+
     setFilteredUsers(filtered);
     navigate("/search", { state: { filteredUsers: filtered } });
   }
@@ -71,7 +80,9 @@ export default function Homepage() {
       <section className="hidden md:grid grid-cols-3 gap-8 px-8 py-12 bg-secondary text-white">
         {/* Colonne 1 */}
         <div className="space-y-8">
-          <h2 className=" font-semibold text-center text-2xl">Découvrez des profils</h2>
+          <h2 className=" font-semibold text-center text-2xl">
+            Découvrez des profils
+          </h2>
           <div className="space-y-4 p-4">
             {users.slice(0, 2).map((user) => (
               <ProfileCard key={user.id} user={user} />
@@ -88,10 +99,15 @@ export default function Homepage() {
             </p>
           </div>
           <div className="w-full max-w-md">
-            <SearchForm onSearch={handleSearch} className="rounded-2xl border-2 border-white shadow-lg bg-accent p-4"/>
+            <SearchForm
+              onSearch={handleSearch}
+              className="rounded-2xl border-2 border-white shadow-lg bg-accent p-4"
+            />
           </div>
           <div className="w-full max-w-md text-center">
-            <h2 className="text-2xl font-semibold mb-4 text-center">Compétences</h2>
+            <h2 className="text-2xl font-semibold mb-4 text-center">
+              Compétences
+            </h2>
             <SkillBubble />
           </div>
         </div>
