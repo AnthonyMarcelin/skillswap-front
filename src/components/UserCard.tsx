@@ -8,12 +8,16 @@ import {
 } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import type { IUser } from "@/types/user";
+import MessageModal  from "@/components/MessageModal"; // Assurez-vous que ce composant existe
+
 
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getUserById, getCurrentUser } from "@/services/user.service";
 import { useAsyncState } from "@/hooks/useAsyncState";
 import ServiceModal from "./Modals/Service.modal";
+
+import { useAuth } from "@/hooks/useAuth";
 
 export function UserCard() {
   const { id } = useParams();
@@ -23,7 +27,9 @@ export function UserCard() {
   const [loggedInUser, setLoggedInUser] = useState<IUser | null>(null);
   const [showModal, setShowModal] = useState(false);
   const { loading, setLoading, error, setError, reset } = useAsyncState();
-
+  const [showMessageModal, setShowMessageModal] = useState(false); 
+  const { user: authUser } = useAuth(); // Récupère l'utilisateur connecté
+  console.log("authUser", authUser);
   useEffect(() => {
     const fetchUser = async () => {
       reset();
@@ -81,20 +87,27 @@ export function UserCard() {
           </div>
 
           {id && (
-            <CardAction className="flex flex-col gap-2">
-              <Button
-                size="sm"
-                className="rounded bg-[var(--color-accent)] text-white"
-              >
-                Contacte-Moi
-              </Button>
-              <Button
+            <CardAction>
+                <Button
+                  onClick={() => setShowMessageModal(true)}
+                  size="sm"
+                  className="rounded bg-[var(--color-accent)] text-white"
+                >
+                  Contacte-Moi
+                </Button>
+              {showMessageModal && authUser?.id && (
+                <MessageModal onClose={() => setShowMessageModal(false)}
+                receiverId={Number(id)}
+                userId={authUser.id} />
+                              <Button
                 size="sm"
                 className="rounded bg-[var(--color-accent)] text-white"
                 onClick={handleAskService}
               >
                 Demander un service
               </Button>
+              )}
+
             </CardAction>
           )}
         </CardHeader>
